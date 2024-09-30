@@ -25,23 +25,27 @@ class HomeView extends StatelessWidget {
             const Text("Fortune Wheel"),
             const SizedBox(height: 20),
 
-            Obx(
-              () => AnimatedBuilder(
-                animation: homeController.animationController!,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: homeController.animationController!.value * 2 * math.pi,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
+            SizedBox(
+              width: Get.width*0.8,
+              child: Obx(
+                () => AnimatedBuilder(
+                  animation: homeController.animationController!,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: homeController.animationController!.value * 2 * math.pi,
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(500)),
+                          child: Image.asset('assets/images/spinningWheel.jpg'),
+                        ),
                       ),
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(500)),
-                        child: Image.asset('assets/images/spinningWheel.jpg'),
-                      ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
 
