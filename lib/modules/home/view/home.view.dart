@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kbspinningwheel/kbspinningwheel.dart';
 import 'package:web_app_demo/modules/home/controller/home.controller.dart';
 import 'dart:math' as math;
 
