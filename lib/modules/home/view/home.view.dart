@@ -24,29 +24,47 @@ class HomeView extends StatelessWidget {
 
             SizedBox(
               width: Get.width*0.8,
-              child: Obx(
-                () => AnimatedBuilder(
-                  animation: homeController.animationController!,
-                  builder: (context, child) {
-                    return Transform.rotate(
-                      angle: homeController.animationController!.value * 2 * math.pi,
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(Radius.circular(500)),
-                          child: Image.asset('assets/images/spinningWheel.jpg'),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+              height: Get.height*0.5,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Obx(
+                        () => AnimatedBuilder(
+                      animation: homeController.animationController!,
+                      builder: (context, child) {
+                        return Transform.rotate(
+                          angle: homeController.animationController!.value * 2 * math.pi,
+                          child: RotationTransition(
+                            turns:  AlwaysStoppedAnimation((homeController.selectedSector*30) / 360),
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(Radius.circular(500)),
+                                child: Image.asset('assets/images/spinningWheel.jpg'),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 200),
+                    child: Icon(Icons.arrow_downward_rounded, size: 60, color: Colors.green,),
+                  ),
+
+                ],
               ),
             ),
 
-            MaterialButton(onPressed: ()=>homeController.onClick(), child: Text("Click"),),
+            const SizedBox(height: 20),
+
+            MaterialButton(onPressed: ()=>homeController.onClick(), color: Colors.green, child: Text("Click"),),
+            const SizedBox(height: 20),
+            Obx(()=> Text("${homeController.selectedSector.value*30}"))
 
             // InkWell(
             //   onTap: () {
