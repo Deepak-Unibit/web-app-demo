@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
+import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
 import 'package:web_app_demo/models/response.model.dart';
 import 'dart:js' as js;
 
@@ -73,16 +74,27 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
     }
   }
 
-  onClick() {
-    const duration = Duration(milliseconds: 1500);
-    _animationController.value = AnimationController(
-      vsync: this, duration: duration, value: 0.2,
-    );
-    _animationController.value?.forward();
+  onClick() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.getSpin);
+    LoadingPage.close();
 
-    selectedSector.value = math.Random().nextInt(12)+1;
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
 
-    print("dkljs $selectedSector ${(selectedSector)*30}");
+    if(responseModel.responseCode == 200) {
+      const duration = Duration(milliseconds: 1500);
+      _animationController.value = AnimationController(
+        vsync: this, duration: duration
+      );
+      _animationController.value?.forward();
+
+      selectedSector.value = ((responseModel.data??0) / 12).toInt();
+
+      print("dkljs $selectedSector ${(selectedSector)*30}");
+    }
+    else {
+      print("dkljs ${responseModel.message}");
+    }
 
   }
 
