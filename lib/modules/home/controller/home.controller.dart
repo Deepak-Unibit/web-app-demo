@@ -28,7 +28,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       print("User Data: ${state['userData']}");
       user.value = state['userData'].toString();
       Map<String, dynamic> userData = jsonDecode(user.value);
-      print("user decode data: ${userData}");
+      user.value = userData.toString();
+      print("user decode data: $userData");
     }
     catch(e) {
       print(e);
