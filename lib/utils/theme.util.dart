@@ -25,7 +25,8 @@ class ThemesUtil {
     colorScheme: const ColorScheme.light(
       surface: Color(0xFF0E0D24),
       onSurface: Color(0xFFFFFFFF),
-      surfaceContainer: Color(0xFF27024F),
+      surfaceContainerLow: Color(0xFF540B81),
+      surfaceContainerHigh: Color(0xFFB600FF),
       primaryFixed: Color(0xFFFFCE1B),
       secondaryFixed: Color(0xFFFF6812)
     ),

@@ -27,7 +27,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
     );
     _animationController.value?.forward();
 
-    turnAnimationController = AnimationController(vsync: this, duration: 10.seconds,)..repeat();
+    turnAnimationController = AnimationController(vsync: this, duration: 60.seconds,)..repeat();
 
     // setUser(UserModel());
 

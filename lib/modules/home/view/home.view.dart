@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:linear_progress_bar/linear_progress_bar.dart';
 import 'package:web_app_demo/helper/lottie.helper.dart';
 import 'package:web_app_demo/modules/home/controller/home.controller.dart';
 import 'dart:math' as math;
@@ -23,10 +24,14 @@ class HomeView extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            SizedBox(
+            Container(
               height: Get.height,
               width: double.infinity,
-              child: LottieHelper.lottie(animationAsset: AssetsUtil.getLottie()),
+              constraints: const BoxConstraints(
+                maxWidth: 550,
+              ),
+              child:
+                  LottieHelper.lottie(animationAsset: AssetsUtil.getLottie()),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 450),
@@ -42,117 +47,156 @@ class HomeView extends StatelessWidget {
                           context,
                           AssetsUtil.getTrophy(),
                           "Rank",
+                          context.theme.colorScheme.surfaceContainerHigh,
+                          context.theme.colorScheme.surfaceContainerLow,
                         ),
                         buildColumn(
                           context,
                           AssetsUtil.getInvitation(),
                           "Invitation",
+                          context.theme.colorScheme.surfaceContainerHigh,
+                          context.theme.colorScheme.surfaceContainerLow,
                         ),
                         buildColumn(
                           context,
                           AssetsUtil.getCoin(),
                           "Cash Out",
+                          context.theme.colorScheme.primaryFixed,
+                          context.theme.colorScheme.secondaryFixed,
                         ),
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(AssetsUtil.getCoin(), height: 30, width: 30, fit: BoxFit.contain,),
+                        Image.asset(
+                          AssetsUtil.getCoin(),
+                          height: 30,
+                          width: 30,
+                          fit: BoxFit.contain,
+                        ),
                         const SizedBox(width: 5),
                         Text(
                           "₹544",
                           style: TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w700,
                             color: context.theme.colorScheme.primaryFixed,
                             fontStyle: FontStyle.italic,
                           ),
                         )
                       ],
                     ),
-
-                    SizedBox(
-                      width: Get.width * 0.8,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          AnimatedBuilder(
-                            animation: homeController.turnAnimationController,
-                            builder: (context, child) {
-                              return Transform.rotate(
-                                angle: homeController.turnAnimationController.value * 2 * math.pi,
-                                child: Image.asset(AssetsUtil.getTurn(), width: double.infinity, fit: BoxFit.cover,),
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Image.asset(AssetsUtil.getBlackCircle(), fit: BoxFit.cover, width: double.infinity,),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(48),
-                            child: Obx(
-                              () => AnimatedBuilder(
-                                animation: homeController.animationController!,
-                                builder: (context, child) {
-                                  return Transform.rotate(
-                                    angle: homeController.animationController!.value * 2 * math.pi,
-                                    child: RotationTransition(
-                                      turns: AlwaysStoppedAnimation((homeController.selectedSector * 30) / 360),
-                                      child: Image.asset(AssetsUtil.getBackground(), width: double.infinity, fit: BoxFit.cover,),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          MaterialButton(
-                            onPressed: () => homeController.onClick(),
-                            minWidth: 0,
-                            padding: EdgeInsets.zero,
-                            visualDensity: VisualDensity.compact,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            child: Container(
-                              height: 80, width: 80,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage(AssetsUtil.getSpinButton(),))
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "0",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: context.theme.colorScheme.onSurface,
-                                      height: 1,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Spins",
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w300,
-                                      color: context.theme.colorScheme.onSurface.withOpacity(0.5),
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                  LinearProgressBar(
+                        backgroundColor: context.theme.colorScheme.onSurface.withOpacity(0.25),
+                        progressColor: context.theme.colorScheme.secondaryFixed,
+                        borderRadius: const BorderRadius.all(Radius.circular(100)),
+                        minHeight: 18,
+                        maxSteps: 100,
+                        currentStep: 50,
                       ),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        AnimatedBuilder(
+                          animation: homeController.turnAnimationController,
+                          builder: (context, child) {
+                            return Transform.rotate(
+                              angle:
+                                  homeController.turnAnimationController.value *
+                                      2 *
+                                      math.pi,
+                              child: Image.asset(
+                                AssetsUtil.getTurn(),
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: Image.asset(
+                            AssetsUtil.getBlackCircle(),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(50),
+                          child: Obx(
+                            () => AnimatedBuilder(
+                              animation: homeController.animationController!,
+                              builder: (context, child) {
+                                return Transform.rotate(
+                                  angle: homeController
+                                          .animationController!.value *
+                                      2 *
+                                      math.pi,
+                                  child: RotationTransition(
+                                    turns: AlwaysStoppedAnimation(
+                                        (homeController.selectedSector * 30) /
+                                            360),
+                                    child: Image.asset(
+                                      AssetsUtil.getBackground(),
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        MaterialButton(
+                          onPressed: () => homeController.onClick(),
+                          minWidth: 0,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                              AssetsUtil.getSpinButton(),
+                            ))),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "0",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: context.theme.colorScheme.onSurface,
+                                    height: 1,
+                                  ),
+                                ),
+                                Text(
+                                  "Spins",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w300,
+                                    color: context.theme.colorScheme.onSurface
+                                        .withOpacity(0.5),
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-
                     const SizedBox(height: 20),
-                    Obx(() => Text("${homeController.selectedSector.value * 30}"))
+                    Obx(() =>
+                        Text("${homeController.selectedSector.value * 30}"))
                   ],
                 ),
               ),
@@ -163,7 +207,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  MaterialButton buildColumn(BuildContext context, String image, String text) {
+  MaterialButton buildColumn(BuildContext context, String image, String text, Color startColor, Color endColor) {
     return MaterialButton(
       onPressed: () {},
       minWidth: 0,
@@ -184,19 +228,28 @@ class HomeView extends StatelessWidget {
           Container(
             width: 80,
             alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 5),
             decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
-                color:
-                    context.theme.colorScheme.surfaceContainer.withOpacity(0.8),
-                border: Border.all(
-                    color: context.theme.colorScheme.onSurface.withOpacity(0.1),
-                    width: 1.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  startColor,
+                  endColor,
+                ],
+              ),
+              border: Border.all(
+                  color: context.theme.colorScheme.onSurface.withOpacity(0.25),
+                  width: 1.5),
+            ),
             child: Text(
               text,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: context.theme.colorScheme.onSurface,
+                height: 1
               ),
             ),
           )
