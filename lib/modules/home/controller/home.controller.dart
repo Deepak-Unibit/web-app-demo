@@ -29,9 +29,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
     try {
       // var state = js.JsObject.fromBrowserObject(js.context['state']);
       var state = js.JsObject.fromBrowserObject(js.context['state']);
-      print(state);
-      print("jsonDecode: ${jsonDecode(state['userData'])}");
-      // print(state['hello']);
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       UserModel userModel = UserModel.fromJson(userData);
 
@@ -63,6 +60,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
     };
 
     var resp = await ApiCall.post(UrlApi.setUser, data);
+    print(resp);
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
@@ -77,6 +75,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
   onClick() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getSpin);
+    print("Spin ${resp}");
     LoadingPage.close();
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
