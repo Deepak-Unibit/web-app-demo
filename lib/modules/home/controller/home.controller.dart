@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:web_app_demo/api/call.api.dart';
+import 'package:web_app_demo/api/url.api.dart';
+import 'package:web_app_demo/models/response.model.dart';
 import 'dart:js' as js;
 
 import 'package:web_app_demo/models/user.model.dart';
@@ -28,12 +31,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       print(state);
       print("jsonDecode: ${jsonDecode(state['userData'])}");
       // print(state['hello']);
-      user.value = state['userData'].toString();
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       UserModel userModel = UserModel.fromJson(userData);
-      user.value = userData.toString();
+
       print("user decode data: $userData");
       print("Id: ${userModel.id} firstName: ${userModel.firstName} lastName: ${userModel.lastName} languageCode: ${userModel.languageCode} allow: ${userModel.allowsWriteToPm}");
+      user.value = userModel.firstName??"";
+      setUser(userModel);
     }
     catch(e) {
       print(e);
@@ -45,6 +49,25 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
   void onClose() {
     _animationController.value?.dispose();
     super.onClose();
+  }
+
+  setUser(UserModel userModel) async {
+    Map<String, dynamic> data = {
+      "id" : userModel.id,
+      "firstName" : userModel.firstName,
+      "lastName" : userModel.lastName
+    };
+
+    var resp = await ApiCall.post(UrlApi.setUser, data);
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if(responseModel.responseCode == 200) {
+      user.value = responseModel.message??"";
+    }
+    else {
+      user.value = responseModel.message ?? "";
+    }
   }
 
   onClick() {
