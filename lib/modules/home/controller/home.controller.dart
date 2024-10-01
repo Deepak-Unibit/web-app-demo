@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       // print(state['hello']);
       print("User Data: ${state['userData']}");
       user.value = state['userData'].toString();
+      Map<String, dynamic> userData = jsonDecode(user.value);
+      print(userData);
     }
     catch(e) {
       print(e);
