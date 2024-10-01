@@ -14,6 +14,7 @@ import 'package:web_app_demo/models/user.model.dart';
 class HomeController extends GetxController with GetTickerProviderStateMixin  {
   final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
   AnimationController? get animationController => _animationController.value;
+  late AnimationController turnAnimationController;
   RxInt selectedSector = 0.obs;
   RxString user = "".obs;
 
@@ -25,6 +26,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       vsync: this, duration: duration,
     );
     _animationController.value?.forward();
+
+    turnAnimationController = AnimationController(vsync: this, duration: 10.seconds,)..repeat();
 
     // setUser(UserModel());
 
@@ -51,6 +54,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
   @override
   void onClose() {
     _animationController.value?.dispose();
+    turnAnimationController.dispose();
     super.onClose();
   }
 
@@ -61,7 +65,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       "lastName" : userModel.lastName
     };
 
+    LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.setUser, data);
+    LoadingPage.close();
     print(resp);
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
