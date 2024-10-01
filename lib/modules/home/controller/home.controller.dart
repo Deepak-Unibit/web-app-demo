@@ -24,6 +24,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       // var state = js.JsObject.fromBrowserObject(js.context['state']);
       var state = js.JsObject.fromBrowserObject(js.context['state']);
       print(state);
+      print("jsonDecode: ${jsonDecode(state['userData'])}");
       // print(state['hello']);
       print("User Data: ${state['userData']}");
       user.value = state['userData'].toString();

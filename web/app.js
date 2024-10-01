@@ -6,5 +6,5 @@
 
 window.state = {
 //    hello: 'world'
-    userData: user
+    userData: JSON.stringify(user)
 }
