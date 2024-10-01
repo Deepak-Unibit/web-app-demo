@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:js' as js;
 
+import 'package:web_app_demo/models/user.model.dart';
+
 
 class HomeController extends GetxController with GetTickerProviderStateMixin  {
   final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
@@ -26,11 +28,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       print(state);
       print("jsonDecode: ${jsonDecode(state['userData'])}");
       // print(state['hello']);
-      print("User Data: ${state['userData']}");
       user.value = state['userData'].toString();
-      Map<String, dynamic> userData = jsonDecode(user.value);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      UserModel userModel = UserModel.fromJson(userData);
       user.value = userData.toString();
       print("user decode data: $userData");
+      print("Id: ${userModel.id} firstName: ${userModel.firstName} lastName: ${userModel.lastName} languageCode: ${userModel.languageCode} allow: ${userModel.allowsWriteToPm}");
     }
     catch(e) {
       print(e);
