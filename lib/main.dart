@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/modules/home/view/home.view.dart';
+import 'package:web_app_demo/utils/theme.util.dart';
 
 import 'api/call.api.dart';
 
@@ -27,11 +28,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      title: 'Spinner',
+      themeMode: ThemeMode.light,
+      debugShowCheckedModeBanner: false,
+      theme: ThemesUtil.light,
       home: HomeView(),
     );
   }

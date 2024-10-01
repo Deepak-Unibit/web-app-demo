@@ -2,9 +2,6 @@
  const initData = tg.initData;
  const user = tg.initDataUnsafe.user;
 
- console.log(user);
-
 window.state = {
-//    hello: 'world'
     userData: JSON.stringify(user)
 }

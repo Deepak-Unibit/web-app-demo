@@ -29,7 +29,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
     // setUser(UserModel());
 
     try {
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
       var state = js.JsObject.fromBrowserObject(js.context['state']);
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       UserModel userModel = UserModel.fromJson(userData);
