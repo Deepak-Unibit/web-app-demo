@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,23 +25,26 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
     );
     _animationController.value?.forward();
 
-    try {
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      UserModel userModel = UserModel.fromJson(userData);
+    setUser(UserModel());
 
-      print("user decode data: $userData");
-      print("Id: ${userModel.id} firstName: ${userModel.firstName} lastName: ${userModel.lastName} languageCode: ${userModel.languageCode} allow: ${userModel.allowsWriteToPm}");
-      user.value = userModel.firstName??"";
-      if(userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
-        setUser(userModel);
-      }
-
-    }
-    catch(e) {
-      print(e);
-    }
+    // try {
+    //   // var state = js.JsObject.fromBrowserObject(js.context['state']);
+    //   var state = js.JsObject.fromBrowserObject(js.context['state']);
+    //   Map<String, dynamic> userData = jsonDecode(state['userData']);
+    //   UserModel userModel = UserModel.fromJson(userData);
+    //
+    //   print("user decode data: $userData");
+    //   print("Id: ${userModel.id} firstName: ${userModel.firstName} lastName: ${userModel.lastName} languageCode: ${userModel.languageCode} allow: ${userModel.allowsWriteToPm}");
+    //   user.value = userModel.firstName??"";
+    //   // setUser(userModel);
+    //   // if(userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
+    //   //   setUser(userModel);
+    //   // }
+    //
+    // }
+    // catch(e) {
+    //   print(e);
+    // }
 
   }
 
@@ -54,9 +56,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
 
   setUser(UserModel userModel) async {
     Map<String, dynamic> data = {
-      "id" : userModel.id,
-      "firstName" : userModel.firstName,
-      "lastName" : userModel.lastName
+      "id" : 5454654354165.toString(),
+      "firstName" : "hdfjhdfgjk",
+      "lastName" : "jdsks"
     };
 
     var resp = await ApiCall.post(UrlApi.setUser, data);
