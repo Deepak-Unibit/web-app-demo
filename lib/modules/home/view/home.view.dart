@@ -23,6 +23,12 @@ class HomeView extends StatelessWidget {
             const Text("Fortune Wheel"),
             const SizedBox(height: 20),
 
+            Obx(
+                ()=> Text(
+                "User Data ${homeController.user.value}"
+              ),
+            ),
+
             SizedBox(
               width: Get.width*0.8,
               height: Get.height*0.5,

@@ -1,13 +1,14 @@
 import 'dart:math' as math;
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:js' as js;
+
 
 class HomeController extends GetxController with GetTickerProviderStateMixin  {
   final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
   AnimationController? get animationController => _animationController.value;
   RxInt selectedSector = 0.obs;
-
+  RxString user = "".obs;
 
   @override
   void onInit() {
@@ -17,6 +18,19 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       vsync: this, duration: duration,
     );
     _animationController.value?.forward();
+
+    try {
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      print(state);
+      // print(state['hello']);
+      print("User Data: ${state['userData']}");
+      user.value = state['userData'].toString();
+    }
+    catch(e) {
+      print(e);
+    }
+
   }
 
   @override
