@@ -29,7 +29,10 @@ class HomeView extends StatelessWidget {
               constraints: const BoxConstraints(
                 maxWidth: 550,
               ),
-              child: Image.asset(AssetsUtil.getLottie(), width: double.infinity,),
+              child: Image.asset(
+                AssetsUtil.getLottie(),
+                width: double.infinity,
+              ),
               // child: LottieHelper.lottie(animationAsset: AssetsUtil.getLottie()),
             ),
             ConstrainedBox(
@@ -131,107 +134,143 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                     Stack(
-                      alignment: Alignment.center,
+                      alignment: Alignment.topCenter,
                       children: [
-                        AnimatedBuilder(
-                          animation: homeController.turnAnimationController,
-                          builder: (context, child) {
-                            return Transform.rotate(
-                              angle:
-                                  homeController.turnAnimationController.value *
-                                      2 *
-                                      math.pi,
-                              child: Image.asset(
-                                AssetsUtil.getTurn(),
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            );
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Image.asset(
-                            AssetsUtil.getBlackCircle(),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(50),
-                          child: Obx(
-                            () => AnimatedBuilder(
-                              animation: homeController.animationController!,
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            AnimatedBuilder(
+                              animation: homeController.turnAnimationController,
                               builder: (context, child) {
                                 return Transform.rotate(
                                   angle: homeController
-                                          .animationController!.value *
+                                          .turnAnimationController.value *
                                       2 *
                                       math.pi,
-                                  child: RotationTransition(
-                                    turns: AlwaysStoppedAnimation(
-                                        (homeController.selectedSector * 30) /
-                                            360),
-                                    child: Image.asset(
-                                      AssetsUtil.getBackground(),
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
+                                  child: Image.asset(
+                                    AssetsUtil.getTurn(),
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
                                   ),
                                 );
                               },
                             ),
-                          ),
-                        ),
-                        MaterialButton(
-                          onPressed: () => homeController.onClick(),
-                          minWidth: 0,
-                          padding: EdgeInsets.zero,
-                          visualDensity: VisualDensity.compact,
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          materialTapTargetSize:
-                          MaterialTapTargetSize.shrinkWrap,
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  AssetsUtil.getSpinButton(),
+                            Padding(
+                              padding: const EdgeInsets.all(30),
+                              child: Image.asset(
+                                AssetsUtil.getBlackCircle(),
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(50),
+                              child: Obx(
+                                () => AnimatedBuilder(
+                                  animation:
+                                      homeController.animationController!,
+                                  builder: (context, child) {
+                                    return Transform.rotate(
+                                      angle: homeController
+                                              .animationController!.value *
+                                          2 *
+                                          math.pi,
+                                      child: RotationTransition(
+                                        turns: AlwaysStoppedAnimation(
+                                            (homeController.selectedSector *
+                                                    30) /
+                                                360),
+                                        child: Image.asset(
+                                          AssetsUtil.getBackground(),
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "0",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: context.theme.colorScheme.onSurface,
-                                    height: 1,
+                            MaterialButton(
+                              onPressed: () => homeController.onClick(),
+                              minWidth: 0,
+                              padding: EdgeInsets.zero,
+                              visualDensity: VisualDensity.compact,
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      AssetsUtil.getSpinButton(),
+                                    ),
                                   ),
                                 ),
-                                Text(
-                                  "Spins",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w300,
-                                    color: context.theme.colorScheme.onSurface
-                                        .withOpacity(0.5),
-                                    fontStyle: FontStyle.italic,
-                                  ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "0",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color:
+                                            context.theme.colorScheme.onSurface,
+                                        height: 1,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Spins",
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w300,
+                                        color: context
+                                            .theme.colorScheme.onSurface
+                                            .withOpacity(0.5),
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30),
+                          child: Image.asset(
+                            AssetsUtil.getMark(),
+                            height: 45,
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(bottom: Get.width>400 ? 350 : (Get.width/2)+60),
-                          child: Image.asset(AssetsUtil.getMark(), height: 45,),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              buildColumn2(
+                                  context,
+                                  AssetsUtil.getSpinCard(),
+                                  "+1 Spin",
+                                  context
+                                      .theme.colorScheme.surfaceContainerHigh,
+                                  context
+                                      .theme.colorScheme.surfaceContainerLow),
+                              buildColumn2(
+                                  context,
+                                  AssetsUtil.getChest(),
+                                  "More Spin",
+                                  context
+                                      .theme.colorScheme.surfaceContainerHigh,
+                                  context
+                                      .theme.colorScheme.surfaceContainerLow),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -242,28 +281,29 @@ class HomeView extends StatelessWidget {
                         children: [
                           Flexible(
                             child: MaterialButton(
-                              onPressed: (){},
+                              onPressed: () {},
                               minWidth: 0,
                               padding: EdgeInsets.zero,
                               visualDensity: VisualDensity.compact,
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
                               elevation: 0,
                               child: Container(
                                 width: double.infinity,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                    borderRadius:
-                                        const BorderRadius.all(Radius.circular(8)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(8)),
                                     gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                       colors: [
-                                        context
-                                            .theme.colorScheme.surfaceContainerHigh,
-                                        context
-                                            .theme.colorScheme.surfaceContainerLow,
+                                        context.theme.colorScheme
+                                            .surfaceContainerHigh,
+                                        context.theme.colorScheme
+                                            .surfaceContainerLow,
                                       ],
                                     ),
                                     border: Border.all(
@@ -286,8 +326,8 @@ class HomeView extends StatelessWidget {
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
-                                          color:
-                                              context.theme.colorScheme.onSurface,
+                                          color: context
+                                              .theme.colorScheme.onSurface,
                                           fontStyle: FontStyle.italic,
                                         ),
                                       )
@@ -297,25 +337,29 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           MaterialButton(
-                            onPressed: (){},
+                            onPressed: () {},
                             minWidth: 0,
                             padding: EdgeInsets.zero,
                             visualDensity: VisualDensity.compact,
                             highlightColor: Colors.transparent,
                             splashColor: Colors.transparent,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             elevation: 0,
                             child: Container(
                               height: 40,
                               width: 40,
                               decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(8)),
                                 gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    context.theme.colorScheme.surfaceContainerHigh,
-                                    context.theme.colorScheme.surfaceContainerLow,
+                                    context
+                                        .theme.colorScheme.surfaceContainerHigh,
+                                    context
+                                        .theme.colorScheme.surfaceContainerLow,
                                   ],
                                 ),
                                 border: Border.all(
@@ -333,6 +377,53 @@ class HomeView extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Share To:",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: context.theme.colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        MaterialButton(
+                          onPressed: () {},
+                          minWidth: 0,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          child: Image.asset(
+                            AssetsUtil.getXIcon(),
+                            height: 22,
+                            width: 22,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        MaterialButton(
+                          onPressed: () {},
+                          minWidth: 0,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          child: Image.asset(
+                            AssetsUtil.getYoutubeIcon(),
+                            height: 22,
+                            width: 22,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -385,6 +476,57 @@ class HomeView extends StatelessWidget {
               text,
               style: TextStyle(
                   fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: context.theme.colorScheme.onSurface,
+                  height: 1),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  MaterialButton buildColumn2(BuildContext context, String image, String text,
+      Color startColor, Color endColor) {
+    return MaterialButton(
+      onPressed: () {},
+      minWidth: 0,
+      padding: EdgeInsets.zero,
+      visualDensity: VisualDensity.compact,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            image,
+            height: 40,
+            width: 40,
+            fit: BoxFit.contain,
+          ),
+          Container(
+            width: 60,
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 3),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  startColor,
+                  endColor,
+                ],
+              ),
+              border: Border.all(
+                  color: context.theme.colorScheme.onSurface.withOpacity(0.25),
+                  width: 1.5),
+            ),
+            child: Text(
+              text,
+              style: TextStyle(
+                  fontSize: 10,
                   fontWeight: FontWeight.w500,
                   color: context.theme.colorScheme.onSurface,
                   height: 1),
