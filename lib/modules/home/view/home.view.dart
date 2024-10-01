@@ -229,7 +229,10 @@ class HomeView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Image.asset(AssetsUtil.getMark(), height: 45,),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: Get.width>400 ? 350 : (Get.width/2)+50),
+                          child: Image.asset(AssetsUtil.getMark(), height: 45,),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20),
