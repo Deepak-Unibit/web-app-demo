@@ -37,7 +37,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin  {
       print("user decode data: $userData");
       print("Id: ${userModel.id} firstName: ${userModel.firstName} lastName: ${userModel.lastName} languageCode: ${userModel.languageCode} allow: ${userModel.allowsWriteToPm}");
       user.value = userModel.firstName??"";
-      setUser(userModel);
+      if(userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
+        setUser(userModel);
+      }
+
     }
     catch(e) {
       print(e);
