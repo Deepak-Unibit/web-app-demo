@@ -36,36 +36,40 @@ class HomeView extends StatelessWidget {
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 450),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildColumn(
-                          context,
-                          AssetsUtil.getTrophy(),
-                          "Rank",
-                          context.theme.colorScheme.surfaceContainerHigh,
-                          context.theme.colorScheme.surfaceContainerLow,
-                        ),
-                        buildColumn(
-                          context,
-                          AssetsUtil.getInvitation(),
-                          "Invitation",
-                          context.theme.colorScheme.surfaceContainerHigh,
-                          context.theme.colorScheme.surfaceContainerLow,
-                        ),
-                        buildColumn(
-                          context,
-                          AssetsUtil.getCoin(),
-                          "Cash Out",
-                          context.theme.colorScheme.primaryFixed,
-                          context.theme.colorScheme.secondaryFixed,
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          buildColumn(
+                            context,
+                            AssetsUtil.getTrophy(),
+                            "Rank",
+                            context.theme.colorScheme.surfaceContainerHigh,
+                            context.theme.colorScheme.surfaceContainerLow,
+                          ),
+                          buildColumn(
+                            context,
+                            AssetsUtil.getInvitation(),
+                            "Invitation",
+                            context.theme.colorScheme.surfaceContainerHigh,
+                            context.theme.colorScheme.surfaceContainerLow,
+                          ),
+                          buildColumn(
+                            context,
+                            AssetsUtil.getCoin(),
+                            "Cash Out",
+                            context.theme.colorScheme.primaryFixed,
+                            context.theme.colorScheme.secondaryFixed,
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -87,14 +91,43 @@ class HomeView extends StatelessWidget {
                         )
                       ],
                     ),
-                  LinearProgressBar(
-                        backgroundColor: context.theme.colorScheme.onSurface.withOpacity(0.25),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 8),
+                      child: LinearProgressBar(
+                        backgroundColor: context.theme.colorScheme.onSurface
+                            .withOpacity(0.25),
                         progressColor: context.theme.colorScheme.secondaryFixed,
-                        borderRadius: const BorderRadius.all(Radius.circular(100)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(100)),
                         minHeight: 18,
                         maxSteps: 100,
                         currentStep: 50,
                       ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "Only ",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: context.theme.colorScheme.onSurface,
+                            fontStyle: FontStyle.italic),
+                        children: [
+                          TextSpan(
+                            text: " ₹13",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: context.theme.colorScheme.primaryFixed,
+                            ),
+                          ),
+                          const TextSpan(
+                            text: " to cash out ₹100 !",
+                          )
+                        ],
+                      ),
+                    ),
                     Stack(
                       alignment: Alignment.center,
                       children: [
@@ -162,10 +195,12 @@ class HomeView extends StatelessWidget {
                             width: 80,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                              AssetsUtil.getSpinButton(),
-                            ))),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  AssetsUtil.getSpinButton(),
+                                ),
+                              ),
+                            ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -195,8 +230,101 @@ class HomeView extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    Obx(() =>
-                        Text("${homeController.selectedSector.value * 30}"))
+                    Row(
+                      children: [
+                        Flexible(
+                          child: MaterialButton(
+                            onPressed: (){},
+                            minWidth: 0,
+                            padding: EdgeInsets.zero,
+                            visualDensity: VisualDensity.compact,
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            elevation: 0,
+                            child: Container(
+                              width: double.infinity,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      const BorderRadius.all(Radius.circular(8)),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      context
+                                          .theme.colorScheme.surfaceContainerHigh,
+                                      context
+                                          .theme.colorScheme.surfaceContainerLow,
+                                    ],
+                                  ),
+                                  border: Border.all(
+                                    color: context.theme.colorScheme.onSurface
+                                        .withOpacity(0.25),
+                                    width: 1.5,
+                                  )),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      AssetsUtil.getSpinCard(),
+                                      height: 30,
+                                      width: 30,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      "Invite for Spins!",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color:
+                                            context.theme.colorScheme.onSurface,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    )
+                                  ]),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        MaterialButton(
+                          onPressed: (){},
+                          minWidth: 0,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          elevation: 0,
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(8)),
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  context.theme.colorScheme.surfaceContainerHigh,
+                                  context.theme.colorScheme.surfaceContainerLow,
+                                ],
+                              ),
+                              border: Border.all(
+                                color: context.theme.colorScheme.onSurface
+                                    .withOpacity(0.25),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.copy,
+                              size: 18,
+                              color: context.theme.colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -207,7 +335,8 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  MaterialButton buildColumn(BuildContext context, String image, String text, Color startColor, Color endColor) {
+  MaterialButton buildColumn(BuildContext context, String image, String text,
+      Color startColor, Color endColor) {
     return MaterialButton(
       onPressed: () {},
       minWidth: 0,
@@ -246,11 +375,10 @@ class HomeView extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: context.theme.colorScheme.onSurface,
-                height: 1
-              ),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: context.theme.colorScheme.onSurface,
+                  height: 1),
             ),
           )
         ],

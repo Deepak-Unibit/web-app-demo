@@ -7,4 +7,5 @@ class AssetsUtil {
   static getCoin() => 'assets/images/coin.webp';
   static getLottie() => 'assets/images/bg-video.mp4.lottie.json';
   static getTurn() => 'assets/images/turn.webp';
+  static getSpinCard() => 'assets/images/spin.webp';
 }
