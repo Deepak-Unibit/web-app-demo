@@ -18,6 +18,7 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text("Fortune Wheel"),
             const SizedBox(height: 20),
@@ -55,7 +56,6 @@ class HomeView extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: 200),
                     child: Icon(Icons.arrow_downward_rounded, size: 60, color: Colors.green,),
                   ),
-
                 ],
               ),
             ),
@@ -65,71 +65,6 @@ class HomeView extends StatelessWidget {
             MaterialButton(onPressed: ()=>homeController.onClick(), color: Colors.green, child: Text("Click"),),
             const SizedBox(height: 20),
             Obx(()=> Text("${homeController.selectedSector.value*30}"))
-
-            // InkWell(
-            //   onTap: () {
-            //     homeController.spin();
-            //   },
-            //   child: AnimatedBuilder(
-            //     animation: Listenable.merge([]),
-            //     builder: (context, child) => Obx(
-            //       () => Transform.rotate(
-            //         angle: homeController.controller.value *
-            //             homeController.angle.value,
-            //         child: Container(
-            //           height: 100,
-            //           width: 100,
-            //           margin: const EdgeInsets.all(20),
-            //           decoration: const BoxDecoration(
-            //             color: Colors.red,
-            //             image: DecorationImage(
-            //                 image:
-            //                     AssetImage("assets/images/spinningWheel.jpg"),
-            //                 fit: BoxFit.cover),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
-            // SizedBox(
-            //   height: 200,
-            //   width: 200,
-            //   child: Get.Obx(
-            //     ()=> FortuneWheel(
-            //         selected: selected.value.stream,
-            //         animateFirst: false,
-            //         rotationCount: 10,
-            //         items: [
-            //           for (int i = 0; i < items.length; i++) ...<FortuneItem>{
-            //             FortuneItem(child: Text(items[i].toString())),
-            //           },
-            //         ],
-            //         onAnimationEnd: () {
-            //           print("animation end");
-            //           // selected.value.close();
-            //           selected.value = BehaviorSubject<int>();
-            //         },
-            //       ),
-            //   ),
-            // ),
-            // const SizedBox(height: 20),
-            // MaterialButton(
-            //   onPressed: () {
-            //     int val = Fortune.randomInt(0, items.length);
-            //     selected.value.add(val);
-            //     print("onTap $val ${selected.value.stream.value}");
-            //   },
-            //   child: Container(
-            //     height: 40,
-            //     width: 120,
-            //     color: Colors.red,
-            //     child: const Center(
-            //       child: Text("SPIN"),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
