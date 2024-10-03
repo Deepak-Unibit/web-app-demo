@@ -1,0 +1,88 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:web_app_demo/modules/home/components/secondaryButton.component.dart';
+import 'package:web_app_demo/utils/assets.util.dart';
+
+class GetSpinDialogComponent {
+  static show({required num spinCount, required Function onClick, bool showClose = false}) {
+    return showDialog(
+      context: Get.context!,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        insetPadding: const EdgeInsets.all(20),
+        backgroundColor: Colors.black.withOpacity(0.25),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            constraints: const BoxConstraints(maxWidth: 500),
+            decoration: BoxDecoration(
+              color: context.theme.colorScheme.surfaceContainerLow,
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              border: Border.all(color: context.theme.colorScheme.primaryFixed.withOpacity(0.25)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+               showClose
+                   ? Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: MaterialButton(
+                    onPressed: () => Get.back(),
+                    minWidth: 0,
+                    padding: EdgeInsets.zero,
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    visualDensity: VisualDensity.compact,
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 20,
+                      color: context.theme.colorScheme.onSurface,
+                    ),
+                  ),
+                )
+                   : const SizedBox.shrink(),
+                Image.asset(
+                  AssetsUtil.getSpinCard(),
+                  height: 150,
+                  fit: BoxFit.contain,
+                ),
+                RichText(
+                  maxLines: 2,
+                  text: TextSpan(
+                    text: "Join Channel & Get ",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: context.theme.colorScheme.onSurface,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "$spinCount",
+                        style: TextStyle(
+                          color: context.theme.colorScheme.primaryFixed,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: " Spin!"
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SecondaryButtonComponent(
+                  text: "Join Channel & Get Spin",
+                  onClick: onClick,
+                  height: 35,
+                  width: double.infinity,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

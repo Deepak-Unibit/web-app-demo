@@ -6,5 +6,6 @@ class UrlApi {
   //Auth
   static const setUser = "$baseUrl/auth/set";
   static const getSpin = "$baseUrl/user/spin-wheel";
+  static const verifySubscription = "$baseUrl/verify-subscription";
 
 }

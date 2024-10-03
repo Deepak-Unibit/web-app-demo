@@ -8,19 +8,23 @@ import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
 import 'package:web_app_demo/helper/lottie.helper.dart';
 import 'package:web_app_demo/models/response.model.dart';
+import 'package:web_app_demo/models/spin.model.dart';
 import 'dart:js' as js;
+import 'dart:html' as html;
 import 'package:web_app_demo/models/user.model.dart';
+import 'package:web_app_demo/modules/home/components/getSpinDialogComponent.dart';
+import 'package:web_app_demo/modules/home/components/spinWinAmountDialog.component.dart';
 import 'package:web_app_demo/utils/assets.util.dart';
 import '../../../models/setUser.model.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  final Rxn<AnimationController> _animationController =
-      Rxn<AnimationController>();
+  final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
   AnimationController? get animationController => _animationController.value;
   late AnimationController turnAnimationController;
   RxDouble selectedSector = 0.0.obs;
   Rx<SetUserData> setUserData = SetUserData().obs;
   RxInt totalSpinCount = 0.obs;
+  bool isSpinning = false;
 
   @override
   void onInit() {
@@ -51,8 +55,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       // Development
       Future.delayed(
           200.milliseconds,
-          () => setUser(UserModel(
-              id: 090900909099, firstName: "deepakTest", lastName: "frrfff")));
+          () => setUser(UserModel(id: 090900909099, firstName: "deepakTest", lastName: "frrfff")));
     } catch (e) {
       print(e);
     }
@@ -63,6 +66,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     _animationController.value?.dispose();
     turnAnimationController.dispose();
     super.onClose();
+  }
+
+  verifySubscription() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.verifySubscription);
+    LoadingPage.close();
   }
 
   setUser(UserModel userModel) async {
@@ -87,137 +96,54 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onSpin() async {
+    if(isSpinning) {
+      return;
+    }
     // LoadingPage.show();
     // var resp = await ApiCall.get(UrlApi.getSpin);
     // LoadingPage.close();
     //
     // ResponseModel responseModel = ResponseModel.fromJson(resp);
-    ResponseModel responseModel = ResponseModel(data: 69.6, responseCode: 200);
+    SpinModel spinModel = SpinModel(data: SpinData(earnedAmount: 0, spinAmount: 46, referralCount: 0, spinCount: 0), responseCode: 200);
 
-    if (responseModel.responseCode == 200) {
+    if (spinModel.responseCode == 200) {
       const duration = Duration(milliseconds: 1500);
       _animationController.value = AnimationController(vsync: this, duration: duration);
       _animationController.value?.forward();
 
-      if ((responseModel.data ?? 0) >= 70) {
+      isSpinning = true;
+
+      if ((spinModel.data?.spinAmount ?? 0) >= 70) {
         selectedSector.value = 271.7;
-      } else if ((responseModel.data ?? 0) >= 10) {
+      } else if ((spinModel.data?.spinAmount ?? 0) >= 10) {
         selectedSector.value = 91;
-      } else if ((responseModel.data ?? 0) >= 5) {
+      } else if ((spinModel.data?.spinAmount ?? 0) >= 5) {
         selectedSector.value = 136.7;
-      } else if ((responseModel.data ?? 0) < 5) {
+      } else if ((spinModel.data?.spinAmount ?? 0) < 5) {
         selectedSector.value = 182.25;
       }
 
-      Future.delayed(2.seconds, () => showSpinAmountDialog(amount: responseModel.data ?? 0));
+      Future.delayed(2.seconds, () {
+        isSpinning = false;
+        setUserData.value.setEarnedAmount = spinModel.data?.spinAmount ??0;
+        setUserData.refresh();
+        SpinWinAmountDialogComponent.show(amount: spinModel.data?.spinAmount ?? 0);
+      });
     } else {
-      print("dkljs ${responseModel.message}");
+      print("dkljs ${spinModel.message}");
     }
   }
 
-  showSpinAmountDialog({required num amount}) {
-    showDialog(
-      context: Get.context!,
-      builder: (context) => Dialog(
-        insetPadding: const EdgeInsets.all(0),
-        backgroundColor: Colors.black.withOpacity(0.1),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Container(
-            width: double.infinity,
-            constraints: const BoxConstraints(maxWidth: 500),
-            decoration: const BoxDecoration(color: Colors.transparent),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                LottieHelper.lottie(
-                  animationAsset: AssetsUtil.getConfettiLottie(),
-                  repeat: false,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: "Congratulations! You Get ",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: context.theme.colorScheme.onSurface,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: " ₹ 50",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: context.theme.colorScheme.primaryFixed,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    LottieHelper.lottie(
-                      animationAsset: AssetsUtil.getRupeeLottie(),
-                      height: 100,
-                      width: 100,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "₹ $amount",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        color: context.theme.colorScheme.primaryFixed,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    MaterialButton(
-                      onPressed: () => Get.back(),
-                      minWidth: 0,
-                      padding: EdgeInsets.zero,
-                      visualDensity: VisualDensity.compact,
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      child: Container(
-                        width: 150,
-                        height: 35,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8)),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              context.theme.colorScheme.primaryFixed,
-                              context.theme.colorScheme.secondaryFixed,
-                            ],
-                          ),
-                          border: Border.all(
-                              color: context.theme.colorScheme.onSurface
-                                  .withOpacity(0.25),
-                              width: 1.5),
-                        ),
-                        child: Text(
-                          "GO ON!",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: context.theme.colorScheme.onSurface,
-                            height: 1,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+  getMoreSpin() {
+    GetSpinDialogComponent.show(onClick: onJoinChannelClick, spinCount: 3);
   }
+
+  onJoinChannelClick() {
+    // Define the Telegram link
+    String telegramLink = 'https://t.me/share/url?url=https://t.me/catizenbot/gameapp?startapp=rp_1365932&text=%F0%9F%92%B0Catizen%3A%20Unleash%2C%20Play%2C%20Earn%20-%20Where%20Every%20Game%20Leads%20to%20an%20Airdrop%20Adventure!%0A%F0%9F%8E%81Let%27s%20play-to-earn%20airdrop%20right%20now!';
+
+    // Open the URL using window.open() (or you can use window.location.href)
+    html.window.open(telegramLink, '_blank');
+  }
+
 }

@@ -127,6 +127,18 @@ class SetUserData {
   String? get phoneNumber => _phoneNumber;
   String? get upiId => _upiId;
 
+  set setEarnedAmount(num value) {
+    _earnedAmount = value;
+  }
+
+  set setSpinCount(num value) {
+    _spinCount = value;
+  }
+
+  set setReferralSpins(num value) {
+    _referralSpins = value;
+  }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
