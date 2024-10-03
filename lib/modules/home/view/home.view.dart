@@ -291,7 +291,7 @@ class HomeView extends StatelessWidget {
                         children: [
                           Flexible(
                             child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: () => homeController.onInviteForSpins(),
                               minWidth: 0,
                               padding: EdgeInsets.zero,
                               visualDensity: VisualDensity.compact,
@@ -349,7 +349,7 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           MaterialButton(
-                            onPressed: () => homeController.onInviteForSpins(),
+                            onPressed: (){},
                             minWidth: 0,
                             padding: EdgeInsets.zero,
                             visualDensity: VisualDensity.compact,

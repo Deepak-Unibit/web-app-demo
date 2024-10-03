@@ -148,7 +148,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   getMoreSpin() {
-    GetSpinDialogComponent.show(text: "Invite To Get More Spin", onClick: onContinueToGetMoreSpin, spinCount: 1);
+    GetSpinDialogComponent.show(text: "Invite To Get More Spin", onClick: onContinueToGetMoreSpin, spinCount: 1, showClose: true,);
   }
 
   onContinueToGetMoreSpin() {
