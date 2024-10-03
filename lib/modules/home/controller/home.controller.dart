@@ -55,7 +55,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       // Development
       // userModel = UserModel(id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
 
-      Future.delayed(200.milliseconds, () => verifySubscription(userModel.id??0));
+      // Future.delayed(200.milliseconds, () => verifySubscription(userModel.id??0));
     } catch (e) {
       print(e);
     }
