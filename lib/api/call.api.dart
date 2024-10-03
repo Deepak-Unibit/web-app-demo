@@ -277,4 +277,51 @@ class ApiCall {
       return responseModel.toJson();
     }
   }
+
+  static getWithOutEncryption(String url) async {
+    final Logger logger = Logger();
+
+    try {
+      String urlPath = Uri.parse(url).path;
+      if (Uri.parse(url).hasQuery) {
+        urlPath = "$urlPath?${Uri.parse(url).query}";
+      }
+      String encryptedData = EncryptionHelper().encryptAESCryptoJS(urlPath, AppConst.encryptionKey);
+      dio.options.headers['hash'] = encryptedData;
+      final response = await dio.getUri(Uri.parse(url));
+      if (response.data['responseCode'] == 501) {
+        ResponseModel responseModel = ResponseModel.fromJson({
+          "status": "error",
+          "message": response.data['message'],
+          "responseCode": 500,
+          "data": null,
+        });
+        forceLogout();
+        return responseModel.toJson();
+      }
+      // if (response.headers.value('Authorization') != null && response.headers.value('Authorization') != '') {
+      //   updateToken(response.headers.value('Authorization')!);
+      // }
+      if (response.data["data"] == null) {
+        return response.data;
+      }
+      // String decryptedData = EncryptionHelper().decryptAESCryptoJS(response.data["data"], AppConst.encryptionKey);
+      try {
+        response.data["data"] = jsonDecode(response.data["data"]);
+      } catch (e) {
+        response.data["data"] = response.data["data"];
+      }
+      return response.data;
+    } catch (e) {
+      logger.e(e);
+      logger.e(url);
+      ResponseModel responseModel = ResponseModel.fromJson({
+        "status": "error",
+        "message": "Something went wrong",
+        "responseCode": 500,
+        "data": null,
+      });
+      return responseModel.toJson();
+    }
+  }
 }
