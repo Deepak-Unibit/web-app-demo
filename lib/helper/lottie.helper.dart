@@ -7,12 +7,14 @@ class LottieHelper {
     double width = 300,
     double height = 300,
     BoxFit fit = BoxFit.fill,
+    bool repeat = true,
   }) {
     return Lottie.asset(
       animationAsset,
       width: width,
       height: height,
       fit: fit,
+      repeat: repeat
     );
   }
 }

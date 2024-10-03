@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
-import 'package:web_app_demo/helper/lottie.helper.dart';
 import 'package:web_app_demo/modules/home/controller/home.controller.dart';
 import 'dart:math' as math;
 
@@ -32,6 +31,7 @@ class HomeView extends StatelessWidget {
               child: Image.asset(
                 AssetsUtil.getLottie(),
                 width: double.infinity,
+                fit: BoxFit.cover,
               ),
               // child: LottieHelper.lottie(animationAsset: AssetsUtil.getLottie()),
             ),
@@ -82,54 +82,57 @@ class HomeView extends StatelessWidget {
                           fit: BoxFit.contain,
                         ),
                         const SizedBox(width: 5),
-                        Text(
-                          "₹544",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: context.theme.colorScheme.primaryFixed,
-                            fontStyle: FontStyle.italic,
+                        Obx(
+                          ()=> Text(
+                            "₹${homeController.setUserData.value.earnedAmount??0}",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: context.theme.colorScheme.primaryFixed,
+                              fontStyle: FontStyle.italic,
+                            ),
                           ),
                         )
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 8),
-                      child: LinearProgressBar(
-                        backgroundColor: context.theme.colorScheme.onSurface
-                            .withOpacity(0.25),
-                        progressColor: context.theme.colorScheme.secondaryFixed,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(100)),
-                        minHeight: 18,
-                        maxSteps: 100,
-                        currentStep: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+                      child: Obx(
+                          ()=> LinearProgressBar(
+                          backgroundColor: context.theme.colorScheme.onSurface.withOpacity(0.25),
+                          progressColor: context.theme.colorScheme.secondaryFixed,
+                          borderRadius: const BorderRadius.all(Radius.circular(100)),
+                          minHeight: 18,
+                          maxSteps: 100,
+                          currentStep: (homeController.setUserData.value.earnedAmount??0)>=100 ? 100 : (homeController.setUserData.value.earnedAmount??0).toInt(),
+                        ),
                       ),
                     ),
                     Align(
                       alignment: Alignment.center,
-                      child: RichText(
-                        text: TextSpan(
-                          text: "Only ",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: context.theme.colorScheme.onSurface,
-                              fontStyle: FontStyle.italic),
-                          children: [
-                            TextSpan(
-                              text: " ₹13",
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: context.theme.colorScheme.primaryFixed,
+                      child: Obx(
+                        ()=> RichText(
+                          text: TextSpan(
+                            text: "Only ",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: context.theme.colorScheme.onSurface,
+                                fontStyle: FontStyle.italic),
+                            children: [
+                              TextSpan(
+                                text: " ₹${100 - (homeController.setUserData.value.earnedAmount??0)}",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: context.theme.colorScheme.primaryFixed,
+                                ),
                               ),
-                            ),
-                            const TextSpan(
-                              text: " to cash out ₹100 !",
-                            )
-                          ],
+                              const TextSpan(
+                                text: " to cash out ₹100 !",
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -171,15 +174,9 @@ class HomeView extends StatelessWidget {
                                       homeController.animationController!,
                                   builder: (context, child) {
                                     return Transform.rotate(
-                                      angle: homeController
-                                              .animationController!.value *
-                                          2 *
-                                          math.pi,
+                                      angle: homeController.animationController!.value * 2 * math.pi,
                                       child: RotationTransition(
-                                        turns: AlwaysStoppedAnimation(
-                                            (homeController.selectedSector *
-                                                    30) /
-                                                360),
+                                        turns: AlwaysStoppedAnimation((homeController.selectedSector.value)/365),
                                         child: Image.asset(
                                           AssetsUtil.getBackground(),
                                           width: double.infinity,
@@ -192,14 +189,15 @@ class HomeView extends StatelessWidget {
                               ),
                             ),
                             MaterialButton(
-                              onPressed: () => homeController.onClick(),
+                              onPressed: () => homeController.onSpin(),
                               minWidth: 0,
                               padding: EdgeInsets.zero,
                               visualDensity: VisualDensity.compact,
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               child: Container(
                                 height: 80,
                                 width: 80,
@@ -214,14 +212,15 @@ class HomeView extends StatelessWidget {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(
-                                      "0",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        color:
-                                            context.theme.colorScheme.onSurface,
-                                        height: 1,
+                                    Obx(
+                                    ()=> Text(
+                                        "${homeController.totalSpinCount.value}",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: context.theme.colorScheme.onSurface,
+                                          height: 1,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -229,9 +228,7 @@ class HomeView extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.w300,
-                                        color: context
-                                            .theme.colorScheme.onSurface
-                                            .withOpacity(0.5),
+                                        color: context.theme.colorScheme.onSurface.withOpacity(0.5),
                                         fontStyle: FontStyle.italic,
                                       ),
                                     ),
@@ -245,7 +242,7 @@ class HomeView extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 30),
                           child: Image.asset(
                             AssetsUtil.getMark(),
-                            height: 45,
+                            height: 42,
                           ),
                         ),
                         Padding(
@@ -310,7 +307,7 @@ class HomeView extends StatelessWidget {
                                       color: context.theme.colorScheme.onSurface
                                           .withOpacity(0.25),
                                       width: 1.5,
-                                    )),
+                                    ),),
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -331,7 +328,7 @@ class HomeView extends StatelessWidget {
                                           fontStyle: FontStyle.italic,
                                         ),
                                       )
-                                    ]),
+                                    ],),
                               ),
                             ),
                           ),
@@ -531,7 +528,7 @@ class HomeView extends StatelessWidget {
                   color: context.theme.colorScheme.onSurface,
                   height: 1),
             ),
-          )
+          ),
         ],
       ),
     );
