@@ -1,14 +1,15 @@
 class SetUserModel {
   SetUserModel({
-      String? status, 
-      String? message, 
-      num? responseCode, 
-      SetUserData? data,}){
+    String? status,
+    String? message,
+    num? responseCode,
+    SetUserData? data,
+  }) {
     _status = status;
     _message = message;
     _responseCode = responseCode;
     _data = data;
-}
+  }
 
   SetUserModel.fromJson(dynamic json) {
     _status = json['status'];
@@ -36,27 +37,27 @@ class SetUserModel {
     }
     return map;
   }
-
 }
 
 class SetUserData {
   SetUserData({
-      String? id, 
-      String? telegramId, 
-      String? username, 
-      String? firstName, 
-      String? lastName, 
-      num? earnedAmountTemp, 
-      num? earnedAmount, 
-      num? spinCount, 
-      num? referralSpins, 
-      String? referralCode, 
-      num? referralCount, 
-      num? referralCountDue, 
-      num? cashOutCount, 
-      String? accountHolderName, 
-      String? phoneNumber, 
-      String? upiId,}){
+    String? id,
+    String? telegramId,
+    String? username,
+    String? firstName,
+    String? lastName,
+    num? earnedAmountTemp,
+    num? earnedAmount,
+    num? spinCount,
+    num? referralSpins,
+    String? referralCode,
+    num? referralCount,
+    num? referralCountDue,
+    num? cashOutCount,
+    String? accountHolderName,
+    String? phoneNumber,
+    String? upiId,
+  }) {
     _id = id;
     _telegramId = telegramId;
     _username = username;
@@ -73,7 +74,7 @@ class SetUserData {
     _accountHolderName = accountHolderName;
     _phoneNumber = phoneNumber;
     _upiId = upiId;
-}
+  }
 
   SetUserData.fromJson(dynamic json) {
     _id = json['_id'];
@@ -159,5 +160,4 @@ class SetUserData {
     map['upiId'] = _upiId;
     return map;
   }
-
 }
