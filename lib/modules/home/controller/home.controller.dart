@@ -110,6 +110,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getSpin);
     LoadingPage.close();
+    print(resp);
 
     SpinModel spinModel = SpinModel.fromJson(resp);
     // SpinModel spinModel = SpinModel(data: SpinData(earnedAmount: 0, spinAmount: 46, referralSpins: 0, spinCount: 0), responseCode: 200);
@@ -147,7 +148,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   getMoreSpin() {
-    GetSpinDialogComponent.show(text: "Invite To Get More Spin", onClick: onJoinChannelClick, spinCount: 1);
+    GetSpinDialogComponent.show(text: "Invite To Get More Spin", onClick: onContinueToGetMoreSpin, spinCount: 1);
+  }
+
+  onContinueToGetMoreSpin() {
+    Get.back();
+    String telegramLink = 'https://t.me/share/url?url=https://t.me/catizenbot/gameapp?startapp=rp_1365932&text=%F0%9F%92%B0Catizen%3A%20Unleash%2C%20Play%2C%20Earn%20-%20Where%20Every%20Game%20Leads%20to%20an%20Airdrop%20Adventure!%0A%F0%9F%8E%81Let%27s%20play-to-earn%20airdrop%20right%20now!';
+
+    html.window.open(telegramLink, '_blank');
   }
 
   onInviteForSpins() {

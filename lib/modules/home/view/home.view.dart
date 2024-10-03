@@ -106,14 +106,9 @@ class HomeView extends StatelessWidget {
                           minHeight: 18,
                           maxSteps: 100,
                           currentStep:
-                              (homeController.setUserData.value.earnedAmount ??
-                                          0) >=
-                                      100
+                              (homeController.setUserData.value.earnedAmount ?? 0) >= 100
                                   ? 100
-                                  : (homeController
-                                              .setUserData.value.earnedAmount ??
-                                          0)
-                                      .toInt(),
+                                  : (homeController.setUserData.value.earnedAmount ?? 0).toInt(),
                         ),
                       ),
                     ),
