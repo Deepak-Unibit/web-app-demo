@@ -71,6 +71,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   verifySubscription(num telegramId) async {
     LoadingPage.show();
     var resp = await ApiCall.get("${UrlApi.verifySubscription}/$telegramId");
+    print(resp);
     LoadingPage.close();
 
     // Production
