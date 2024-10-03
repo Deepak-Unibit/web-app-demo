@@ -5,7 +5,7 @@ import 'package:web_app_demo/modules/home/components/secondaryButton.component.d
 import 'package:web_app_demo/utils/assets.util.dart';
 
 class GetSpinDialogComponent {
-  static show({required num spinCount, required Function onClick, required String text, bool showClose = false}) {
+  static show({required Function onJoinChannelClick, required Function onContinueClick, required String text, required, required int channel1Status, required int channel2Status}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -26,24 +26,6 @@ class GetSpinDialogComponent {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-               showClose
-                   ? Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: MaterialButton(
-                    onPressed: () => Get.back(),
-                    minWidth: 0,
-                    padding: EdgeInsets.zero,
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    visualDensity: VisualDensity.compact,
-                    child: Icon(
-                      Icons.close_rounded,
-                      size: 20,
-                      color: context.theme.colorScheme.onSurface,
-                    ),
-                  ),
-                )
-                   : const SizedBox.shrink(),
                 Image.asset(
                   AssetsUtil.getSpinCard(),
                   height: 150,
@@ -60,7 +42,7 @@ class GetSpinDialogComponent {
                     ),
                     children: [
                       TextSpan(
-                        text: "$spinCount",
+                        text: "3",
                         style: TextStyle(
                           color: context.theme.colorScheme.primaryFixed,
                         ),
@@ -73,8 +55,15 @@ class GetSpinDialogComponent {
                 ),
                 const SizedBox(height: 20),
                 SecondaryButtonComponent(
-                  text: text,
-                  onClick: onClick,
+                  text: channel1Status==0 ? "Join Channel & Get Spin" : "Continue",
+                  onClick: channel1Status==0 ? ()=>onJoinChannelClick(0) : onContinueClick,
+                  height: 35,
+                  width: double.infinity,
+                ),
+                const SizedBox(height: 20),
+                SecondaryButtonComponent(
+                  text: channel2Status==0 ? "Join Channel & Get Spin" : "Continue",
+                  onClick: channel2Status==0 ? ()=>onJoinChannelClick(1) : onContinueClick,
                   height: 35,
                   width: double.infinity,
                 ),

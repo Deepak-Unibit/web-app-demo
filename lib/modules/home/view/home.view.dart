@@ -81,7 +81,7 @@ class HomeView extends StatelessWidget {
                         const SizedBox(width: 5),
                         Obx(
                           () => Text(
-                            "₹${homeController.setUserData.value.earnedAmount ?? 0}",
+                            "₹${(homeController.setUserData.value.earnedAmount ?? 0).toStringAsFixed(2)}",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -97,12 +97,9 @@ class HomeView extends StatelessWidget {
                           horizontal: 40, vertical: 8),
                       child: Obx(
                         () => LinearProgressBar(
-                          backgroundColor: context.theme.colorScheme.onSurface
-                              .withOpacity(0.25),
-                          progressColor:
-                              context.theme.colorScheme.secondaryFixed,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(100)),
+                          backgroundColor: context.theme.colorScheme.onSurface.withOpacity(0.25),
+                          progressColor: context.theme.colorScheme.secondaryFixed,
+                          borderRadius: const BorderRadius.all(Radius.circular(100)),
                           minHeight: 18,
                           maxSteps: 100,
                           currentStep:
