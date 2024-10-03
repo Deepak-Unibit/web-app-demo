@@ -14,7 +14,6 @@ import 'dart:html' as html;
 import 'package:web_app_demo/models/user.model.dart';
 import 'package:web_app_demo/modules/home/components/getSpinDialogComponent.dart';
 import 'package:web_app_demo/modules/home/components/spinWinAmountDialog.component.dart';
-import 'package:web_app_demo/utils/assets.util.dart';
 import '../../../models/setUser.model.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
@@ -22,6 +21,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   AnimationController? get animationController => _animationController.value;
   late AnimationController turnAnimationController;
   RxDouble selectedSector = 0.0.obs;
+  UserModel userModel = UserModel();
   Rx<SetUserData> setUserData = SetUserData().obs;
   RxInt totalSpinCount = 0.obs;
   bool isSpinning = false;
@@ -41,21 +41,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       duration: 60.seconds,
     )..repeat();
 
-    // setUser(UserModel());
-
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // UserModel userModel = UserModel.fromJson(userData);
-      // if(userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
-      //   setUser(userModel);
-      // }
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      print(userData);
+      userModel = UserModel.fromJson(userData);
+      if(userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
+        Future.delayed(200.milliseconds, () => verifySubscription(userModel.id??0));
+        // setUser(userModel);
+      }
+
+      // userModel = UserModel(id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
 
       // Development
-      Future.delayed(
-          200.milliseconds,
-          () => setUser(UserModel(id: 090900909099, firstName: "deepakTest", lastName: "frrfff")));
+      // Future.delayed(200.milliseconds, () => verifySubscription(userModel.id??0));
     } catch (e) {
       print(e);
     }
@@ -68,10 +68,19 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     super.onClose();
   }
 
-  verifySubscription() async {
+  verifySubscription(num telegramId) async {
     LoadingPage.show();
-    var resp = await ApiCall.get(UrlApi.verifySubscription);
+    var resp = await ApiCall.get("${UrlApi.verifySubscription}/$telegramId");
     LoadingPage.close();
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if(responseModel.responseCode == 200) {
+      setUser(userModel);
+    }
+    else {
+      GetSpinDialogComponent.show(text: "Join Channel & Get Spin", onClick: onJoinChannelClick, spinCount: 3);
+    }
   }
 
   setUser(UserModel userModel) async {
@@ -92,7 +101,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       setUserData.value = setUserModel.data!;
       totalSpinCount.value = ((setUserData.value.spinCount ?? 0) +
           (setUserData.value.referralSpins ?? 0)) as int;
-    } else {}
+    }
+    else {
+
+    }
   }
 
   onSpin() async {
@@ -135,15 +147,22 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   getMoreSpin() {
-    GetSpinDialogComponent.show(onClick: onJoinChannelClick, spinCount: 3);
+    GetSpinDialogComponent.show(text: "Invite To Get More Spin", onClick: onJoinChannelClick, spinCount: 1);
   }
 
   onJoinChannelClick() {
-    // Define the Telegram link
-    String telegramLink = 'https://t.me/share/url?url=https://t.me/catizenbot/gameapp?startapp=rp_1365932&text=%F0%9F%92%B0Catizen%3A%20Unleash%2C%20Play%2C%20Earn%20-%20Where%20Every%20Game%20Leads%20to%20an%20Airdrop%20Adventure!%0A%F0%9F%8E%81Let%27s%20play-to-earn%20airdrop%20right%20now!';
+    String telegramLink = 'https://t.me/Wheel24Bot';
 
-    // Open the URL using window.open() (or you can use window.location.href)
+    // 'https://t.me/share/url?url=https://t.me/catizenbot/gameapp?startapp=rp_1365932&text=%F0%9F%92%B0Catizen%3A%20Unleash%2C%20Play%2C%20Earn%20-%20Where%20Every%20Game%20Leads%20to%20an%20Airdrop%20Adventure!%0A%F0%9F%8E%81Let%27s%20play-to-earn%20airdrop%20right%20now!'
+
     html.window.open(telegramLink, '_blank');
+    Get.back();
+    GetSpinDialogComponent.show(text: "Continue", onClick: onContinueClick, spinCount: 1);
+  }
+
+  onContinueClick() {
+    Get.back();
+    verifySubscription(userModel.id??0);
   }
 
 }

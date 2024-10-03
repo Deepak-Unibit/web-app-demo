@@ -5,7 +5,7 @@ import 'package:web_app_demo/modules/home/components/secondaryButton.component.d
 import 'package:web_app_demo/utils/assets.util.dart';
 
 class GetSpinDialogComponent {
-  static show({required num spinCount, required Function onClick, bool showClose = false}) {
+  static show({required num spinCount, required Function onClick, required String text, bool showClose = false}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -73,7 +73,7 @@ class GetSpinDialogComponent {
                 ),
                 const SizedBox(height: 20),
                 SecondaryButtonComponent(
-                  text: "Join Channel & Get Spin",
+                  text: text,
                   onClick: onClick,
                   height: 35,
                   width: double.infinity,
