@@ -66,7 +66,7 @@ class InviteDialogComponent {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                        "₹${(setUserData.earnedAmount ?? 0).toStringAsFixed(2)}",
+                        "₹${setUserData.earnedAmount ?? 0}",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
@@ -103,7 +103,7 @@ class InviteDialogComponent {
                         children: [
                           TextSpan(
                             text:
-                      " ₹${(setUserData.earnedAmount??0) >= 100 ? 0 : (100 - (setUserData.earnedAmount ?? 0)).toStringAsFixed(2)}",
+                      " ₹${(setUserData.earnedAmount??0) >= 100 ? 0 : 100 - (setUserData.earnedAmount ?? 0)}",
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,

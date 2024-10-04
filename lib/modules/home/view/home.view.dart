@@ -84,7 +84,7 @@ class HomeView extends StatelessWidget {
                         const SizedBox(width: 5),
                         Obx(
                           () => Text(
-                            "₹${(homeController.setUserData.value.earnedAmount ?? 0).toStringAsFixed(2)}",
+                            "₹${homeController.setUserData.value.earnedAmount ?? 0}",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -126,7 +126,7 @@ class HomeView extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text:
-                                    " ₹${(homeController.setUserData.value.earnedAmount??0) >= 100 ? 0 : (100 - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
+                                    " ₹${(homeController.setUserData.value.earnedAmount??0) >= 100 ? 0 : (100 - (homeController.setUserData.value.earnedAmount ?? 0))}",
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -272,13 +272,13 @@ class HomeView extends StatelessWidget {
                                   "+1 Spin",
                                   context.theme.colorScheme.surfaceContainerHigh,
                                   context.theme.colorScheme.surfaceContainerLow),
-                              buildColumn2(
-                                  context,
-                                  () {},
-                                  AssetsUtil.getChest(),
-                                  "More Spin",
-                                  context.theme.colorScheme.surfaceContainerHigh,
-                                  context.theme.colorScheme.surfaceContainerLow),
+                               // buildColumn2(
+                               //    context,
+                               //    () {},
+                               //    AssetsUtil.getChest(),
+                               //    "More Spin",
+                               //    context.theme.colorScheme.surfaceContainerHigh,
+                               //    context.theme.colorScheme.surfaceContainerLow),
                             ],
                           ),
                         ),

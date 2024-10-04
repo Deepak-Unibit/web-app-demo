@@ -143,8 +143,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (setUserModel.responseCode == 200) {
       setUserData.value = setUserModel.data!;
-      totalSpinCount.value = ((setUserData.value.spinCount ?? 0) +
-          (setUserData.value.referralSpins ?? 0)) as int;
+      totalSpinCount.value = ((setUserData.value.spinCount ?? 0) + (setUserData.value.referralSpins ?? 0)) as int;
+      setUserData.value.setEarnedAmount = ((setUserData.value.earnedAmount??0) * 100).truncateToDouble() / 100;
     } else {}
   }
 
@@ -381,6 +381,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     SpinModel spinModel = SpinModel.fromJson(resp);
 
+
     if (spinModel.responseCode == 200) {
       const duration = Duration(milliseconds: 1500);
       _animationController.value = AnimationController(vsync: this, duration: duration);
@@ -402,13 +403,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
       Future.delayed(2.seconds, () {
         isSpinning = false;
-        setUserData.value.setEarnedAmount = spinModel.data?.earnedAmount ?? 0;
+        setUserData.value.setEarnedAmount = ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;
         setUserData.value.setReferralSpins = spinModel.data?.referralSpins ?? 0;
         setUserData.refresh();
         totalSpinCount.value = ((setUserData.value.spinCount ?? 0) + (setUserData.value.referralSpins ?? 0)) as int;
 
-        SpinWinAmountDialogComponent.show(amount: spinModel.data?.spinAmount ?? 0);
+        SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100);
       });
     } else {
     }

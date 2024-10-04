@@ -40,7 +40,7 @@ class SpinWinAmountDialogComponent {
                         ),
                         children: [
                           TextSpan(
-                            text: " ₹ ${amount.toStringAsFixed(2)}",
+                            text: " ₹ $amount",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -57,7 +57,7 @@ class SpinWinAmountDialogComponent {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      "₹ ${amount.toStringAsFixed(2)}",
+                      "₹ $amount",
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w600,

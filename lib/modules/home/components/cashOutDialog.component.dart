@@ -74,7 +74,7 @@ class CashOutDialogComponent {
                           ),
                           const Spacer(),
                           Text(
-                            "₹ ${myProfileData.earnedAmount?.toStringAsFixed(2)}",
+                            "₹ ${myProfileData.earnedAmount??0}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -102,7 +102,7 @@ class CashOutDialogComponent {
                           ),
                           const Spacer(),
                           Text(
-                            "₹ ${withdrawDetailsData.successWithDrawl?.toStringAsFixed(2)}",
+                            "₹ ${((withdrawDetailsData.successWithDrawl??0) * 100).truncateToDouble() / 100}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -130,7 +130,7 @@ class CashOutDialogComponent {
                           ),
                           const Spacer(),
                           Text(
-                            "₹ ${withdrawDetailsData.underReview?.toStringAsFixed(2)}",
+                            "₹ ${((withdrawDetailsData.underReview ?? 0) * 100).truncateToDouble() / 100}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
