@@ -3,14 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/modules/home/components/secondaryButton.component.dart';
-
 import '../../../models/myProfile.model.dart';
 import '../../../models/withdrawDetails.model.dart';
 import '../../../utils/assets.util.dart';
 
 class CashOutDialogComponent {
   static show(
-      {required Function onEdit, required Function onWithdraw, required MyProfileData myProfileData, required WithdrawDetailsData withdrawDetailsData}) {
+      {required Function onEdit, required Function onWithdrawRecord, required Function onWithdraw, required MyProfileData myProfileData, required WithdrawDetailsData withdrawDetailsData}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -131,7 +130,7 @@ class CashOutDialogComponent {
                           ),
                           const Spacer(),
                           Text(
-                            "₹ ${withdrawDetailsData.underReview?.toStringAsFixed(0)}",
+                            "₹ ${withdrawDetailsData.underReview?.toStringAsFixed(2)}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -141,6 +140,41 @@ class CashOutDialogComponent {
                         ],
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                MaterialButton(
+                  onPressed: ()=>onWithdrawRecord(),
+                  minWidth: 0,
+                  padding: EdgeInsets.zero,
+                  visualDensity: VisualDensity.compact,
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      color: context.theme.colorScheme.onSurface.withOpacity(0.05),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Withdrawal Record",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: context.theme.colorScheme.onSurface
+                                .withOpacity(0.75),
+                          ),
+                        ),
+                        Icon(Icons.keyboard_arrow_right_outlined, size: 24, color: context.theme.colorScheme.onSurface
+                            .withOpacity(0.75),),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),

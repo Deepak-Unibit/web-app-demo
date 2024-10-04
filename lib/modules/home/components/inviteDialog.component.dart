@@ -103,7 +103,7 @@ class InviteDialogComponent {
                         children: [
                           TextSpan(
                             text:
-                            " ₹${(100 - (setUserData.earnedAmount ?? 0)).toStringAsFixed(2)}",
+                      " ₹${(setUserData.earnedAmount??0) >= 100 ? 0 : (100 - (setUserData.earnedAmount ?? 0)).toStringAsFixed(2)}",
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,

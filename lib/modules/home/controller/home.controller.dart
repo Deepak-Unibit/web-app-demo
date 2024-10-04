@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/api/call.api.dart';
@@ -17,12 +18,14 @@ import 'package:flutter/services.dart';
 import 'package:web_app_demo/models/user.model.dart';
 import 'package:web_app_demo/models/verifySubscription.model.dart';
 import 'package:web_app_demo/models/withdrawDetails.model.dart';
+import 'package:web_app_demo/models/withdrawRequest.model.dart';
 import 'package:web_app_demo/modules/home/components/accountInfoDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/cashOutDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/invitationListDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/inviteDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/rankDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/spinWinAmountDialog.component.dart';
+import 'package:web_app_demo/modules/home/components/withdrawHistoryDialog.component.dart';
 import '../../../models/setUser.model.dart';
 import '../components/getSpinDialog.component.dart';
 
@@ -58,14 +61,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      print(userData);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // print(userData);
+      // userModel = UserModel.fromJson(userData);
 
       // Development
-      // userModel = UserModel(
-      //     id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
+      userModel = UserModel(
+          id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
 
       if (userModel.id != null &&
           userModel.firstName != null &&
@@ -213,14 +216,30 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       if (withdrawDetailsModel.responseCode == 200) {
         CashOutDialogComponent.show(
             onEdit: onEditAccount,
+            onWithdrawRecord: onWithdrawRecord,
             onWithdraw: onWithdraw,
             myProfileData: myProfileModel.data ?? MyProfileData(),
-            withdrawDetailsData:
-                withdrawDetailsModel.data ?? WithdrawDetailsData());
+            withdrawDetailsData: withdrawDetailsModel.data ?? WithdrawDetailsData());
       }
     } else {
       LoadingPage.close();
     }
+  }
+
+  onWithdrawRecord() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.getWithdrawList);
+    LoadingPage.close();
+
+    print(resp);
+
+    WithdrawRequestModel withdrawRequestModel = WithdrawRequestModel.fromJson(resp);
+
+    if(withdrawRequestModel.responseCode == 200) {
+      WithdrawHistoryDialogComponent.show(withdrawRequestDataList: withdrawRequestModel.data??[]);
+    }
+    
+
   }
 
   onWithdraw() async {
@@ -231,6 +250,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
     if (responseModel.responseCode == 200) {
+      setUserData.value.setEarnedAmount = 0;
+      setUserData.refresh();
       Get.back();
       onCashOut();
     } else {
@@ -364,27 +385,27 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getSpin);
     LoadingPage.close();
-    print(resp);
 
     SpinModel spinModel = SpinModel.fromJson(resp);
-    // SpinModel spinModel = SpinModel(data: SpinData(earnedAmount: 0, spinAmount: 46, referralSpins: 0, spinCount: 0), responseCode: 200);
 
     if (spinModel.responseCode == 200) {
       const duration = Duration(milliseconds: 1500);
-      _animationController.value =
-          AnimationController(vsync: this, duration: duration);
+      _animationController.value = AnimationController(vsync: this, duration: duration);
       _animationController.value?.forward();
 
       isSpinning = true;
 
       if ((spinModel.data?.spinAmount ?? 0) >= 70) {
-        selectedSector.value = 271.7;
+        selectedSector.value = 180;
       } else if ((spinModel.data?.spinAmount ?? 0) >= 10) {
-        selectedSector.value = 91;
+        selectedSector.value = 90;
       } else if ((spinModel.data?.spinAmount ?? 0) >= 5) {
-        selectedSector.value = 136.7;
+        selectedSector.value = 135;
       } else if ((spinModel.data?.spinAmount ?? 0) < 5) {
-        selectedSector.value = 182.25;
+        Random random = Random();
+        int randomNumber = random.nextInt(3);
+        print(randomNumber);
+        selectedSector.value = randomNumber==0 ? 225 : randomNumber==1 ? 270 : 315;
       }
 
       Future.delayed(2.seconds, () {
@@ -393,11 +414,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;
         setUserData.value.setReferralSpins = spinModel.data?.referralSpins ?? 0;
         setUserData.refresh();
-        totalSpinCount.value = ((setUserData.value.spinCount ?? 0) +
-            (setUserData.value.referralSpins ?? 0)) as int;
+        totalSpinCount.value = ((setUserData.value.spinCount ?? 0) + (setUserData.value.referralSpins ?? 0)) as int;
 
-        SpinWinAmountDialogComponent.show(
-            amount: spinModel.data?.spinAmount ?? 0);
+        SpinWinAmountDialogComponent.show(amount: spinModel.data?.spinAmount ?? 0);
       });
     } else {
       print("dkljs ${spinModel.message}");
@@ -411,37 +430,38 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   onContinueToGetMoreSpin() {
     Get.back();
-    String telegramLink =
-        'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}';
+    String telegramLink = 'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰';
 
     html.window.open(telegramLink, '_blank');
   }
 
   onInviteForSpins() {
-    String telegramLink =
-        'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}';
+    String telegramLink = 'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰';
 
     html.window.open(telegramLink, '_blank');
   }
 
   onCopyClick() async {
-    await Clipboard.setData(ClipboardData(
-        text:
-            'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}'));
-    Get.closeAllSnackbars();
-    Get.snackbar(
-      "",
-      "",
-      titleText: const SizedBox.shrink(),
-      duration: 2.seconds,
-      messageText: const Text(
-        "Copied to Clipboard",
-        textAlign: TextAlign.center,
-      ),
-      maxWidth: 150,
-      margin: const EdgeInsets.only(top: 20),
-      padding: const EdgeInsets.only(bottom: 5),
-    );
+    html.window.navigator.clipboard?.writeText('https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰').then((_) {
+      Get.closeAllSnackbars();
+      Get.snackbar(
+        "",
+        "",
+        titleText: const SizedBox.shrink(),
+        duration: 2.seconds,
+        messageText: const Text(
+          "Copied to Clipboard",
+          textAlign: TextAlign.center,
+        ),
+        maxWidth: 150,
+        margin: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(bottom: 5),
+      );
+    }).catchError((e) {
+      print("Failed to copy text to clipboard: $e");
+    });
+    // await Clipboard.setData(ClipboardData(text: 'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰'));
+
   }
 
   onJoinChannelClick(int type) {
@@ -451,8 +471,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     } else {
       telegramLink = 'https://t.me/Wheel24';
     }
-    print("$type $telegramLink");
-    // 'https://t.me/share/url?url=https://t.me/catizenbot/gameapp?startapp=rp_1365932&text=%F0%9F%92%B0Catizen%3A%20Unleash%2C%20Play%2C%20Earn%20-%20Where%20Every%20Game%20Leads%20to%20an%20Airdrop%20Adventure!%0A%F0%9F%8E%81Let%27s%20play-to-earn%20airdrop%20right%20now!'
 
     html.window.open(telegramLink, '_blank');
     Get.back();
@@ -478,5 +496,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     verifySubscription(userModel.id ?? 0);
   }
 
-  onShareClick(int index) {}
+  onShareClick(int index) {
+
+  }
 }
