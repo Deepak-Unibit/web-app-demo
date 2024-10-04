@@ -63,7 +63,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       // Production
       var state = js.JsObject.fromBrowserObject(js.context['state']);
       Map<String, dynamic> userData = jsonDecode(state['userData']);
-      print(userData);
       userModel = UserModel.fromJson(userData);
 
 
@@ -74,7 +73,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
             200.milliseconds, () => verifySubscription(userModel.id ?? 0));
       }
     } catch (e) {
-      print(e);
     }
   }
 
@@ -89,7 +87,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     // Production
     LoadingPage.show();
     var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    print(resp);
     LoadingPage.close();
 
     VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
@@ -118,7 +115,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         );
       }
     } else {
-      print(verifySubscriptionModel.data);
     }
   }
 
@@ -132,7 +128,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
-    print(resp);
 
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
@@ -203,8 +198,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       var resp = await ApiCall.get(UrlApi.getWithdrawDetails);
       LoadingPage.close();
 
-      print(resp);
-
       WithdrawDetailsModel withdrawDetailsModel = WithdrawDetailsModel.fromJson(resp);
 
       if (withdrawDetailsModel.responseCode == 200) {
@@ -224,8 +217,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getWithdrawList);
     LoadingPage.close();
-
-    print(resp);
 
     WithdrawRequestModel withdrawRequestModel = WithdrawRequestModel.fromJson(resp);
 
@@ -398,7 +389,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       } else if ((spinModel.data?.spinAmount ?? 0) < 5) {
         Random random = Random();
         int randomNumber = random.nextInt(3);
-        print(randomNumber);
         selectedSector.value = randomNumber==0 ? 225 : randomNumber==1 ? 270 : 315;
       }
 
@@ -413,7 +403,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         SpinWinAmountDialogComponent.show(amount: spinModel.data?.spinAmount ?? 0);
       });
     } else {
-      print("dkljs ${spinModel.message}");
     }
   }
 
@@ -491,20 +480,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-    if (html.window.navigator.share != null) {
-      // Check if the Web Share API is supported
-      html.window.navigator.share({
-        'title': "Wheel24",
-        'title': "Wheel24",
-        'text': "Wheel24",
-        'url': "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰",
-      }).then((_) {
-        print("Content shared successfully");
-      }).catchError((e) {
-        print("Error sharing content: $e");
-      });
-    } else {
-      print("Web Share API not supported in this browser.");
+    // Check if the Web Share API is supported
+    html.window.navigator.share({
+      'title': "Wheel24",
+      'text': "Wheel24",
+      'url': "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰",
+    }).then((_) {
+    }).catchError((e) {
+      print("Error sharing content: $e");
+    });
     }
-  }
 }
