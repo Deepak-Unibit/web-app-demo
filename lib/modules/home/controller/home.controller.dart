@@ -66,9 +66,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       print(userData);
       userModel = UserModel.fromJson(userData);
 
-      // Development
-      // userModel = UserModel(
-      //     id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
 
       if (userModel.id != null &&
           userModel.firstName != null &&
@@ -109,8 +106,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
 
-      if ((verifySubscriptionData.joinedChannel1 ?? false) &&
-          (verifySubscriptionData.joinedChannel2 ?? false)) {
+      if ((verifySubscriptionData.joinedChannel1 ?? false) && (verifySubscriptionData.joinedChannel2 ?? false)) {
         setUser(userModel);
       } else {
         GetSpinDialogComponent.show(
@@ -495,6 +491,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-
+    if (html.window.navigator.share != null) {
+      // Check if the Web Share API is supported
+      html.window.navigator.share({
+        'title': "Wheel24",
+        'title': "Wheel24",
+        'text': "Wheel24",
+        'url': "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰",
+      }).then((_) {
+        print("Content shared successfully");
+      }).catchError((e) {
+        print("Error sharing content: $e");
+      });
+    } else {
+      print("Web Share API not supported in this browser.");
+    }
   }
 }

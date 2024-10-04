@@ -2,7 +2,7 @@ import 'app.const.dart';
 
 class UrlApi {
   static const String baseUrl = AppConst.baseUrl;
-  static const String baseUrl2 = "https://dev.fun11.in:8006";
+  static const String baseUrl2 = AppConst.baseUrl2;
 
   // Auth
   static const setUser = "$baseUrl/auth/set";
