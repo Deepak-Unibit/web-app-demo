@@ -413,7 +413,7 @@ class HomeView extends StatelessWidget {
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                           child: Image.asset(
-                            AssetsUtil.getXIcon(),
+                            AssetsUtil.getWhatsappIcon(),
                             height: 22,
                             width: 22,
                             fit: BoxFit.cover,
@@ -430,7 +430,7 @@ class HomeView extends StatelessWidget {
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                           child: Image.asset(
-                            AssetsUtil.getWhatsappIcon(),
+                            AssetsUtil.getXIcon(),
                             height: 22,
                             width: 22,
                             fit: BoxFit.cover,

@@ -61,9 +61,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
+
+      // Development
+      userModel = UserModel(
+        id: 1146609300,
+        firstName: "Deepak Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
 
       if (userModel.id != null &&
@@ -129,6 +137,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
 
+    print(resp);
+
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
     if (setUserModel.responseCode == 200) {
@@ -141,7 +151,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onRankClick() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getRankList);
-
+    print(resp);
     RankModel rankModel = RankModel.fromJson(resp);
 
     if (rankModel.responseCode == 200) {
@@ -165,7 +175,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getInvitationList);
     LoadingPage.close();
-
+    print(resp);
     InvitationModel invitationModel = InvitationModel.fromJson(resp);
 
     if(invitationModel.responseCode == 200) {
@@ -191,7 +201,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onCashOut() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getProfile);
-
+    print(resp);
     MyProfileModel myProfileModel = MyProfileModel.fromJson(resp);
 
     if (myProfileModel.responseCode == 200) {
@@ -217,14 +227,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getWithdrawList);
     LoadingPage.close();
-
+    print(resp);
     WithdrawRequestModel withdrawRequestModel = WithdrawRequestModel.fromJson(resp);
 
     if(withdrawRequestModel.responseCode == 200) {
       WithdrawHistoryDialogComponent.show(withdrawRequestDataList: withdrawRequestModel.data??[]);
     }
-    
-
   }
 
   onWithdraw() async {
@@ -413,13 +421,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   onContinueToGetMoreSpin() {
     Get.back();
-    String telegramLink = 'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰';
+    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
 
   onInviteForSpins() {
-    String telegramLink = 'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰';
+    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -480,14 +488,35 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-    // Check if the Web Share API is supported
-    html.window.navigator.share({
-      'title': "Wheel24",
-      'text': "Wheel24",
-      'url': "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰",
-    }).then((_) {
-    }).catchError((e) {
-      print("Error sharing content: $e");
-    });
+      String message = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n💰Let's stike it rich together!💰";
+
+    if(index==0) {
+      final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
+      js.context.callMethod('open', [whatsappUrl, '_blank']);
+    }
+    else if(index==1) {
+      final String twitterUrl = 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent("Wheel24")}&url=${Uri.encodeComponent(message)}';
+
+      // Open Twitter share dialog in a new tab
+      js.context.callMethod('open', [twitterUrl, '_blank']);
+    }
+    else if(index==2) {
+      final String facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
+
+      // Open Facebook share dialog in a new tab
+      js.context.callMethod('open', [facebookUrl, '_blank']);
+    }
+    else {
+      // Check if the Web Share API is supported
+      html.window.navigator.share({
+        'title': "Wheel24",
+        'text': "Wheel24",
+        'url': message,
+      }).then((_) {
+      }).catchError((e) {
+        print("Error sharing content: $e");
+      });
+    }
+
     }
 }
