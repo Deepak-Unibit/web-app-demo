@@ -5,11 +5,12 @@ import 'package:get/get.dart';
 import 'package:web_app_demo/modules/home/components/secondaryButton.component.dart';
 
 import '../../../models/myProfile.model.dart';
+import '../../../models/withdrawDetails.model.dart';
 import '../../../utils/assets.util.dart';
 
 class CashOutDialogComponent {
   static show(
-      {required Function onEdit, required MyProfileData myProfileData}) {
+      {required Function onEdit, required Function onWithdraw, required MyProfileData myProfileData, required WithdrawDetailsData withdrawDetailsData}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -74,7 +75,7 @@ class CashOutDialogComponent {
                           ),
                           const Spacer(),
                           Text(
-                            "₹ ${myProfileData.earnedAmount}",
+                            "₹ ${myProfileData.earnedAmount?.toStringAsFixed(2)}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -102,7 +103,7 @@ class CashOutDialogComponent {
                           ),
                           const Spacer(),
                           Text(
-                            "₹ ${myProfileData.earnedAmount}",
+                            "₹ ${withdrawDetailsData.successWithDrawl?.toStringAsFixed(2)}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -130,7 +131,7 @@ class CashOutDialogComponent {
                           ),
                           const Spacer(),
                           Text(
-                            "₹ ${myProfileData.earnedAmount}",
+                            "₹ ${withdrawDetailsData.underReview?.toStringAsFixed(0)}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -333,7 +334,7 @@ class CashOutDialogComponent {
                     const SizedBox(width: 15),
                     Flexible(
                       child: SecondaryButtonComponent(
-                        onClick: () {},
+                        onClick: () => onWithdraw(),
                         height: 35,
                         width: double.infinity,
                         text: "Cash Out",

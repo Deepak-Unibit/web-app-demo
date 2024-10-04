@@ -15,6 +15,8 @@ class UrlApi {
 
   // Profile
   static const getProfile = "$baseUrl/user/my-profile";
+  static const getWithdrawDetails = "$baseUrl/user/withdraw-details";
   static const addUpiDetails = "$baseUrl/user/upi-details";
+  static const cashOutRequest = "$baseUrl/user/cash-out-request";
 
 }

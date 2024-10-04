@@ -15,6 +15,7 @@ import 'dart:html' as html;
 import 'package:flutter/services.dart';
 import 'package:web_app_demo/models/user.model.dart';
 import 'package:web_app_demo/models/verifySubscription.model.dart';
+import 'package:web_app_demo/models/withdrawDetails.model.dart';
 import 'package:web_app_demo/modules/home/components/accountInfoDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/cashOutDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/inviteDialog.component.dart';
@@ -61,7 +62,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       userModel = UserModel.fromJson(userData);
 
       // Development
-      // userModel = UserModel(id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
+      // userModel = UserModel(
+      //     id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
 
       if (userModel.id != null &&
           userModel.firstName != null &&
@@ -151,7 +153,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (rankModel.responseCode == 200) {
       var resp = await ApiCall.get(UrlApi.getMyRank);
       LoadingPage.close();
-      print(resp);
       MyRankModel myRankModel = MyRankModel.fromJson(resp);
       if (myRankModel.responseCode == 200) {
         RankDialogComponent.show(
@@ -169,14 +170,55 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onCashOut() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getProfile);
-    LoadingPage.close();
 
     MyProfileModel myProfileModel = MyProfileModel.fromJson(resp);
 
-    if(myProfileModel.responseCode == 200) {
-      CashOutDialogComponent.show(onEdit: onEditAccount, myProfileData: myProfileModel.data!);
-    }
+    if (myProfileModel.responseCode == 200) {
+      var resp = await ApiCall.get(UrlApi.getWithdrawDetails);
+      LoadingPage.close();
 
+      print(resp);
+
+      WithdrawDetailsModel withdrawDetailsModel = WithdrawDetailsModel.fromJson(resp);
+
+      if (withdrawDetailsModel.responseCode == 200) {
+        CashOutDialogComponent.show(
+            onEdit: onEditAccount,
+            onWithdraw: onWithdraw,
+            myProfileData: myProfileModel.data ?? MyProfileData(),
+            withdrawDetailsData:
+                withdrawDetailsModel.data ?? WithdrawDetailsData());
+      }
+    } else {
+      LoadingPage.close();
+    }
+  }
+
+  onWithdraw() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.cashOutRequest);
+    LoadingPage.close();
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if (responseModel.responseCode == 200) {
+      Get.back();
+      onCashOut();
+    } else {
+      Get.snackbar(
+        "",
+        "",
+        titleText: const SizedBox.shrink(),
+        duration: 2.seconds,
+        messageText: Text(
+          responseModel.message ?? "",
+          textAlign: TextAlign.center,
+        ),
+        maxWidth: 250,
+        margin: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(bottom: 5),
+      );
+    }
   }
 
   onEditAccount() {
@@ -200,7 +242,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     upiController.text = upiController.text.trim();
     mobileNumberController.text = mobileNumberController.text.trim();
 
-    if(!(RegexHelper.nameRegex.hasMatch(nameController.text))) {
+    if (!(RegexHelper.nameRegex.hasMatch(nameController.text))) {
       Get.snackbar(
         "",
         "",
@@ -215,8 +257,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         padding: const EdgeInsets.only(bottom: 5),
       );
       return;
-    }
-    else if(upiController.text == "") {
+    } else if (upiController.text == "") {
       Get.snackbar(
         "",
         "",
@@ -231,8 +272,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         padding: const EdgeInsets.only(bottom: 5),
       );
       return;
-    }
-    else if(!(RegexHelper.mobileRegex.hasMatch(mobileNumberController.text))) {
+    } else if (!(RegexHelper.mobileRegex
+        .hasMatch(mobileNumberController.text))) {
       Get.snackbar(
         "",
         "",
@@ -261,18 +302,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
-    if(responseModel.responseCode == 200) {
+    if (responseModel.responseCode == 200) {
       Get.back();
       onCashOut();
-    }
-    else {
+    } else {
       Get.snackbar(
         "",
         "",
         titleText: const SizedBox.shrink(),
         duration: 2.seconds,
         messageText: Text(
-          responseModel.message??"",
+          responseModel.message ?? "",
           textAlign: TextAlign.center,
         ),
         maxWidth: 150,
@@ -280,7 +320,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         padding: const EdgeInsets.only(bottom: 5),
       );
     }
-
   }
 
   onSpin() async {
