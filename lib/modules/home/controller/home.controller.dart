@@ -503,7 +503,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       js.context.callMethod('open', [facebookUrl, '_blank']);
     }
     else {
-      // Check if the Web Share API is supported
       html.window.navigator.share({
         'title': "Wheel24",
         'text': "Wheel24",
