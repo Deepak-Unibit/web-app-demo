@@ -54,7 +54,7 @@ class HomeView extends StatelessWidget {
                           ),
                           buildColumn(
                             context,
-                                (){},
+                              homeController.onInvitation,
                             AssetsUtil.getInvitation(),
                             "Invitation",
                             context.theme.colorScheme.surfaceContainerHigh,
@@ -421,7 +421,7 @@ class HomeView extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         MaterialButton(
-                          onPressed: () => homeController.onShareClick(0),
+                          onPressed: () => homeController.onShareClick(1),
                           minWidth: 0,
                           padding: EdgeInsets.zero,
                           visualDensity: VisualDensity.compact,
@@ -430,7 +430,24 @@ class HomeView extends StatelessWidget {
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                           child: Image.asset(
-                            AssetsUtil.getYoutubeIcon(),
+                            AssetsUtil.getWhatsappIcon(),
+                            height: 22,
+                            width: 22,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        MaterialButton(
+                          onPressed: () => homeController.onShareClick(2),
+                          minWidth: 0,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          materialTapTargetSize:
+                          MaterialTapTargetSize.shrinkWrap,
+                          child: Image.asset(
+                            AssetsUtil.getFacebookIcon(),
                             height: 22,
                             width: 22,
                             fit: BoxFit.cover,

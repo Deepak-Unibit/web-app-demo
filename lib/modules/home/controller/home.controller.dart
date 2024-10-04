@@ -5,6 +5,7 @@ import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
 import 'package:web_app_demo/helper/regex.helper.dart';
+import 'package:web_app_demo/models/invitation.model.dart';
 import 'package:web_app_demo/models/myProfile.model.dart';
 import 'package:web_app_demo/models/myRank.model.dart';
 import 'package:web_app_demo/models/rank.model.dart';
@@ -18,6 +19,7 @@ import 'package:web_app_demo/models/verifySubscription.model.dart';
 import 'package:web_app_demo/models/withdrawDetails.model.dart';
 import 'package:web_app_demo/modules/home/components/accountInfoDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/cashOutDialog.component.dart';
+import 'package:web_app_demo/modules/home/components/invitationListDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/inviteDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/rankDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/spinWinAmountDialog.component.dart';
@@ -164,6 +166,33 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       }
     } else {
       LoadingPage.close();
+    }
+  }
+
+  onInvitation() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.getInvitationList);
+    LoadingPage.close();
+
+    InvitationModel invitationModel = InvitationModel.fromJson(resp);
+
+    if(invitationModel.responseCode == 200) {
+      InvitationListDialogComponent.show(invitationDataList: invitationModel.data??[]);
+    }
+    else {
+      Get.snackbar(
+        "",
+        "",
+        titleText: const SizedBox.shrink(),
+        duration: 2.seconds,
+        messageText: Text(
+          invitationModel.message??"",
+          textAlign: TextAlign.center,
+        ),
+        maxWidth: 250,
+        margin: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(bottom: 5),
+      );
     }
   }
 

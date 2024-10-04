@@ -9,6 +9,9 @@ class UrlApi {
   static const getSpin = "$baseUrl/user/spin-wheel";
   static const verifySubscription = "$baseUrl2/verify-subscription";
 
+  // Invitation
+  static const getInvitationList = "$baseUrl/user/my-invitation-history";
+
   // Rank
   static const getRankList = "$baseUrl/user/ranks";
   static const getMyRank = "$baseUrl/user/my-rank";
