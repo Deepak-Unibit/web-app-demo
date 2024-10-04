@@ -495,15 +495,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       js.context.callMethod('open', [whatsappUrl, '_blank']);
     }
     else if(index==1) {
-      final String twitterUrl = 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent("Wheel24")}&url=${Uri.encodeComponent(message)}';
-
-      // Open Twitter share dialog in a new tab
+      final String twitterUrl = 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(message)}';
       js.context.callMethod('open', [twitterUrl, '_blank']);
     }
     else if(index==2) {
       final String facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
-
-      // Open Facebook share dialog in a new tab
       js.context.callMethod('open', [facebookUrl, '_blank']);
     }
     else {
