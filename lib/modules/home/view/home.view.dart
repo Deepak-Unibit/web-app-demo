@@ -35,7 +35,7 @@ class HomeView extends StatelessWidget {
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 450),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: ListView(
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -46,6 +46,7 @@ class HomeView extends StatelessWidget {
                         children: [
                           buildColumn(
                             context,
+                            homeController.onRankClick,
                             AssetsUtil.getTrophy(),
                             "Rank",
                             context.theme.colorScheme.surfaceContainerHigh,
@@ -53,6 +54,7 @@ class HomeView extends StatelessWidget {
                           ),
                           buildColumn(
                             context,
+                                (){},
                             AssetsUtil.getInvitation(),
                             "Invitation",
                             context.theme.colorScheme.surfaceContainerHigh,
@@ -60,6 +62,7 @@ class HomeView extends StatelessWidget {
                           ),
                           buildColumn(
                             context,
+                            homeController.onCashOut,
                             AssetsUtil.getCoin(),
                             "Cash Out",
                             context.theme.colorScheme.primaryFixed,
@@ -123,7 +126,7 @@ class HomeView extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text:
-                                    " ₹${(100 - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
+                                    " ₹${(homeController.setUserData.value.earnedAmount??0) >= 100 ? 0 : (100 - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -324,9 +327,9 @@ class HomeView extends StatelessWidget {
                                   children: [
                                     Image.asset(
                                       AssetsUtil.getSpinCard(),
-                                      height: 30,
-                                      width: 30,
-                                      fit: BoxFit.cover,
+                                      height: 25,
+                                      width: 40,
+                                      fit: BoxFit.contain,
                                     ),
                                     const SizedBox(width: 5),
                                     Text(
@@ -401,7 +404,7 @@ class HomeView extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () => homeController.onShareClick(0),
                           minWidth: 0,
                           padding: EdgeInsets.zero,
                           visualDensity: VisualDensity.compact,
@@ -418,7 +421,7 @@ class HomeView extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () => homeController.onShareClick(0),
                           minWidth: 0,
                           padding: EdgeInsets.zero,
                           visualDensity: VisualDensity.compact,
@@ -445,10 +448,10 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  MaterialButton buildColumn(BuildContext context, String image, String text,
+  MaterialButton buildColumn(BuildContext context, Function onClick, String image, String text,
       Color startColor, Color endColor) {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: () => onClick(),
       minWidth: 0,
       padding: EdgeInsets.zero,
       visualDensity: VisualDensity.compact,
