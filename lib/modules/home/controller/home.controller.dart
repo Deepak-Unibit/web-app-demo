@@ -8,6 +8,7 @@ import 'package:web_app_demo/models/response.model.dart';
 import 'package:web_app_demo/models/spin.model.dart';
 import 'dart:js' as js;
 import 'dart:html' as html;
+import 'package:flutter/services.dart';
 import 'package:web_app_demo/models/user.model.dart';
 import 'package:web_app_demo/models/verifySubscription.model.dart';
 import 'package:web_app_demo/modules/home/components/getSpinDialogComponent.dart';
@@ -52,10 +53,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       // Development
       // userModel = UserModel(id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
 
-      if(userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
-        Future.delayed(200.milliseconds, () => verifySubscription(userModel.id??0));
+      if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
+        Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
       }
-
     } catch (e) {
       print(e);
     }
@@ -69,19 +69,19 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   verifySubscription(num telegramId) async {
+    // Production
     LoadingPage.show();
     var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
     print(resp);
     LoadingPage.close();
 
-    // Production
     VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
     // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
     //   responseCode: 200,
     //   data: VerifySubscriptionData(
-    //     joinedChannel1: false,
+    //     joinedChannel1: true,
     //     joinedChannel2: true,
     //   ),
     // );
@@ -89,16 +89,18 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
 
-      if ((verifySubscriptionData.joinedChannel1 ?? false) && (verifySubscriptionData.joinedChannel2 ?? false)) {
+      if ((verifySubscriptionData.joinedChannel1 ?? false) &&
+          (verifySubscriptionData.joinedChannel2 ?? false)) {
         setUser(userModel);
-      }
-      else {
+      } else {
         GetSpinDialogComponent.show(
           text: "Join Channel & Get Spin",
           onJoinChannelClick: onJoinChannelClick,
           onContinueClick: onContinueClick,
-          channel1Status: verifySubscriptionData.joinedChannel1??false ? 1 : 0,
-          channel2Status: verifySubscriptionData.joinedChannel2??false ? 1 : 0,
+          channel1Status:
+              verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0,
+          channel2Status:
+              verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
         );
       }
     } else {
@@ -194,28 +196,53 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onInviteForSpins() {
-    String telegramLink =
-        'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}';
+    String telegramLink = 'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}';
 
     html.window.open(telegramLink, '_blank');
   }
 
+  onCopyClick() async {
+    await Clipboard.setData(ClipboardData(text: 'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}'));
+    Get.closeAllSnackbars();
+    Get.snackbar(
+      "",
+      "",
+      titleText: const SizedBox.shrink(),
+      duration: 2.seconds,
+      messageText: const Text(
+        "Copied to Clipboard",
+        textAlign: TextAlign.center,
+      ),
+      maxWidth: 150,
+      margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(bottom: 5),
+    );
+  }
+
   onJoinChannelClick(int type) {
     String telegramLink = "";
-    if(type==0) {
-      telegramLink = 'https://t.me/test2channelforsaquib';
+    if (type == 0) {
+      telegramLink = 'https://t.me/ludo24_app';
+    } else {
+      telegramLink = 'https://t.me/Wheel24';
     }
-    else {
-      telegramLink = 'https://t.me/testchannel3forsaquib';
-    }
+    print("$type $telegramLink");
     // 'https://t.me/share/url?url=https://t.me/catizenbot/gameapp?startapp=rp_1365932&text=%F0%9F%92%B0Catizen%3A%20Unleash%2C%20Play%2C%20Earn%20-%20Where%20Every%20Game%20Leads%20to%20an%20Airdrop%20Adventure!%0A%F0%9F%8E%81Let%27s%20play-to-earn%20airdrop%20right%20now!'
 
     html.window.open(telegramLink, '_blank');
     Get.back();
     GetSpinDialogComponent.show(
       text: "Continue",
-      channel1Status: type == 0 ? 1 : (verifySubscriptionData.joinedChannel1??false)?1:0,
-      channel2Status: type == 1 ? 1 : (verifySubscriptionData.joinedChannel2??false)?1:0,
+      channel1Status: type == 0
+          ? 1
+          : (verifySubscriptionData.joinedChannel1 ?? false)
+              ? 2
+              : 0,
+      channel2Status: type == 1
+          ? 1
+          : (verifySubscriptionData.joinedChannel2 ?? false)
+              ? 2
+              : 0,
       onJoinChannelClick: onJoinChannelClick,
       onContinueClick: onContinueClick,
     );

@@ -20,7 +20,7 @@ class InviteDialogComponent {
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
             constraints: const BoxConstraints(maxWidth: 500),
             decoration: BoxDecoration(
               color: context.theme.colorScheme.surfaceContainerLow,
@@ -117,11 +117,14 @@ class InviteDialogComponent {
                       ),
                     ),
                 const SizedBox(height: 20),
-                SecondaryButtonComponent(
-                  text: "Invite for Spins",
-                  onClick: onClick,
-                  height: 35,
-                  width: double.infinity,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                  child: SecondaryButtonComponent(
+                    text: "Invite for Spins",
+                    onClick: onClick,
+                    height: 35,
+                    width: double.infinity,
+                  ),
                 ),
               ],
             ),

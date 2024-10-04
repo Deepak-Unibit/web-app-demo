@@ -346,7 +346,7 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           MaterialButton(
-                            onPressed: (){},
+                            onPressed: ()=>homeController.onCopyClick(),
                             minWidth: 0,
                             padding: EdgeInsets.zero,
                             visualDensity: VisualDensity.compact,
