@@ -61,14 +61,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // print(userData);
-      // userModel = UserModel.fromJson(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      print(userData);
+      userModel = UserModel.fromJson(userData);
 
       // Development
-      userModel = UserModel(
-          id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
+      // userModel = UserModel(
+      //     id: 1146609300, firstName: "deepakTest", lastName: "frrfff");
 
       if (userModel.id != null &&
           userModel.firstName != null &&
@@ -117,10 +117,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           text: "Join Channel & Get Spin",
           onJoinChannelClick: onJoinChannelClick,
           onContinueClick: onContinueClick,
-          channel1Status:
-              verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0,
-          channel2Status:
-              verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
+          channel1Status: verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0,
+          channel2Status: verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
         );
       }
     } else {
