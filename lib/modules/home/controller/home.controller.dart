@@ -517,6 +517,5 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         print("Error sharing content: $e");
       });
     }
-
     }
 }
