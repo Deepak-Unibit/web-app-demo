@@ -103,7 +103,7 @@ class AccountInfoDialogComponent {
                           decoration: BoxDecoration(
                             borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                            color: context.theme.colorScheme.onSurface.withOpacity(0.05),
+                            color: context.theme.colorScheme.onSurface.withOpacity(0.1),
                             border: Border.all(
                                 color: context.theme.colorScheme.onSurface
                                     .withOpacity(0.25),

@@ -51,8 +51,8 @@ class CashOutDialogComponent {
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                     gradient: LinearGradient(
                       colors: [
-                        context.theme.colorScheme.onSurface.withOpacity(0.05),
-                        context.theme.colorScheme.surfaceContainerLow.withOpacity(0.05),
+                        context.theme.colorScheme.onSurface.withOpacity(0.1),
+                        context.theme.colorScheme.surfaceContainerLow.withOpacity(0.1),
                       ],
                     ),
                     border: Border.all(
@@ -157,7 +157,7 @@ class CashOutDialogComponent {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      color: context.theme.colorScheme.onSurface.withOpacity(0.05),
+                      color: context.theme.colorScheme.onSurface.withOpacity(0.1),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,7 +183,7 @@ class CashOutDialogComponent {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    color: context.theme.colorScheme.onSurface.withOpacity(0.05),
+                    color: context.theme.colorScheme.onSurface.withOpacity(0.1),
                   ),
                   child: Column(
                     children: [
@@ -220,8 +220,7 @@ class CashOutDialogComponent {
                             focusColor: Colors.transparent,
                             hoverElevation: 0,
                             focusElevation: 0,
-                            color: context.theme.colorScheme.onSurface
-                                .withOpacity(0),
+                            color: Colors.black12.withOpacity(0.2),
                             shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10)),
@@ -346,7 +345,7 @@ class CashOutDialogComponent {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8)),
                             color: context.theme.colorScheme.onSurface
-                                .withOpacity(0.05),
+                                .withOpacity(0.1),
                             border: Border.all(
                                 color: context.theme.colorScheme.onSurface
                                     .withOpacity(0.25),

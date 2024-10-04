@@ -32,16 +32,16 @@ class TextFieldComponent extends StatelessWidget {
         maxLines: maxLines,
         maxLength: maxLength,
         keyboardType: textInputType,
-        textInputAction: textInputAction ?? null,
+        textInputAction: textInputAction,
         decoration: InputDecoration(
           filled: true,
-          fillColor: context.theme.colorScheme.onSurface.withOpacity(0.05),
+          fillColor: context.theme.colorScheme.onSurface.withOpacity(0.1),
           counterText: "",
           hintText: hintText,
           hintStyle: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w400,
-            color: context.theme.colorScheme.onSurface.withOpacity(0.15),
+            color: context.theme.colorScheme.onSurface.withOpacity(0.2),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           border: const OutlineInputBorder(
