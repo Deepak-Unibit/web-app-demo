@@ -1,10 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/modules/home/components/secondaryButton.component.dart';
 import 'package:web_app_demo/modules/home/components/textField.component.dart';
-
 import '../../../utils/assets.util.dart';
 
 class AccountInfoDialogComponent {
