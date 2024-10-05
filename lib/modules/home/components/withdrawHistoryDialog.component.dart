@@ -76,19 +76,24 @@ class WithdrawHistoryDialogComponent {
                               ),
                             ),
                             const SizedBox(width: 10),
-                            Text(
-                              "${withdrawRequestDataList[index].amount}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: context.theme.colorScheme.onSurface
-                                    .withOpacity(0.75),
+                            Flexible(
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Text(
+                                  "${withdrawRequestDataList[index].amount}",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: context.theme.colorScheme.onSurface
+                                        .withOpacity(0.75),
+                                  ),
+                                ),
                               ),
                             ),
                             Text(
-                              "${withdrawRequestDataList[index].status}",
+                              withdrawRequestDataList[index].status==1 ? "Pending" : withdrawRequestDataList[index].status==2 ? "Success" : withdrawRequestDataList[index].status==3 ? "Rejected" : "",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
