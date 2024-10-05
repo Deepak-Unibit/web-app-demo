@@ -90,21 +90,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   verifySubscription(num telegramId) async {
     // Production
-    // LoadingPage.show();
-    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    // LoadingPage.close();
-    //
-    // print(resp);
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    LoadingPage.show();
+    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    LoadingPage.close();
+
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-      responseCode: 200,
-      data: VerifySubscriptionData(
-        joinedChannel1: true,
-        joinedChannel2: true,
-      ),
-    );
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+    //   responseCode: 200,
+    //   data: VerifySubscriptionData(
+    //     joinedChannel1: true,
+    //     joinedChannel2: true,
+    //   ),
+    // );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
@@ -135,8 +134,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
 
-    print(resp);
-
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
     if (setUserModel.responseCode == 200) {
@@ -149,7 +146,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onRankClick() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getRankList);
-    print(resp);
+
     RankModel rankModel = RankModel.fromJson(resp);
 
     if (rankModel.responseCode == 200) {
@@ -173,7 +170,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getInvitationList);
     LoadingPage.close();
-    print(resp);
+
     InvitationModel invitationModel = InvitationModel.fromJson(resp);
 
     if(invitationModel.responseCode == 200) {
@@ -184,7 +181,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onCashOut() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getProfile);
-    print(resp);
+
     MyProfileModel myProfileModel = MyProfileModel.fromJson(resp);
 
     if (myProfileModel.responseCode == 200) {
@@ -210,7 +207,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getWithdrawList);
     LoadingPage.close();
-    print(resp);
+
     WithdrawRequestModel withdrawRequestModel = WithdrawRequestModel.fromJson(resp);
 
     if(withdrawRequestModel.responseCode == 200) {
@@ -416,7 +413,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onCopyClick() async {
-    html.window.navigator.clipboard?.writeText("https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰").then((_) {
+    html.window.navigator.clipboard?.writeText("https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰").then((_) {
       Get.closeAllSnackbars();
       Get.snackbar(
         "",
@@ -470,7 +467,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-      String message = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+      String message = "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
 
     if(index==0) {
       final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
