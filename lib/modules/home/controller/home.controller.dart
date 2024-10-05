@@ -60,17 +60,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // userModel = UserModel.fromJson(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      userModel = UserModel.fromJson(userData);
 
       // Development
-      userModel = UserModel(
-        id: 1146609300,
-        firstName: "Deepak Kumar",
-        lastName: "Behera",
-        allowsWriteToPm: true,
-      );
+      // userModel = UserModel(
+      //   id: 1146609300,
+      //   firstName: "Deepak Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,
+      // );
 
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
