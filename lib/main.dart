@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/modules/home/view/home.view.dart';
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Spinner',
+      title: 'Wheel24',
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       theme: ThemesUtil.light,
