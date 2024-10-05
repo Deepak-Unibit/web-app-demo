@@ -75,7 +75,7 @@ class WithdrawHistoryDialogComponent {
                                     .withOpacity(0.75),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(
                               "${withdrawRequestDataList[index].amount}",
                               maxLines: 1,

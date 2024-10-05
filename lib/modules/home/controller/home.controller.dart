@@ -60,17 +60,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // userModel = UserModel.fromJson(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      userModel = UserModel.fromJson(userData);
 
       // Development
-      userModel = UserModel(
-        id: 1146609300,
-        firstName: "Deepak Kumar",
-        lastName: "Behera",
-        allowsWriteToPm: true,
-      );
+      // userModel = UserModel(
+      //   id: 1146609300,
+      //   firstName: "Deepak Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,
+      // );
 
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
@@ -89,21 +89,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   verifySubscription(num telegramId) async {
     // Production
-    LoadingPage.show();
-    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    LoadingPage.close();
-
-    print(resp);
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    // LoadingPage.show();
+    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    // LoadingPage.close();
+    //
+    // print(resp);
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-    //   responseCode: 200,
-    //   data: VerifySubscriptionData(
-    //     joinedChannel1: true,
-    //     joinedChannel2: true,
-    //   ),
-    // );
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+      responseCode: 200,
+      data: VerifySubscriptionData(
+        joinedChannel1: true,
+        joinedChannel2: true,
+      ),
+    );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
