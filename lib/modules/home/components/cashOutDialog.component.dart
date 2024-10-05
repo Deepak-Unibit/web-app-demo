@@ -65,7 +65,7 @@ class CashOutDialogComponent {
                           ),
                           const Spacer(),
                           Text(
-                            "₹ ${myProfileData.earnedAmount??0}",
+                            "₹ ${((myProfileData.earnedAmount??0) * 100).truncateToDouble() / 100}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,

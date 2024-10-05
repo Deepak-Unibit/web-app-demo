@@ -126,7 +126,7 @@ class HomeView extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text:
-                                    " ₹${(homeController.setUserData.value.earnedAmount??0) >= 100 ? 0 : (100 - (homeController.setUserData.value.earnedAmount ?? 0))}",
+                                    " ₹${(homeController.setUserData.value.earnedAmount??0) >= 100 ? 0 : (100 - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
