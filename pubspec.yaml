@@ -1,5 +1,5 @@
-name: wheel_24
-description: "Play & Earn - Let's strike it rich together"
+name: web_app_demo
+description: "Wheel24 - Play & Earn."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 

@@ -430,7 +430,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onCopyClick() async {
-    html.window.navigator.clipboard?.writeText('https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰').then((_) {
+    html.window.navigator.clipboard?.writeText('https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n💰Let\'s stike it rich together!💰').then((_) {
       Get.closeAllSnackbars();
       Get.snackbar(
         "",
