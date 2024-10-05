@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:web_app_demo/helper/date.helper.dart';
 import 'package:web_app_demo/models/withdrawRequest.model.dart';
 import '../../../utils/assets.util.dart';
 
@@ -48,39 +49,101 @@ class WithdrawHistoryDialogComponent {
                       borderRadius: const BorderRadius.all(Radius.circular(8)),
                       color: context.theme.colorScheme.onSurface.withOpacity(0.05),
                     ),
-                    child: ListView.separated(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      itemCount: withdrawRequestDataList.length,
-                      separatorBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Divider(
-                          height: 0.5,
-                          color: context.theme.colorScheme.onSurface
-                              .withOpacity(0.05),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Sl. No.",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: context.theme.colorScheme.onSurface
+                                      .withOpacity(0.75),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                "Amount",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: context.theme.colorScheme.onSurface
+                                      .withOpacity(0.75),
+                                ),
+                              ),
+                              const Spacer(),
+                              SizedBox(
+                                width: 80,
+                                child: Text(
+                                  "Status",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                    color: context.theme.colorScheme.onSurface
+                                        .withOpacity(0.75),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 130,
+                                child: Text(
+                                  "Date",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                    color: context.theme.colorScheme.onSurface
+                                        .withOpacity(0.75),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "${index+1}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
+                        Expanded(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.all(10),
+                            itemCount: withdrawRequestDataList.length,
+                            separatorBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Divider(
+                                height: 0.5,
                                 color: context.theme.colorScheme.onSurface
-                                    .withOpacity(0.75),
+                                    .withOpacity(0.05),
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  "${withdrawRequestDataList[index].amount}",
+                            itemBuilder: (context, index) => Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 37,
+                                  child: Text(
+                                    "${index+1}.",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: context.theme.colorScheme.onSurface
+                                          .withOpacity(0.75),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  "₹ ${withdrawRequestDataList[index].amount}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -90,22 +153,41 @@ class WithdrawHistoryDialogComponent {
                                         .withOpacity(0.75),
                                   ),
                                 ),
-                              ),
+                                const Spacer(),
+                                SizedBox(
+                                  width: 80,
+                                  child: Text(
+                                    withdrawRequestDataList[index].status==1 ? "Pending" : withdrawRequestDataList[index].status==2 ? "Success" : withdrawRequestDataList[index].status==3 ? "Rejected" : "",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w300,
+                                      color: context.theme.colorScheme.onSurface
+                                          .withOpacity(0.75),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 130,
+                                  child: Text(
+                                    DateHelper().dateFormat(date: withdrawRequestDataList[index].createdAt??"", format: "dd MMM yy hh:mm:ss a"),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w300,
+                                      color: context.theme.colorScheme.onSurface
+                                          .withOpacity(0.75),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              withdrawRequestDataList[index].status==1 ? "Pending" : withdrawRequestDataList[index].status==2 ? "Success" : withdrawRequestDataList[index].status==3 ? "Rejected" : "",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w300,
-                                color: context.theme.colorScheme.onSurface
-                                    .withOpacity(0.75),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ),

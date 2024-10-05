@@ -42,7 +42,7 @@ class InvitationListDialogComponent {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 RichText(
                   text: TextSpan(
                     text: "You Have Invited",
@@ -76,7 +76,7 @@ class InvitationListDialogComponent {
                     color: context.theme.colorScheme.onSurface.withOpacity(0.5),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
@@ -135,7 +135,7 @@ class InvitationListDialogComponent {
                     ),
                   ),
                 ),
-
+                const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.center,
                   child: MaterialButton(

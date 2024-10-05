@@ -60,17 +60,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609300,
-      //   firstName: "Deepak Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609300,
+        firstName: "Deepak Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
@@ -390,11 +390,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       } else if ((spinModel.data?.spinAmount ?? 0) >= 10) {
         selectedSector.value = 90;
       } else if ((spinModel.data?.spinAmount ?? 0) >= 5) {
-        selectedSector.value = 135;
+        selectedSector.value = 270;
       } else if ((spinModel.data?.spinAmount ?? 0) < 5) {
         Random random = Random();
         int randomNumber = random.nextInt(3);
-        selectedSector.value = randomNumber==0 ? 225 : randomNumber==1 ? 270 : 315;
+        selectedSector.value = randomNumber==0 ? 225 : randomNumber==1 ? 135 : 315;
       }
 
       Future.delayed(2.seconds, () {
