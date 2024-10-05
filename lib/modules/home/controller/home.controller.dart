@@ -77,6 +77,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
       }
     } catch (e) {
+      print(e);
     }
   }
 
@@ -177,21 +178,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if(invitationModel.responseCode == 200) {
       InvitationListDialogComponent.show(invitationDataList: invitationModel.data??[]);
-    }
-    else {
-      Get.snackbar(
-        "",
-        "",
-        titleText: const SizedBox.shrink(),
-        duration: 2.seconds,
-        messageText: Text(
-          invitationModel.message??"",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: 250,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
-      );
     }
   }
 
@@ -385,7 +371,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
       isSpinning = true;
 
-      if ((spinModel.data?.spinAmount ?? 0) >= 70) {
+      if ((spinModel.data?.spinAmount ?? 0) >= 50) {
         selectedSector.value = 180;
       } else if ((spinModel.data?.spinAmount ?? 0) >= 10) {
         selectedSector.value = 90;
