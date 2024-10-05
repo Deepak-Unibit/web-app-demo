@@ -49,16 +49,7 @@ class CashOutDialogComponent {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    gradient: LinearGradient(
-                      colors: [
-                        context.theme.colorScheme.onSurface.withOpacity(0.1),
-                        context.theme.colorScheme.surfaceContainerLow.withOpacity(0.1),
-                      ],
-                    ),
-                    border: Border.all(
-                      color: context.theme.colorScheme.onSurface.withOpacity(0.15),
-                      width: 0.8,
-                    ),
+                    color: context.theme.colorScheme.onSurface.withOpacity(0.1),
                   ),
                   child: Column(
                     children: [
@@ -342,14 +333,9 @@ class CashOutDialogComponent {
                           height: 35,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            color: context.theme.colorScheme.onSurface
-                                .withOpacity(0.1),
-                            border: Border.all(
-                                color: context.theme.colorScheme.onSurface
-                                    .withOpacity(0.25),
-                                width: 1.5),
+                            borderRadius: const BorderRadius.all(Radius.circular(8)),
+                            color: context.theme.colorScheme.onSurface.withOpacity(0.1),
+                            border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
                           ),
                           child: Text(
                             "Close",

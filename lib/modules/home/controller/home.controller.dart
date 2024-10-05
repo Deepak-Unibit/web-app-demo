@@ -30,8 +30,7 @@ import '../../../models/setUser.model.dart';
 import '../components/getSpinDialog.component.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  final Rxn<AnimationController> _animationController =
-      Rxn<AnimationController>();
+  final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
   AnimationController? get animationController => _animationController.value;
   late AnimationController turnAnimationController;
   RxDouble selectedSector = 0.0.obs;
@@ -61,17 +60,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609300,
-      //   firstName: "Deepak Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609300,
+        firstName: "Deepak Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
@@ -94,6 +93,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
     LoadingPage.close();
 
+    print(resp);
     VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
@@ -297,7 +297,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         padding: const EdgeInsets.only(bottom: 5),
       );
       return;
-    } else if (upiController.text == "") {
+    } else if (!(RegexHelper.upiIdRegex.hasMatch(upiController.text))) {
       Get.snackbar(
         "",
         "",
@@ -312,8 +312,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         padding: const EdgeInsets.only(bottom: 5),
       );
       return;
-    } else if (!(RegexHelper.mobileRegex
-        .hasMatch(mobileNumberController.text))) {
+    } else if (!(RegexHelper.mobileRegex.hasMatch(mobileNumberController.text))) {
       Get.snackbar(
         "",
         "",
