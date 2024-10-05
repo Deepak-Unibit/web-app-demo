@@ -434,7 +434,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }).catchError((e) {
       print("Failed to copy text to clipboard: $e");
     });
-    // await Clipboard.setData(ClipboardData(text: 'https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I\'ve won ₹${setUserData.value.earnedAmount} from this Game!🎁 \n\nClick URL and play with me!\n💰Let\'s stike it rich together!💰'));
 
   }
 
@@ -478,8 +477,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       js.context.callMethod('open', [whatsappUrl, '_blank']);
     }
     else if(index==1) {
-      const String instagramCreatePostUrl = 'https://www.instagram.com/create/style/';
-      js.context.callMethod('open', [instagramCreatePostUrl, '_blank']);
+      final String twitterUrl = 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(message)}';
+      js.context.callMethod('open', [twitterUrl, '_blank']);
     }
     else if(index==2) {
       final String facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
