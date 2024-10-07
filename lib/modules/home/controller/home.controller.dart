@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +15,6 @@ import 'package:web_app_demo/models/response.model.dart';
 import 'package:web_app_demo/models/spin.model.dart';
 import 'dart:js' as js;
 import 'dart:html' as html;
-import 'package:flutter/services.dart';
 import 'package:web_app_demo/models/user.model.dart';
 import 'package:web_app_demo/models/verifySubscription.model.dart';
 import 'package:web_app_demo/models/withdrawDetails.model.dart';
@@ -63,17 +61,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609325,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609325,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
@@ -96,8 +94,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     // LoadingPage.show();
     // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
     // LoadingPage.close();
-    //
-    // print(resp);
     //
     // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
@@ -138,8 +134,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
-
-    print(resp);
 
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
