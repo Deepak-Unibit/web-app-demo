@@ -23,11 +23,10 @@ class MyHttpOverrides extends HttpOverrides {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Wheel24',
+      title: 'Wheel24 - Spin & Win',
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       theme: ThemesUtil.light,

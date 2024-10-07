@@ -6,6 +6,7 @@ import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
 import 'package:web_app_demo/helper/regex.helper.dart';
+import 'package:web_app_demo/models/cashOut.model.dart';
 import 'package:web_app_demo/models/invitation.model.dart';
 import 'package:web_app_demo/models/myProfile.model.dart';
 import 'package:web_app_demo/models/myRank.model.dart';
@@ -37,6 +38,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   UserModel userModel = UserModel();
   VerifySubscriptionData verifySubscriptionData = VerifySubscriptionData();
   Rx<SetUserData> setUserData = SetUserData().obs;
+  RxInt goalAmount = 0.obs;
   RxInt totalSpinCount = 0.obs;
   bool isSpinning = false;
   TextEditingController nameController = TextEditingController();
@@ -66,8 +68,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
       // Development
       // userModel = UserModel(
-      //   id: 1146609300,
-      //   firstName: "Deepak Kumar",
+      //   id: 1146609325,
+      //   firstName: "New3 Kumar",
       //   lastName: "Behera",
       //   allowsWriteToPm: true,
       // );
@@ -140,6 +142,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       setUserData.value = setUserModel.data!;
       totalSpinCount.value = ((setUserData.value.spinCount ?? 0) + (setUserData.value.referralSpins ?? 0)) as int;
       setUserData.value.setEarnedAmount = ((setUserData.value.earnedAmount??0) * 100).truncateToDouble() / 100;
+      goalAmount.value =  ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
+
     } else {}
   }
 
@@ -220,13 +224,26 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.get(UrlApi.cashOutRequest);
     LoadingPage.close();
 
-    ResponseModel responseModel = ResponseModel.fromJson(resp);
+    CashOutModel cashOutModel = CashOutModel.fromJson(resp);
 
-    if (responseModel.responseCode == 200) {
-      setUserData.value.setEarnedAmount = 0;
+    if (cashOutModel.responseCode == 200) {
+      setUserData.value.setEarnedAmount = cashOutModel.data?.earnedAmount ?? 0;
       setUserData.refresh();
       Get.back();
       onCashOut();
+      Get.snackbar(
+        "",
+        "",
+        titleText: const SizedBox.shrink(),
+        duration: 2.seconds,
+        messageText: Text(
+          cashOutModel.message ?? "",
+          textAlign: TextAlign.center,
+        ),
+        maxWidth: 250,
+        margin: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(bottom: 5),
+      );
     } else {
       Get.snackbar(
         "",
@@ -234,7 +251,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         titleText: const SizedBox.shrink(),
         duration: 2.seconds,
         messageText: Text(
-          responseModel.message ?? "",
+          cashOutModel.message ?? "",
           textAlign: TextAlign.center,
         ),
         maxWidth: 250,
@@ -349,11 +366,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       return;
     }
 
-    if (totalSpinCount.value <= 0) {
-      getMoreSpin();
-      return;
-    }
-
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getSpin);
     LoadingPage.close();
@@ -380,23 +392,29 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         selectedSector.value = randomNumber==0 ? 225 : randomNumber==1 ? 135 : 315;
       }
 
+      totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
+
       Future.delayed(2.seconds, () {
         isSpinning = false;
         setUserData.value.setEarnedAmount = ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;
         setUserData.value.setReferralSpins = spinModel.data?.referralSpins ?? 0;
         setUserData.refresh();
-        totalSpinCount.value = ((setUserData.value.spinCount ?? 0) + (setUserData.value.referralSpins ?? 0)) as int;
+
+        goalAmount.value =  ((((spinModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
 
         SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100);
       });
     } else {
+      if (totalSpinCount.value <= 0) {
+        getMoreSpin();
+        return;
+      }
     }
   }
 
   getMoreSpin() {
-    InviteDialogComponent.show(
-        onClick: onContinueToGetMoreSpin, setUserData: setUserData.value);
+    InviteDialogComponent.show(onClick: onContinueToGetMoreSpin, setUserData: setUserData.value, goalAmount: goalAmount.value);
   }
 
   onContinueToGetMoreSpin() {

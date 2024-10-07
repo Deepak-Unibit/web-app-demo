@@ -9,7 +9,7 @@ import '../../../utils/assets.util.dart';
 
 
 class InviteDialogComponent {
-  static show({required Function onClick, required SetUserData setUserData}) {
+  static show({required Function onClick, required SetUserData setUserData, required int goalAmount}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -84,9 +84,9 @@ class InviteDialogComponent {
                       progressColor: context.theme.colorScheme.secondaryFixed,
                       borderRadius: const BorderRadius.all(Radius.circular(100)),
                       minHeight: 18,
-                      maxSteps: 100,
-                      currentStep: (setUserData.earnedAmount ?? 0) >= 100
-                          ? 100
+                      maxSteps: goalAmount<=0 ? 1 : goalAmount,
+                      currentStep: (setUserData.earnedAmount ?? 0) >= goalAmount
+                          ? goalAmount
                           : (setUserData.earnedAmount ?? 0).toInt(),
                     ),
 
@@ -103,15 +103,15 @@ class InviteDialogComponent {
                         children: [
                           TextSpan(
                             text:
-                      " ₹${(setUserData.earnedAmount??0) >= 100 ? 0 : (100 - (setUserData.earnedAmount ?? 0)).toStringAsFixed(2)}",
+                      " ₹${(setUserData.earnedAmount??0) >= goalAmount ? 0 : (goalAmount - (setUserData.earnedAmount ?? 0)).toStringAsFixed(2)}",
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: context.theme.colorScheme.primaryFixed,
                             ),
                           ),
-                          const TextSpan(
-                            text: " to cash out ₹100 !",
+                           TextSpan(
+                            text: " to cash out ₹$goalAmount !",
                           )
                         ],
                       ),

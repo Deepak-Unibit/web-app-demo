@@ -57,6 +57,7 @@ class SetUserData {
     String? accountHolderName,
     String? phoneNumber,
     String? upiId,
+    num? goal,
   }) {
     _id = id;
     _telegramId = telegramId;
@@ -74,6 +75,7 @@ class SetUserData {
     _accountHolderName = accountHolderName;
     _phoneNumber = phoneNumber;
     _upiId = upiId;
+    _goal = goal;
   }
 
   SetUserData.fromJson(dynamic json) {
@@ -93,6 +95,7 @@ class SetUserData {
     _accountHolderName = json['accountHolderName'];
     _phoneNumber = json['phoneNumber'];
     _upiId = json['upiId'];
+    _goal = json['goal'];
   }
   String? _id;
   String? _telegramId;
@@ -110,6 +113,7 @@ class SetUserData {
   String? _accountHolderName;
   String? _phoneNumber;
   String? _upiId;
+  num? _goal;
 
   String? get id => _id;
   String? get telegramId => _telegramId;
@@ -127,6 +131,7 @@ class SetUserData {
   String? get accountHolderName => _accountHolderName;
   String? get phoneNumber => _phoneNumber;
   String? get upiId => _upiId;
+  num? get goal => _goal;
 
   set setEarnedAmount(num value) {
     _earnedAmount = value;
@@ -158,6 +163,7 @@ class SetUserData {
     map['accountHolderName'] = _accountHolderName;
     map['phoneNumber'] = _phoneNumber;
     map['upiId'] = _upiId;
+    map['goal'] = _goal;
     return map;
   }
 }

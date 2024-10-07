@@ -44,11 +44,13 @@ class SpinData {
       num? spinAmount, 
       num? earnedAmount, 
       num? spinCount, 
-      num? referralSpins,}){
+      num? referralSpins, 
+      num? goal,}){
     _spinAmount = spinAmount;
     _earnedAmount = earnedAmount;
     _spinCount = spinCount;
     _referralSpins = referralSpins;
+    _goal = goal;
 }
 
   SpinData.fromJson(dynamic json) {
@@ -56,16 +58,19 @@ class SpinData {
     _earnedAmount = json['earnedAmount'];
     _spinCount = json['spinCount'];
     _referralSpins = json['referralSpins'];
+    _goal = json['goal'];
   }
   num? _spinAmount;
   num? _earnedAmount;
   num? _spinCount;
   num? _referralSpins;
+  num? _goal;
 
   num? get spinAmount => _spinAmount;
   num? get earnedAmount => _earnedAmount;
   num? get spinCount => _spinCount;
   num? get referralSpins => _referralSpins;
+  num? get goal => _goal;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -73,6 +78,7 @@ class SpinData {
     map['earnedAmount'] = _earnedAmount;
     map['spinCount'] = _spinCount;
     map['referralSpins'] = _referralSpins;
+    map['goal'] = _goal;
     return map;
   }
 

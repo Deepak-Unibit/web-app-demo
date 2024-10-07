@@ -25,8 +25,8 @@ class LoadingPage {
                   height: 40,
                   width: 40,
                   child: CircularProgressIndicator(
-                    backgroundColor: context.theme.colorScheme.primary,
-                    color: context.theme.colorScheme.onPrimary,
+                    backgroundColor: context.theme.colorScheme.surfaceContainerHigh,
+                    color: context.theme.colorScheme.onSurface,
                   ),
                 ),
               ),

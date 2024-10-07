@@ -104,8 +104,7 @@ class WithdrawHistoryDialogComponent {
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
-                                    color: context.theme.colorScheme.onSurface
-                                        .withOpacity(0.75),
+                                    color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                   ),
                                 ),
                               ),
@@ -172,7 +171,7 @@ class WithdrawHistoryDialogComponent {
                                 SizedBox(
                                   width: 130,
                                   child: Text(
-                                    DateHelper().dateFormat(date: withdrawRequestDataList[index].createdAt??"", format: "dd MMM yy hh:mm:ss a"),
+                                    DateHelper().dateFormat(date: withdrawRequestDataList[index].createdAt??"", format: "dd-MM-yy hh:mm:ss a"),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(

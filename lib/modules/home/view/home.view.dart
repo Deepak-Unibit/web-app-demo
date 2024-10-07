@@ -54,7 +54,7 @@ class HomeView extends StatelessWidget {
                           ),
                           buildColumn(
                             context,
-                              homeController.onInvitation,
+                            homeController.onInvitation,
                             AssetsUtil.getInvitation(),
                             "Invitation",
                             context.theme.colorScheme.surfaceContainerHigh,
@@ -100,15 +100,17 @@ class HomeView extends StatelessWidget {
                           horizontal: 40, vertical: 8),
                       child: Obx(
                         () => LinearProgressBar(
-                          backgroundColor: context.theme.colorScheme.onSurface.withOpacity(0.25),
-                          progressColor: context.theme.colorScheme.secondaryFixed,
-                          borderRadius: const BorderRadius.all(Radius.circular(100)),
+                          backgroundColor: context.theme.colorScheme.onSurface
+                              .withOpacity(0.25),
+                          progressColor:
+                              context.theme.colorScheme.secondaryFixed,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(100)),
                           minHeight: 18,
-                          maxSteps: 100,
-                          currentStep:
-                              (homeController.setUserData.value.earnedAmount ?? 0) >= 100
-                                  ? 100
-                                  : (homeController.setUserData.value.earnedAmount ?? 0).toInt(),
+                          maxSteps: homeController.goalAmount.value<=0 ? 1 : homeController.goalAmount.value,
+                          currentStep: (homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value
+                                  ? homeController.goalAmount.value
+                                  : homeController.setUserData.value.earnedAmount?.toInt() ?? 0,
                         ),
                       ),
                     ),
@@ -125,16 +127,15 @@ class HomeView extends StatelessWidget {
                                 fontStyle: FontStyle.italic),
                             children: [
                               TextSpan(
-                                text:
-                                    " ₹${(homeController.setUserData.value.earnedAmount??0) >= 100 ? 0 : (100 - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
+                                text: " ₹${(homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value ? 0 : (homeController.goalAmount.value - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: context.theme.colorScheme.primaryFixed,
                                 ),
                               ),
-                              const TextSpan(
-                                text: " to cash out ₹100 !",
+                               TextSpan(
+                                text: " to cash out ₹${homeController.goalAmount.value} !",
                               )
                             ],
                           ),
@@ -270,15 +271,17 @@ class HomeView extends StatelessWidget {
                                   homeController.getMoreSpin,
                                   AssetsUtil.getSpinCard(),
                                   "+1 Spin",
-                                  context.theme.colorScheme.surfaceContainerHigh,
-                                  context.theme.colorScheme.surfaceContainerLow),
-                               // buildColumn2(
-                               //    context,
-                               //    () {},
-                               //    AssetsUtil.getChest(),
-                               //    "More Spin",
-                               //    context.theme.colorScheme.surfaceContainerHigh,
-                               //    context.theme.colorScheme.surfaceContainerLow),
+                                  context
+                                      .theme.colorScheme.surfaceContainerHigh,
+                                  context
+                                      .theme.colorScheme.surfaceContainerLow),
+                              // buildColumn2(
+                              //    context,
+                              //    () {},
+                              //    AssetsUtil.getChest(),
+                              //    "More Spin",
+                              //    context.theme.colorScheme.surfaceContainerHigh,
+                              //    context.theme.colorScheme.surfaceContainerLow),
                             ],
                           ),
                         ),
@@ -291,7 +294,8 @@ class HomeView extends StatelessWidget {
                         children: [
                           Flexible(
                             child: MaterialButton(
-                              onPressed: () => homeController.onInviteForSpins(),
+                              onPressed: () =>
+                                  homeController.onInviteForSpins(),
                               minWidth: 0,
                               padding: EdgeInsets.zero,
                               visualDensity: VisualDensity.compact,
@@ -349,7 +353,7 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           MaterialButton(
-                            onPressed: ()=>homeController.onCopyClick(),
+                            onPressed: () => homeController.onCopyClick(),
                             minWidth: 0,
                             padding: EdgeInsets.zero,
                             visualDensity: VisualDensity.compact,
@@ -445,7 +449,7 @@ class HomeView extends StatelessWidget {
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           materialTapTargetSize:
-                          MaterialTapTargetSize.shrinkWrap,
+                              MaterialTapTargetSize.shrinkWrap,
                           child: Image.asset(
                             AssetsUtil.getFacebookIcon(),
                             height: 22,
@@ -465,8 +469,8 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  MaterialButton buildColumn(BuildContext context, Function onClick, String image, String text,
-      Color startColor, Color endColor) {
+  MaterialButton buildColumn(BuildContext context, Function onClick,
+      String image, String text, Color startColor, Color endColor) {
     return MaterialButton(
       onPressed: () => onClick(),
       minWidth: 0,
