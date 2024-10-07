@@ -6,6 +6,7 @@ import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
 import 'package:web_app_demo/helper/regex.helper.dart';
+import 'package:web_app_demo/helper/snackBar.helper.dart';
 import 'package:web_app_demo/models/cashOut.model.dart';
 import 'package:web_app_demo/models/invitation.model.dart';
 import 'package:web_app_demo/models/myProfile.model.dart';
@@ -62,17 +63,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609325,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609325,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
@@ -92,22 +93,22 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   verifySubscription(num telegramId) async {
     // Production
-    LoadingPage.show();
-    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    LoadingPage.close();
-
-    print(resp);
-
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    // LoadingPage.show();
+    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    // LoadingPage.close();
+    //
+    // print(resp);
+    //
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-    //   responseCode: 200,
-    //   data: VerifySubscriptionData(
-    //     joinedChannel1: true,
-    //     joinedChannel2: true,
-    //   ),
-    // );
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+      responseCode: 200,
+      data: VerifySubscriptionData(
+        joinedChannel1: true,
+        joinedChannel2: true,
+      ),
+    );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
@@ -231,37 +232,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     CashOutModel cashOutModel = CashOutModel.fromJson(resp);
 
     if (cashOutModel.responseCode == 200) {
+      Get.back();
       setUserData.value.setEarnedAmount = cashOutModel.data?.earnedAmount ?? 0;
       setUserData.refresh();
-      Get.back();
       onCashOut();
-      Get.snackbar(
-        "",
-        "",
-        titleText: const SizedBox.shrink(),
-        duration: 2.seconds,
-        messageText: Text(
-          cashOutModel.message ?? "",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: 250,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
-      );
+      SnackBarHelper.show(cashOutModel.message??"", maxWidth: 280);
     } else {
-      Get.snackbar(
-        "",
-        "",
-        titleText: const SizedBox.shrink(),
-        duration: 2.seconds,
-        messageText: Text(
-          cashOutModel.message ?? "",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: 250,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
-      );
+      SnackBarHelper.show(cashOutModel.message??"");
     }
   }
 
@@ -287,49 +264,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     mobileNumberController.text = mobileNumberController.text.trim();
 
     if (!(RegexHelper.nameRegex.hasMatch(nameController.text))) {
-      Get.snackbar(
-        "",
-        "",
-        titleText: const SizedBox.shrink(),
-        duration: 2.seconds,
-        messageText: const Text(
-          "Enter valid name",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: 250,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
-      );
+      SnackBarHelper.show("Enter valid name", maxWidth: 180);
       return;
     } else if (!(RegexHelper.upiIdRegex.hasMatch(upiController.text))) {
-      Get.snackbar(
-        "",
-        "",
-        titleText: const SizedBox.shrink(),
-        duration: 2.seconds,
-        messageText: const Text(
-          "Enter valid UPI ID",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: 250,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
-      );
+      SnackBarHelper.show("Enter valid UPI ID", maxWidth: 180);
       return;
     } else if (!(RegexHelper.mobileRegex.hasMatch(mobileNumberController.text))) {
-      Get.snackbar(
-        "",
-        "",
-        titleText: const SizedBox.shrink(),
-        duration: 2.seconds,
-        messageText: const Text(
-          "Enter valid mobile number",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: 250,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
-      );
+      SnackBarHelper.show("Enter valid mobile number");
       return;
     }
 
@@ -349,19 +290,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       Get.back();
       onCashOut();
     } else {
-      Get.snackbar(
-        "",
-        "",
-        titleText: const SizedBox.shrink(),
-        duration: 2.seconds,
-        messageText: Text(
-          responseModel.message ?? "",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: 150,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
-      );
+      SnackBarHelper.show(responseModel.message ?? "");
     }
   }
 
@@ -436,20 +365,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   onCopyClick() async {
     html.window.navigator.clipboard?.writeText("https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰").then((_) {
-      Get.closeAllSnackbars();
-      Get.snackbar(
-        "",
-        "",
-        titleText: const SizedBox.shrink(),
-        duration: 2.seconds,
-        messageText: const Text(
-          "Copied to Clipboard",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: 150,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
-      );
+      SnackBarHelper.show( "Copied to Clipboard");
     }).catchError((e) {
       print("Failed to copy text to clipboard: $e");
     });
