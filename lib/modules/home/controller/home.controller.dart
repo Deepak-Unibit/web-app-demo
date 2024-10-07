@@ -233,7 +233,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (cashOutModel.responseCode == 200) {
       Get.back();
-      setUserData.value.setEarnedAmount = cashOutModel.data?.earnedAmount ?? 0;
+      // setUserData.value.setEarnedAmount = cashOutModel.data?.earnedAmount ?? 0;
+      setUserData.value.setEarnedAmount = ((cashOutModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
       setUserData.refresh();
       onCashOut();
       SnackBarHelper.show(cashOutModel.message??"", maxWidth: 280);
