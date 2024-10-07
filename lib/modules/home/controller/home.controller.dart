@@ -62,17 +62,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // userModel = UserModel.fromJson(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      userModel = UserModel.fromJson(userData);
 
       // Development
-      userModel = UserModel(
-        id: 1146609325,
-        firstName: "New3 Kumar",
-        lastName: "Behera",
-        allowsWriteToPm: true,
-      );
+      // userModel = UserModel(
+      //   id: 1146609325,
+      //   firstName: "New3 Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,
+      // );
 
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
@@ -95,6 +95,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
     LoadingPage.close();
+
+    print(resp);
 
     VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
@@ -135,6 +137,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
+
+    print(resp);
 
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
