@@ -77,7 +77,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     )..repeat(reverse: true);
 
     pointHandAnimationController.addListener(() {
-      // scale.value = 1;
       scale.value = pointHandAnimationController.value;
     });
 
