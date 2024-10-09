@@ -16,6 +16,8 @@ class AssetsUtil {
   static getSecondRank() => 'assets/images/Rank 2.webp';
   static getThirdRank() => 'assets/images/Rank 3.webp';
   static getCardIcon() => 'assets/images/card.webp';
+  static getPointHand() => 'assets/images/pointHand.webp';
+  static getPointHandBg() => 'assets/images/halo.webp';
 
 
   static getLottie() => 'assets/images/bg-video.gif';

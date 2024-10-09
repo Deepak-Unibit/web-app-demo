@@ -107,10 +107,17 @@ class HomeView extends StatelessWidget {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(100)),
                           minHeight: 18,
-                          maxSteps: homeController.goalAmount.value<=0 ? 1 : homeController.goalAmount.value,
-                          currentStep: (homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value
-                                  ? homeController.goalAmount.value
-                                  : homeController.setUserData.value.earnedAmount?.toInt() ?? 0,
+                          maxSteps: homeController.goalAmount.value <= 0
+                              ? 1
+                              : homeController.goalAmount.value,
+                          currentStep: (homeController
+                                          .setUserData.value.earnedAmount ??
+                                      0) >=
+                                  homeController.goalAmount.value
+                              ? homeController.goalAmount.value
+                              : homeController.setUserData.value.earnedAmount
+                                      ?.toInt() ??
+                                  0,
                         ),
                       ),
                     ),
@@ -127,15 +134,17 @@ class HomeView extends StatelessWidget {
                                 fontStyle: FontStyle.italic),
                             children: [
                               TextSpan(
-                                text: " ₹${(homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value ? 0 : (homeController.goalAmount.value - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
+                                text:
+                                    " ₹${(homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value ? 0 : (homeController.goalAmount.value - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: context.theme.colorScheme.primaryFixed,
                                 ),
                               ),
-                               TextSpan(
-                                text: " to cash out ₹${homeController.goalAmount.value} !",
+                              TextSpan(
+                                text:
+                                    " to cash out ₹${homeController.goalAmount.value} !",
                               )
                             ],
                           ),
@@ -209,8 +218,7 @@ class HomeView extends StatelessWidget {
                               splashColor: Colors.transparent,
                               focusColor: Colors.transparent,
                               hoverColor: Colors.transparent,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               child: Container(
                                 height: 80,
                                 width: 80,
@@ -251,6 +259,80 @@ class HomeView extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                            ),
+                            Obx(
+                              () => homeController.totalSpinCount.value > 0 && !homeController.isSpinning.value
+                                  ? MaterialButton(
+                                onPressed: () => homeController.onSpin(),
+                                minWidth: 0,
+                                padding: EdgeInsets.zero,
+                                visualDensity: VisualDensity.compact,
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 20, left: 25),
+                                        child: AnimatedBuilder(
+                                          animation: homeController
+                                              .pointHandBgAnimationController,
+                                          builder: (context, child) {
+                                            return Transform.rotate(
+                                              angle: homeController
+                                                      .pointHandBgAnimationController
+                                                      .value *
+                                                  2 *
+                                                  math.pi,
+                                              child: Image.asset(
+                                                AssetsUtil.getPointHandBg(),
+                                                height: 45,
+                                                width: 45,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                  )
+                                  : const SizedBox.shrink(),
+                            ),
+                            Obx(
+                              () => homeController.totalSpinCount.value > 0 && !homeController.isSpinning.value
+                                  ? MaterialButton(
+                                onPressed: () => homeController.onSpin(),
+                                minWidth: 0,
+                                padding: EdgeInsets.zero,
+                                visualDensity: VisualDensity.compact,
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 53, left: 60),
+                                        child: AnimatedBuilder(
+                                          animation: homeController
+                                              .pointHandBgAnimationController,
+                                          builder: (context, child) {
+                                            return Obx(
+                                              () => Transform.scale(
+                                                scale: homeController.scale.value,
+                                                child: Image.asset(
+                                                  AssetsUtil.getPointHand(),
+                                                  height: 45,
+                                                  width: 45,
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                  )
+                                  : const SizedBox.shrink(),
                             ),
                           ],
                         ),

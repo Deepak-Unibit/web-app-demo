@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,16 +31,20 @@ import '../../../models/setUser.model.dart';
 import '../components/getSpinDialog.component.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
+  final Rxn<AnimationController> _animationController =
+      Rxn<AnimationController>();
   AnimationController? get animationController => _animationController.value;
   late AnimationController turnAnimationController;
+  late AnimationController pointHandBgAnimationController;
+  late AnimationController pointHandAnimationController;
+  RxDouble scale = 0.0.obs;
   RxDouble selectedSector = 0.0.obs;
   UserModel userModel = UserModel();
   VerifySubscriptionData verifySubscriptionData = VerifySubscriptionData();
   Rx<SetUserData> setUserData = SetUserData().obs;
   RxInt goalAmount = 0.obs;
   RxInt totalSpinCount = 0.obs;
-  bool isSpinning = false;
+  RxBool isSpinning = false.obs;
   TextEditingController nameController = TextEditingController();
   TextEditingController upiController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
@@ -59,23 +64,42 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       duration: 60.seconds,
     )..repeat();
 
+    pointHandBgAnimationController = AnimationController(
+      vsync: this,
+      duration: 2500.milliseconds,
+    )..repeat();
+
+    pointHandAnimationController = AnimationController(
+      vsync: this,
+      duration: 2.seconds,
+      lowerBound: 0.8,
+      upperBound: 1.2,
+    )..repeat(reverse: true);
+
+    pointHandAnimationController.addListener(() {
+      // scale.value = 1;
+      scale.value = pointHandAnimationController.value;
+    });
+
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // userModel = UserModel.fromJson(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      userModel = UserModel.fromJson(userData);
 
       // Development
-      userModel = UserModel(
-        id: 1146609325,
-        firstName: "New3 Kumar",
-        lastName: "Behera",
-        allowsWriteToPm: true,
-      );
+      // userModel = UserModel(
+      //   id: 1146609325,
+      //   firstName: "New3 Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,
+      // );
 
-
-      if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
-        Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
+      if (userModel.id != null &&
+          userModel.firstName != null &&
+          userModel.lastName != null) {
+        Future.delayed(
+            200.milliseconds, () => verifySubscription(userModel.id ?? 0));
       }
     } catch (e) {
       print(e);
@@ -86,42 +110,46 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void onClose() {
     _animationController.value?.dispose();
     turnAnimationController.dispose();
+    pointHandBgAnimationController.dispose();
+    pointHandAnimationController.dispose();
     super.onClose();
   }
 
   verifySubscription(num telegramId) async {
     // Production
-    // LoadingPage.show();
-    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    // LoadingPage.close();
-    //
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    LoadingPage.show();
+    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    LoadingPage.close();
+
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-      responseCode: 200,
-      data: VerifySubscriptionData(
-        joinedChannel1: true,
-        joinedChannel2: true,
-      ),
-    );
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+    //   responseCode: 200,
+    //   data: VerifySubscriptionData(
+    //     joinedChannel1: true,
+    //     joinedChannel2: true,
+    //   ),
+    // );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
 
-      if ((verifySubscriptionData.joinedChannel1 ?? false) && (verifySubscriptionData.joinedChannel2 ?? false)) {
+      if ((verifySubscriptionData.joinedChannel1 ?? false) &&
+          (verifySubscriptionData.joinedChannel2 ?? false)) {
         setUser(userModel);
       } else {
         GetSpinDialogComponent.show(
           text: "Join Channel & Get Spin",
           onJoinChannelClick: onJoinChannelClick,
           onContinueClick: onContinueClick,
-          channel1Status: verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0,
-          channel2Status: verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
+          channel1Status:
+              verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0,
+          channel2Status:
+              verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
         );
       }
-    } else {
-    }
+    } else {}
   }
 
   setUser(UserModel userModel) async {
@@ -139,10 +167,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (setUserModel.responseCode == 200) {
       setUserData.value = setUserModel.data!;
-      totalSpinCount.value = ((setUserData.value.spinCount ?? 0) + (setUserData.value.referralSpins ?? 0)) as int;
-      setUserData.value.setEarnedAmount = ((setUserData.value.earnedAmount??0) * 100).truncateToDouble() / 100;
-      goalAmount.value =  ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
-
+      totalSpinCount.value = ((setUserData.value.spinCount ?? 0) +
+          (setUserData.value.referralSpins ?? 0)) as int;
+      setUserData.value.setEarnedAmount =
+          ((setUserData.value.earnedAmount ?? 0) * 100).truncateToDouble() /
+              100;
+      goalAmount.value =
+          ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100)
+              as int;
     } else {}
   }
 
@@ -176,8 +208,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     InvitationModel invitationModel = InvitationModel.fromJson(resp);
 
-    if(invitationModel.responseCode == 200) {
-      InvitationListDialogComponent.show(invitationDataList: invitationModel.data??[]);
+    if (invitationModel.responseCode == 200) {
+      InvitationListDialogComponent.show(
+          invitationDataList: invitationModel.data ?? []);
     }
   }
 
@@ -191,7 +224,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       var resp = await ApiCall.get(UrlApi.getWithdrawDetails);
       LoadingPage.close();
 
-      WithdrawDetailsModel withdrawDetailsModel = WithdrawDetailsModel.fromJson(resp);
+      WithdrawDetailsModel withdrawDetailsModel =
+          WithdrawDetailsModel.fromJson(resp);
 
       if (withdrawDetailsModel.responseCode == 200) {
         CashOutDialogComponent.show(
@@ -199,7 +233,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
             onWithdrawRecord: onWithdrawRecord,
             onWithdraw: onWithdraw,
             myProfileData: myProfileModel.data ?? MyProfileData(),
-            withdrawDetailsData: withdrawDetailsModel.data ?? WithdrawDetailsData());
+            withdrawDetailsData:
+                withdrawDetailsModel.data ?? WithdrawDetailsData());
       }
     } else {
       LoadingPage.close();
@@ -211,10 +246,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.get(UrlApi.getWithdrawList);
     LoadingPage.close();
 
-    WithdrawRequestModel withdrawRequestModel = WithdrawRequestModel.fromJson(resp);
+    WithdrawRequestModel withdrawRequestModel =
+        WithdrawRequestModel.fromJson(resp);
 
-    if(withdrawRequestModel.responseCode == 200) {
-      WithdrawHistoryDialogComponent.show(withdrawRequestDataList: withdrawRequestModel.data??[]);
+    if (withdrawRequestModel.responseCode == 200) {
+      WithdrawHistoryDialogComponent.show(
+          withdrawRequestDataList: withdrawRequestModel.data ?? []);
     }
   }
 
@@ -228,12 +265,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (cashOutModel.responseCode == 200) {
       Get.back();
       // setUserData.value.setEarnedAmount = cashOutModel.data?.earnedAmount ?? 0;
-      setUserData.value.setEarnedAmount = ((cashOutModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
+      setUserData.value.setEarnedAmount =
+          ((cashOutModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() /
+              100;
       setUserData.refresh();
       onCashOut();
-      SnackBarHelper.show(cashOutModel.message??"", maxWidth: 280);
+      SnackBarHelper.show(cashOutModel.message ?? "", maxWidth: 280);
     } else {
-      SnackBarHelper.show(cashOutModel.message??"");
+      SnackBarHelper.show(cashOutModel.message ?? "");
     }
   }
 
@@ -264,7 +303,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     } else if (!(RegexHelper.upiIdRegex.hasMatch(upiController.text))) {
       SnackBarHelper.show("Enter valid UPI ID", maxWidth: 180);
       return;
-    } else if (!(RegexHelper.mobileRegex.hasMatch(mobileNumberController.text))) {
+    } else if (!(RegexHelper.mobileRegex
+        .hasMatch(mobileNumberController.text))) {
       SnackBarHelper.show("Enter valid mobile number");
       return;
     }
@@ -290,7 +330,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onSpin() async {
-    if (isSpinning) {
+    if (isSpinning.value) {
       return;
     }
 
@@ -300,13 +340,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     SpinModel spinModel = SpinModel.fromJson(resp);
 
-
     if (spinModel.responseCode == 200) {
       const duration = Duration(milliseconds: 1500);
-      _animationController.value = AnimationController(vsync: this, duration: duration);
+      _animationController.value =
+          AnimationController(vsync: this, duration: duration);
       _animationController.value?.forward();
 
-      isSpinning = true;
+      isSpinning.value = true;
 
       if ((spinModel.data?.spinAmount ?? 0) >= 50) {
         selectedSector.value = 180;
@@ -317,21 +357,33 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       } else if ((spinModel.data?.spinAmount ?? 0) < 5) {
         Random random = Random();
         int randomNumber = random.nextInt(3);
-        selectedSector.value = randomNumber==0 ? 225 : randomNumber==1 ? 135 : 315;
+        selectedSector.value = randomNumber == 0
+            ? 225
+            : randomNumber == 1
+                ? 135
+                : 315;
       }
 
-      totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
+      totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) +
+          (spinModel.data?.referralSpins ?? 0)) as int;
 
       Future.delayed(2.seconds, () {
-        isSpinning = false;
-        setUserData.value.setEarnedAmount = ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
+        isSpinning.value = false;
+        setUserData.value.setEarnedAmount =
+            ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() /
+                100;
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;
         setUserData.value.setReferralSpins = spinModel.data?.referralSpins ?? 0;
         setUserData.refresh();
 
-        goalAmount.value =  ((((spinModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
+        goalAmount.value =
+            ((((spinModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100)
+                as int;
 
-        SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100);
+        SpinWinAmountDialogComponent.show(
+            amount:
+                ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() /
+                    100);
       });
     } else {
       if (totalSpinCount.value <= 0) {
@@ -342,29 +394,36 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   getMoreSpin() {
-    InviteDialogComponent.show(onClick: onContinueToGetMoreSpin, setUserData: setUserData.value, goalAmount: goalAmount.value);
+    InviteDialogComponent.show(
+        onClick: onContinueToGetMoreSpin,
+        setUserData: setUserData.value,
+        goalAmount: goalAmount.value);
   }
 
   onContinueToGetMoreSpin() {
     Get.back();
-    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink =
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
 
   onInviteForSpins() {
-    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink =
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
 
   onCopyClick() async {
-    html.window.navigator.clipboard?.writeText("https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰").then((_) {
-      SnackBarHelper.show( "Copied to Clipboard");
+    html.window.navigator.clipboard
+        ?.writeText(
+            "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+        .then((_) {
+      SnackBarHelper.show("Copied to Clipboard");
     }).catchError((e) {
       print("Failed to copy text to clipboard: $e");
     });
-
   }
 
   onJoinChannelClick(int type) {
@@ -400,29 +459,32 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-      String message = "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+    String message =
+        "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
 
-    if(index==0) {
-      final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
+    if (index == 0) {
+      final String whatsappUrl =
+          'https://wa.me/?text=${Uri.encodeComponent(message)}';
       js.context.callMethod('open', [whatsappUrl, '_blank']);
-    }
-    else if(index==1) {
-      final String twitterUrl = 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(message)}';
+    } else if (index == 1) {
+      final String twitterUrl =
+          'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(message)}';
       js.context.callMethod('open', [twitterUrl, '_blank']);
-    }
-    else if(index==2) {
-      final String facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
+    } else if (index == 2) {
+      final String facebookUrl =
+          'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
       js.context.callMethod('open', [facebookUrl, '_blank']);
+    } else {
+      html.window.navigator
+          .share({
+            'title': "Wheel24",
+            'text': "Wheel24",
+            'url': message,
+          })
+          .then((_) {})
+          .catchError((e) {
+            print("Error sharing content: $e");
+          });
     }
-    else {
-      html.window.navigator.share({
-        'title': "Wheel24",
-        'text': "Wheel24",
-        'url': message,
-      }).then((_) {
-      }).catchError((e) {
-        print("Error sharing content: $e");
-      });
-    }
-    }
+  }
 }
