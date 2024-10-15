@@ -303,8 +303,7 @@ class HomeView extends StatelessWidget {
                                   : const SizedBox.shrink(),
                             ),
                             Obx(
-                              () => homeController.totalSpinCount.value > 0 &&
-                                      !homeController.isSpinning.value
+                              () => homeController.totalSpinCount.value > 0 && !homeController.isSpinning.value
                                   ? Padding(
                                       padding: const EdgeInsets.only(
                                           top: 55, left: 70),
@@ -564,7 +563,7 @@ class HomeView extends StatelessWidget {
                           ],
                         ),
                         Obx(
-                          () => homeController.totalSpinCount.value <= 0
+                          () => homeController.totalSpinCount.value<=0 && !homeController.isSpinning.value
                               ? Padding(
                             padding: const EdgeInsets.only(left: 145, bottom: 38),
                                 child: MaterialButton(
@@ -579,15 +578,10 @@ class HomeView extends StatelessWidget {
                                     materialTapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     child: AnimatedBuilder(
-                                      animation: homeController
-                                          .pointHandBgAnimationController,
+                                      animation: homeController.pointHandBgAnimationController,
                                       builder: (context, child) {
                                         return Transform.rotate(
-                                          angle: homeController
-                                                  .pointHandBgAnimationController
-                                                  .value *
-                                              2 *
-                                              math.pi,
+                                          angle: homeController.pointHandBgAnimationController.value * 2 * math.pi,
                                           child: Image.asset(
                                             AssetsUtil.getPointHandBg(),
                                             height: 45,
@@ -602,7 +596,7 @@ class HomeView extends StatelessWidget {
                               : const SizedBox.shrink(),
                         ),
                         Obx(
-                          () => homeController.totalSpinCount.value <= 0
+                          () => homeController.totalSpinCount.value<=0  && !homeController.isSpinning.value
                               ? Padding(
                             padding: const EdgeInsets.only(left: 178, bottom: 5),
                                 child: MaterialButton(
