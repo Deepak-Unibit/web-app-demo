@@ -6,19 +6,19 @@ class SnackBarHelper {
     Get.closeAllSnackbars();
     Get.snackbar(
       '',
-     '',
+      '',
       snackPosition: SnackPosition.TOP,
       backgroundColor: Colors.white.withOpacity(0.1),
       colorText: Colors.white,
       duration: const Duration(seconds: 2),
-        titleText: const SizedBox.shrink(),
-        messageText: Text(
-          message ?? "Something went wrong",
-          textAlign: TextAlign.center,
-        ),
-        maxWidth: maxWidth,
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.only(bottom: 5),
+      titleText: const SizedBox.shrink(),
+      messageText: Text(
+        message ?? "Something went wrong",
+        textAlign: TextAlign.center,
+      ),
+      maxWidth: maxWidth,
+      margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(bottom: 5),
     );
   }
 
