@@ -303,7 +303,8 @@ class HomeView extends StatelessWidget {
                                   : const SizedBox.shrink(),
                             ),
                             Obx(
-                              () => homeController.totalSpinCount.value > 0 && !homeController.isSpinning.value
+                              () => homeController.totalSpinCount.value > 0 &&
+                                      !homeController.isSpinning.value
                                   ? Padding(
                                       padding: const EdgeInsets.only(
                                           top: 55, left: 70),
@@ -383,12 +384,14 @@ class HomeView extends StatelessWidget {
                         Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: Row(
                                 children: [
                                   Flexible(
                                     child: MaterialButton(
-                                      onPressed: () => homeController.onInviteForSpins(),
+                                      onPressed: () =>
+                                          homeController.onInviteForSpins(),
                                       minWidth: 0,
                                       padding: EdgeInsets.zero,
                                       visualDensity: VisualDensity.compact,
@@ -563,11 +566,14 @@ class HomeView extends StatelessWidget {
                           ],
                         ),
                         Obx(
-                          () => homeController.totalSpinCount.value<=0 && !homeController.isSpinning.value
+                          () => homeController.totalSpinCount.value <= 0 &&
+                                  !homeController.isSpinning.value
                               ? Padding(
-                            padding: const EdgeInsets.only(left: 145, bottom: 38),
-                                child: MaterialButton(
-                                    onPressed: () => homeController.onInviteForSpins(),
+                                  padding: const EdgeInsets.only(
+                                      left: 145, bottom: 38),
+                                  child: MaterialButton(
+                                    onPressed: () =>
+                                        homeController.onInviteForSpins(),
                                     minWidth: 0,
                                     padding: EdgeInsets.zero,
                                     visualDensity: VisualDensity.compact,
@@ -578,10 +584,15 @@ class HomeView extends StatelessWidget {
                                     materialTapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     child: AnimatedBuilder(
-                                      animation: homeController.pointHandBgAnimationController,
+                                      animation: homeController
+                                          .pointHandBgAnimationController,
                                       builder: (context, child) {
                                         return Transform.rotate(
-                                          angle: homeController.pointHandBgAnimationController.value * 2 * math.pi,
+                                          angle: homeController
+                                                  .pointHandBgAnimationController
+                                                  .value *
+                                              2 *
+                                              math.pi,
                                           child: Image.asset(
                                             AssetsUtil.getPointHandBg(),
                                             height: 45,
@@ -592,15 +603,18 @@ class HomeView extends StatelessWidget {
                                       },
                                     ),
                                   ),
-                              )
+                                )
                               : const SizedBox.shrink(),
                         ),
                         Obx(
-                          () => homeController.totalSpinCount.value<=0  && !homeController.isSpinning.value
+                          () => homeController.totalSpinCount.value <= 0 &&
+                                  !homeController.isSpinning.value
                               ? Padding(
-                            padding: const EdgeInsets.only(left: 178, bottom: 5),
-                                child: MaterialButton(
-                                    onPressed: () => homeController.onInviteForSpins(),
+                                  padding: const EdgeInsets.only(
+                                      left: 178, bottom: 5),
+                                  child: MaterialButton(
+                                    onPressed: () =>
+                                        homeController.onInviteForSpins(),
                                     minWidth: 0,
                                     padding: EdgeInsets.zero,
                                     visualDensity: VisualDensity.compact,
@@ -628,7 +642,7 @@ class HomeView extends StatelessWidget {
                                       },
                                     ),
                                   ),
-                              )
+                                )
                               : const SizedBox.shrink(),
                         ),
                       ],
