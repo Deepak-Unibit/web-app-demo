@@ -43,15 +43,18 @@ class Data {
   Data({
       num? referralCountForCash, 
       num? earnedReferralCash, 
+      num? cashClaimedCount, 
       List<ReferralSystemData>? referralSystem,}){
     _referralCountForCash = referralCountForCash;
     _earnedReferralCash = earnedReferralCash;
+    _cashClaimedCount = cashClaimedCount;
     _referralSystem = referralSystem;
 }
 
   Data.fromJson(dynamic json) {
     _referralCountForCash = json['referralCountForCash'];
     _earnedReferralCash = json['earnedReferralCash'];
+    _cashClaimedCount = json['cashClaimedCount'];
     if (json['referralSystem'] != null) {
       _referralSystem = [];
       json['referralSystem'].forEach((v) {
@@ -61,16 +64,19 @@ class Data {
   }
   num? _referralCountForCash;
   num? _earnedReferralCash;
+  num? _cashClaimedCount;
   List<ReferralSystemData>? _referralSystem;
 
   num? get referralCountForCash => _referralCountForCash;
   num? get earnedReferralCash => _earnedReferralCash;
+  num? get cashClaimedCount => _cashClaimedCount;
   List<ReferralSystemData>? get referralSystem => _referralSystem;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['referralCountForCash'] = _referralCountForCash;
     map['earnedReferralCash'] = _earnedReferralCash;
+    map['cashClaimedCount'] = _cashClaimedCount;
     if (_referralSystem != null) {
       map['referralSystem'] = _referralSystem?.map((v) => v.toJson()).toList();
     }

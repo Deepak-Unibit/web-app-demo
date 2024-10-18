@@ -6,7 +6,7 @@ import '../../../models/rewards.model.dart';
 import '../../../utils/assets.util.dart';
 
 class RewardsDialogComponent {
-  static show({required RewardsModel rewardsModel, required Function inviteStatus, required Function claimStatus }) {
+  static show({required RewardsModel rewardsModel, required Function inviteStatus, required Function cashOutRequest}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -110,12 +110,12 @@ class RewardsDialogComponent {
                                         Radius.circular(100)),
                                     minHeight: 12,
                                     maxSteps: (rewardsModel.data!.referralSystem![index].referralCount??0) as int,
-                                    currentStep: ((rewardsModel.data!.referralCountForCash??0) <= (rewardsModel.data!.referralSystem![index].referralCount??0) ? (rewardsModel.data!.referralCountForCash??0) : (rewardsModel.data!.referralSystem![index].referralCount??0)) as int,
+                                    currentStep: inviteStatus(index, rewardsModel.data!.referralCountForCash, rewardsModel.data?.referralSystem!),
                                   ),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  "${(rewardsModel.data!.referralCountForCash??0) <= (rewardsModel.data!.referralSystem![index].referralCount??0) ? (rewardsModel.data!.referralCountForCash??0) : (rewardsModel.data!.referralSystem![index].referralCount??0) }/${(rewardsModel.data!.referralSystem![index].referralCount??0)} Today",
+                                  "${inviteStatus(index, rewardsModel.data!.referralCountForCash, rewardsModel.data?.referralSystem!)}/${(rewardsModel.data!.referralSystem![index].referralCount??0)} Today",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -134,20 +134,18 @@ class RewardsDialogComponent {
                                 onClick: (){},
                                 height: 25,
                                 width: 49,
-                                startColor: (rewardsModel.data!.referralCountForCash??0) >= (rewardsModel.data!.referralSystem![index].referralCount??0) ? context.theme.colorScheme.primaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
-                                endColor: (rewardsModel.data!.referralCountForCash??0) >= (rewardsModel.data!.referralSystem![index].referralCount??0) ? context.theme.colorScheme.secondaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                startColor: (rewardsModel.data?.cashClaimedCount??0)==index+1 ? context.theme.colorScheme.primaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                endColor:(rewardsModel.data?.cashClaimedCount??0)==index+1 ? context.theme.colorScheme.secondaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
                               ),
                               const SizedBox(height: 10),
-                              inviteStatus(index, rewardsModel.data!.referralCountForCash??0, rewardsModel.data!.referralSystem![index].referralCount??0, rewardsModel.data?.referralSystem)
-                                  ? RewardButtonComponent(
+                             RewardButtonComponent(
                                 text: "Invite",
                                 onClick: (){},
                                 height: 25,
                                 width: 49,
                                 startColor: context.theme.colorScheme.scrim,
                                 endColor: context.theme.colorScheme.scrim,
-                              )
-                                  : const SizedBox.shrink(),
+                              ),
                             ],
                           ),
                         ],
