@@ -84,17 +84,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      // var state = js.JsObject.fromBrowserObject(js.context['state']);
-      // Map<String, dynamic> userData = jsonDecode(state['userData']);
-      // userModel = UserModel.fromJson(userData);
+      var state = js.JsObject.fromBrowserObject(js.context['state']);
+      Map<String, dynamic> userData = jsonDecode(state['userData']);
+      userModel = UserModel.fromJson(userData);
 
       // Development
-      userModel = UserModel(
-        id: 1146609325,
-        firstName: "New3 Kumar",
-        lastName: "Behera",
-        allowsWriteToPm: true,
-      );
+      // userModel = UserModel(
+      //   id: 1146609325,
+      //   firstName: "New3 Kumar",
+      //   lastName: "Behera",
+      //   allowsWriteToPm: true,
+      // );
 
       if (userModel.id != null &&
           userModel.firstName != null &&
@@ -425,7 +425,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     for (int i = 0; i <= index; i++) {
       prevReferralCount += referralData[i].referralCount as int;
     }
-    print("outside $index $totalReferralCount $prevReferralCount ${totalReferralCount-prevReferralCount}");
     if((totalReferralCount-prevReferralCount) > 0) {
       return referralData[index].referralCount as int;
     }
@@ -453,6 +452,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if(responseModel.responseCode==200) {
       SnackBarHelper.show(responseModel.message);
+    }
+    else if(resp["responseCode"] == 501) {
+      SnackBarHelper.show(responseModel.message);
+      onCashOut();
     }
     else {
       SnackBarHelper.show(responseModel.message);
