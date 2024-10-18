@@ -30,7 +30,6 @@ class HomeView extends StatelessWidget {
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
-              // child: LottieHelper.lottie(animationAsset: AssetsUtil.getLottie()),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 450),
@@ -358,20 +357,20 @@ class HomeView extends StatelessWidget {
                             children: [
                               buildColumn2(
                                   context,
-                                  homeController.getMoreSpin,
+                                  homeController.inviteForSpin,
                                   AssetsUtil.getSpinCard(),
                                   "+1 Spin",
                                   context
                                       .theme.colorScheme.surfaceContainerHigh,
                                   context
                                       .theme.colorScheme.surfaceContainerLow),
-                              // buildColumn2(
-                              //    context,
-                              //    () {},
-                              //    AssetsUtil.getChest(),
-                              //    "More Spin",
-                              //    context.theme.colorScheme.surfaceContainerHigh,
-                              //    context.theme.colorScheme.surfaceContainerLow),
+                              buildColumn2(
+                                 context,
+                                 homeController.getMoreRewards,
+                                 AssetsUtil.getChest(),
+                                 "More Spin",
+                                 context.theme.colorScheme.surfaceContainerHigh,
+                                 context.theme.colorScheme.surfaceContainerLow),
                             ],
                           ),
                         ),

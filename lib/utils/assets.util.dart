@@ -18,6 +18,8 @@ class AssetsUtil {
   static getCardIcon() => 'assets/images/card.webp';
   static getPointHand() => 'assets/images/pointHand.webp';
   static getPointHandBg() => 'assets/images/halo.webp';
+  static getTwoCoin() => 'assets/images/twoCoin.webp';
+  static getGiftBox() => 'assets/images/giftBox.webp';
 
 
   static getLottie() => 'assets/images/bg-video.gif';

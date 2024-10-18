@@ -13,6 +13,7 @@ import 'package:web_app_demo/models/myProfile.model.dart';
 import 'package:web_app_demo/models/myRank.model.dart';
 import 'package:web_app_demo/models/rank.model.dart';
 import 'package:web_app_demo/models/response.model.dart';
+import 'package:web_app_demo/models/rewards.model.dart';
 import 'package:web_app_demo/models/spin.model.dart';
 import 'dart:js' as js;
 import 'dart:html' as html;
@@ -25,14 +26,14 @@ import 'package:web_app_demo/modules/home/components/cashOutDialog.component.dar
 import 'package:web_app_demo/modules/home/components/invitationListDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/inviteDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/rankDialog.component.dart';
+import 'package:web_app_demo/modules/home/components/rewardsDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/spinWinAmountDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/withdrawHistoryDialog.component.dart';
 import '../../../models/setUser.model.dart';
 import '../components/getSpinDialog.component.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  final Rxn<AnimationController> _animationController =
-      Rxn<AnimationController>();
+  final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
   AnimationController? get animationController => _animationController.value;
   late AnimationController turnAnimationController;
   late AnimationController pointHandBgAnimationController;
@@ -82,17 +83,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609325,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609325,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
       if (userModel.id != null &&
           userModel.firstName != null &&
@@ -386,17 +387,64 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       });
     } else {
       if (totalSpinCount.value <= 0) {
-        getMoreSpin();
+        inviteForSpin();
         return;
       }
     }
   }
 
-  getMoreSpin() {
+  inviteForSpin() {
     InviteDialogComponent.show(
         onClick: onContinueToGetMoreSpin,
         setUserData: setUserData.value,
         goalAmount: goalAmount.value);
+  }
+
+  getMoreRewards() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.getRewardsList);
+    LoadingPage.close();
+
+    RewardsModel rewardsModel = RewardsModel.fromJson(resp);
+
+    if(rewardsModel.responseCode == 200) {
+      RewardsDialogComponent.show(rewardsModel: rewardsModel, inviteStatus: inviteStatus, claimStatus: claimStatus,);
+    }
+    else {
+      SnackBarHelper.show(rewardsModel.message);
+    }
+
+  }
+
+  bool inviteStatus(int index, num totalReferralCount, num selfReferralCount, List<ReferralSystemData> referralData) {
+    if(index==0) {
+      if(totalReferralCount < selfReferralCount) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    else {
+      int prevReferralCount = 0;
+      for(int i=0; i<index; i++){
+        prevReferralCount += referralData[i].referralCount as int;
+      }
+      print("$index $totalReferralCount ${totalReferralCount-prevReferralCount}");
+      if((totalReferralCount-prevReferralCount) >= 0) {
+        if((totalReferralCount!=prevReferralCount))
+        return true;
+      }
+      else {
+        // print("$index $prevReferralCount ${totalReferralCount-prevReferralCount}");
+      }
+    }
+
+    return false;
+  }
+
+  bool claimStatus() {
+    return false;
   }
 
   onContinueToGetMoreSpin() {
@@ -416,8 +464,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   onCopyClick() async {
     html.window.navigator.clipboard
-        ?.writeText(
-            "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+        ?.writeText("https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
         .then((_) {
       SnackBarHelper.show("Copied to Clipboard");
     }).catchError((e) {

@@ -23,4 +23,7 @@ class UrlApi {
   static const cashOutRequest = "$baseUrl/user/cash-out-request";
   static const getWithdrawList = "$baseUrl/user/withdraw-requests";
 
+  // Rewards
+  static const getRewardsList = "$baseUrl/user/cash-referral-details";
+
 }

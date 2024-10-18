@@ -28,7 +28,9 @@ class ThemesUtil {
       surfaceContainerLow: Color(0xFF540B81),
       surfaceContainerHigh: Color(0xFFB600FF),
       primaryFixed: Color(0xFFFFCE1B),
-      secondaryFixed: Color(0xFFFF6812)
+      secondaryFixed: Color(0xFFFF6812),
+      onSurfaceVariant: Color(0xFF808080),
+      scrim: Color(0xFF4CBB17),
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color(0xFFFFFFFF),
