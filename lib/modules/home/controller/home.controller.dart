@@ -533,7 +533,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   onShareClick(int index) {
     String message =
-        "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+        "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-spin \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
 
     if (index == 0) {
       final String whatsappUrl =
