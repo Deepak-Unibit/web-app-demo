@@ -84,17 +84,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609325,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609325,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
       if (userModel.id != null &&
           userModel.firstName != null &&
@@ -412,6 +412,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         rewardsModel: rewardsModel,
         inviteStatus: inviteStatus,
         cashOutRequest: rewardCashOut,
+        inviteReward: inviteRewards,
       );
     } else {
       SnackBarHelper.show(rewardsModel.message);
@@ -421,13 +422,25 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   int inviteStatus(int index, num totalReferralCount, List<ReferralSystemData> referralData) {
 
     int prevReferralCount = 0;
-    for (int i = 0; i < index; i++) {
+    for (int i = 0; i <= index; i++) {
       prevReferralCount += referralData[i].referralCount as int;
     }
-    if ((totalReferralCount - prevReferralCount) > 0) {
-      return (totalReferralCount - prevReferralCount) as int;
-    } else {
-      return 0;
+    print("outside $index $totalReferralCount $prevReferralCount ${totalReferralCount-prevReferralCount}");
+    if((totalReferralCount-prevReferralCount) > 0) {
+      return referralData[index].referralCount as int;
+    }
+    else {
+      int prevReferralCount2 = 0;
+      for (int i = 0; i < index; i++) {
+        prevReferralCount2 += referralData[i].referralCount as int;
+      }
+      if((totalReferralCount - prevReferralCount2) > 0) {
+        return (totalReferralCount - prevReferralCount2) as int;
+      }
+      else {
+        return 0;
+      }
+
     }
   }
 
@@ -446,6 +459,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
+  inviteRewards() {
+    String telegramLink =
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-cash %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+
+    html.window.open(telegramLink, '_blank');
+  }
+
   bool claimStatus() {
     return false;
   }
@@ -453,14 +473,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onContinueToGetMoreSpin() {
     Get.back();
     String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-spin %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
 
   onInviteForSpins() {
     String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-spin %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -468,7 +488,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onCopyClick() async {
     html.window.navigator.clipboard
         ?.writeText(
-            "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+            "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-spin \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
         .then((_) {
       SnackBarHelper.show("Copied to Clipboard");
     }).catchError((e) {

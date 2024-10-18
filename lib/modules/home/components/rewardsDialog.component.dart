@@ -6,7 +6,7 @@ import '../../../models/rewards.model.dart';
 import '../../../utils/assets.util.dart';
 
 class RewardsDialogComponent {
-  static show({required RewardsModel rewardsModel, required Function inviteStatus, required Function cashOutRequest}) {
+  static show({required RewardsModel rewardsModel, required Function inviteStatus, required Function cashOutRequest, required Function inviteReward}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -131,16 +131,16 @@ class RewardsDialogComponent {
                             children: [
                               RewardButtonComponent(
                                 text: "Claim",
-                                onClick: (){},
+                                onClick: ()=>cashOutRequest(rewardsModel.data!.referralSystem![index].referralReward??0),
                                 height: 25,
                                 width: 49,
-                                startColor: (rewardsModel.data?.cashClaimedCount??0)==index+1 ? context.theme.colorScheme.primaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
-                                endColor:(rewardsModel.data?.cashClaimedCount??0)==index+1 ? context.theme.colorScheme.secondaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                startColor: (rewardsModel.data?.cashClaimedCount??0)==index ? context.theme.colorScheme.primaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                endColor:(rewardsModel.data?.cashClaimedCount??0)==index ? context.theme.colorScheme.secondaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
                               ),
                               const SizedBox(height: 10),
                              RewardButtonComponent(
                                 text: "Invite",
-                                onClick: (){},
+                                onClick: ()=>inviteReward(),
                                 height: 25,
                                 width: 49,
                                 startColor: context.theme.colorScheme.scrim,
