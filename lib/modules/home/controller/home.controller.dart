@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:web_app_demo/api/app.const.dart';
 import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
@@ -119,20 +118,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   verifySubscription(num telegramId) async {
     // Production
-    // LoadingPage.show();
-    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    // LoadingPage.close();
-    //
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    LoadingPage.show();
+    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    LoadingPage.close();
+
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-      responseCode: 200,
-      data: VerifySubscriptionData(
-        joinedChannel1: true,
-        joinedChannel2: true,
-      ),
-    );
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+    //   responseCode: 200,
+    //   data: VerifySubscriptionData(
+    //     joinedChannel1: true,
+    //     joinedChannel2: true,
+    //   ),
+    // );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
@@ -446,15 +445,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   rewardCashOut(int amount) async {
     LoadingPage.show();
-    print("apicall ${AppConst.authToken}");
     var resp = await ApiCall.get("${UrlApi.rewardCashOut}/$amount");
-    print(resp);
     LoadingPage.close();
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
     if(responseModel.responseCode==200) {
       SnackBarHelper.show(responseModel.message);
+      Future.delayed(200.milliseconds, () =>   Get.back(),);
     }
     else if(responseModel.responseCode == 502) {
       SnackBarHelper.show(responseModel.message);

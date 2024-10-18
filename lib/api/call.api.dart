@@ -69,7 +69,6 @@ class ApiCall {
 
   static get(String url) async {
     final Logger logger = Logger();
-    print(AppConst.authToken);
 
     try {
       String urlPath = Uri.parse(url).path;

@@ -52,9 +52,9 @@ class RewardsDialogComponent {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  "Claim your rewards based on the number of referrals!",
+            "Note: You have to complete all the referrals by today, otherwise it will get reset.",
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: context.theme.colorScheme.onSurface.withOpacity(0.5),
                   ),
