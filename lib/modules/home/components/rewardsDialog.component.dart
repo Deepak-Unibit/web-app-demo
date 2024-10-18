@@ -131,7 +131,7 @@ class RewardsDialogComponent {
                             children: [
                               RewardButtonComponent(
                                 text: "Claim",
-                                onClick: ()=>cashOutRequest(rewardsModel.data!.referralSystem![index].referralReward??0),
+                                onClick: (rewardsModel.data?.cashClaimedCount??0)==index ?()=>cashOutRequest(rewardsModel.data!.referralSystem![index].referralReward??0) : (){},
                                 height: 25,
                                 width: 49,
                                 startColor: (rewardsModel.data?.cashClaimedCount??0)==index ? context.theme.colorScheme.primaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:web_app_demo/api/app.const.dart';
 import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
@@ -445,7 +446,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   rewardCashOut(int amount) async {
     LoadingPage.show();
+    print("apicall ${AppConst.authToken}");
     var resp = await ApiCall.get("${UrlApi.rewardCashOut}/$amount");
+    print(resp);
     LoadingPage.close();
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
@@ -453,7 +456,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if(responseModel.responseCode==200) {
       SnackBarHelper.show(responseModel.message);
     }
-    else if(resp["responseCode"] == 501) {
+    else if(responseModel.responseCode == 502) {
       SnackBarHelper.show(responseModel.message);
       onCashOut();
     }

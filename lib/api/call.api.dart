@@ -69,21 +69,21 @@ class ApiCall {
 
   static get(String url) async {
     final Logger logger = Logger();
+    print(AppConst.authToken);
 
     try {
       String urlPath = Uri.parse(url).path;
       if (Uri.parse(url).hasQuery) {
         urlPath = "$urlPath?${Uri.parse(url).query}";
       }
-      String encryptedData = EncryptionHelper()
-          .encryptAESCryptoJS(urlPath, AppConst.encryptionKey);
+      String encryptedData = EncryptionHelper().encryptAESCryptoJS(urlPath, AppConst.encryptionKey);
       dio.options.headers['hash'] = encryptedData;
       final response = await dio.getUri(Uri.parse(url));
       if (response.data['responseCode'] == 501) {
         ResponseModel responseModel = ResponseModel.fromJson({
           "status": "error",
           "message": response.data['message'],
-          "responseCode": 500,
+          "responseCode": response.data['responseCode'],
           "data": null,
         });
         forceLogout();
