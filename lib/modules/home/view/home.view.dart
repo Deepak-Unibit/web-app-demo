@@ -368,7 +368,7 @@ class HomeView extends StatelessWidget {
                                  context,
                                  homeController.getMoreRewards,
                                  AssetsUtil.getChest(),
-                                 "Rewards",
+                                 "Extra Cash",
                                  context.theme.colorScheme.surfaceContainerHigh,
                                  context.theme.colorScheme.surfaceContainerLow),
                             ],

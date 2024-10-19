@@ -293,7 +293,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     onCashOut();
   }
 
-  onSaveAccountInfo() async {
+  onSaveAccountInfo({bool showCashOut = true}) async {
     nameController.text = nameController.text.trim();
     upiController.text = upiController.text.trim();
     mobileNumberController.text = mobileNumberController.text.trim();
@@ -324,7 +324,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (responseModel.responseCode == 200) {
       Get.back();
-      onCashOut();
+      if(showCashOut) {
+        onCashOut();
+      }
     } else {
       SnackBarHelper.show(responseModel.message ?? "");
     }
@@ -456,7 +458,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
     else if(responseModel.responseCode == 502) {
       SnackBarHelper.show(responseModel.message);
-      onCashOut();
+      AccountInfoDialogComponent.show(
+        nameController: nameController,
+        upiController: upiController,
+        mobileNumberController: mobileNumberController,
+        onBack: ()=>Get.back(),
+        onSave: ()=>onSaveAccountInfo(showCashOut: false),
+      );
     }
     else {
       SnackBarHelper.show(responseModel.message);
