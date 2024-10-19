@@ -324,7 +324,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (responseModel.responseCode == 200) {
       Get.back();
-      if(showCashOut) {
+      if (showCashOut) {
         onCashOut();
       }
     } else {
@@ -367,7 +367,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
                 : 315;
       }
 
-      totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
+      totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) +
+          (spinModel.data?.referralSpins ?? 0)) as int;
 
       Future.delayed(2.seconds, () {
         isSpinning.value = false;
@@ -421,27 +422,24 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  int inviteStatus(int index, num totalReferralCount, List<ReferralSystemData> referralData) {
-
+  int inviteStatus(int index, num totalReferralCount,
+      List<ReferralSystemData> referralData) {
     int prevReferralCount = 0;
     for (int i = 0; i <= index; i++) {
       prevReferralCount += referralData[i].referralCount as int;
     }
-    if((totalReferralCount-prevReferralCount) > 0) {
+    if ((totalReferralCount - prevReferralCount) > 0) {
       return referralData[index].referralCount as int;
-    }
-    else {
+    } else {
       int prevReferralCount2 = 0;
       for (int i = 0; i < index; i++) {
         prevReferralCount2 += referralData[i].referralCount as int;
       }
-      if((totalReferralCount - prevReferralCount2) > 0) {
+      if ((totalReferralCount - prevReferralCount2) > 0) {
         return (totalReferralCount - prevReferralCount2) as int;
-      }
-      else {
+      } else {
         return 0;
       }
-
     }
   }
 
@@ -452,21 +450,22 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
-    if(responseModel.responseCode==200) {
+    if (responseModel.responseCode == 200) {
       SnackBarHelper.show(responseModel.message);
-      Future.delayed(200.milliseconds, () =>   Get.back(),);
-    }
-    else if(responseModel.responseCode == 502) {
+      Future.delayed(
+        200.milliseconds,
+        () => Get.back(),
+      );
+    } else if (responseModel.responseCode == 502) {
       SnackBarHelper.show(responseModel.message);
       AccountInfoDialogComponent.show(
         nameController: nameController,
         upiController: upiController,
         mobileNumberController: mobileNumberController,
-        onBack: ()=>Get.back(),
-        onSave: ()=>onSaveAccountInfo(showCashOut: false),
+        onBack: () => Get.back(),
+        onSave: () => onSaveAccountInfo(showCashOut: false),
       );
-    }
-    else {
+    } else {
       SnackBarHelper.show(responseModel.message);
     }
   }
