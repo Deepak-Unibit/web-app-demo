@@ -1,17 +1,16 @@
-class ResponseModel {
-  ResponseModel({
-    String? status,
-    String? message,
-    num? responseCode,
-    num? data,
-  }) {
+class SettingsModel {
+  SettingsModel({
+      String? status, 
+      String? message, 
+      num? responseCode, 
+      bool? data,}){
     _status = status;
     _message = message;
     _responseCode = responseCode;
     _data = data;
-  }
+}
 
-  ResponseModel.fromJson(dynamic json) {
+  SettingsModel.fromJson(dynamic json) {
     _status = json['status'];
     _message = json['message'];
     _responseCode = json['responseCode'];
@@ -20,12 +19,12 @@ class ResponseModel {
   String? _status;
   String? _message;
   num? _responseCode;
-  num? _data;
+  bool? _data;
 
   String? get status => _status;
   String? get message => _message;
   num? get responseCode => _responseCode;
-  num? get data => _data;
+  bool? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -35,4 +34,5 @@ class ResponseModel {
     map['data'] = _data;
     return map;
   }
+
 }

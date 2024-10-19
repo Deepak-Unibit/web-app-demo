@@ -364,13 +364,20 @@ class HomeView extends StatelessWidget {
                                       .theme.colorScheme.surfaceContainerHigh,
                                   context
                                       .theme.colorScheme.surfaceContainerLow),
-                              buildColumn2(
-                                 context,
-                                 homeController.getMoreRewards,
-                                 AssetsUtil.getChest(),
-                                 "Extra Cash",
-                                 context.theme.colorScheme.surfaceContainerHigh,
-                                 context.theme.colorScheme.surfaceContainerLow),
+                              Obx(
+                                () => homeController.showExtraCash.value
+                                    ? buildColumn2(
+                                        context,
+                                        homeController.getMoreRewards,
+                                        AssetsUtil.getChest(),
+                                        "Extra Cash",
+                                        context.theme.colorScheme
+                                            .surfaceContainerHigh,
+                                        context.theme.colorScheme
+                                            .surfaceContainerLow,
+                                      )
+                                    : const SizedBox.shrink(),
+                              ),
                             ],
                           ),
                         ),

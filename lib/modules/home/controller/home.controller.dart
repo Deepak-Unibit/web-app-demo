@@ -14,6 +14,7 @@ import 'package:web_app_demo/models/myRank.model.dart';
 import 'package:web_app_demo/models/rank.model.dart';
 import 'package:web_app_demo/models/response.model.dart';
 import 'package:web_app_demo/models/rewards.model.dart';
+import 'package:web_app_demo/models/settings.model.dart';
 import 'package:web_app_demo/models/spin.model.dart';
 import 'dart:js' as js;
 import 'dart:html' as html;
@@ -50,6 +51,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   TextEditingController nameController = TextEditingController();
   TextEditingController upiController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
+  RxBool showExtraCash = false.obs;
 
   @override
   void onInit() {
@@ -136,8 +138,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
 
-      if ((verifySubscriptionData.joinedChannel1 ?? false) &&
-          (verifySubscriptionData.joinedChannel2 ?? false)) {
+      if ((verifySubscriptionData.joinedChannel1 ?? false) && (verifySubscriptionData.joinedChannel2 ?? false)) {
         setUser(userModel);
       } else {
         GetSpinDialogComponent.show(
@@ -150,7 +151,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
               verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
         );
       }
-    } else {}
+    } else {
+      SnackBarHelper.show(verifySubscriptionModel.message);
+    }
   }
 
   setUser(UserModel userModel) async {
@@ -168,15 +171,24 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (setUserModel.responseCode == 200) {
       setUserData.value = setUserModel.data!;
-      totalSpinCount.value = ((setUserData.value.spinCount ?? 0) +
-          (setUserData.value.referralSpins ?? 0)) as int;
-      setUserData.value.setEarnedAmount =
-          ((setUserData.value.earnedAmount ?? 0) * 100).truncateToDouble() /
-              100;
-      goalAmount.value =
-          ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100)
-              as int;
-    } else {}
+      totalSpinCount.value = ((setUserData.value.spinCount ?? 0) + (setUserData.value.referralSpins ?? 0)) as int;
+      setUserData.value.setEarnedAmount = ((setUserData.value.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
+      goalAmount.value = ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
+      extraCashStatus();
+    } else {
+
+    }
+  }
+
+  extraCashStatus() async {
+    var resp = await ApiCall.get(UrlApi.extraCashStatus);
+
+    SettingsModel settingsModel = SettingsModel.fromJson(resp);
+
+    if(settingsModel.responseCode == 200) {
+      showExtraCash.value = settingsModel.data ?? false;
+    }
+
   }
 
   onRankClick() async {

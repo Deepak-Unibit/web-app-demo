@@ -26,5 +26,6 @@ class UrlApi {
   // Rewards
   static const getRewardsList = "$baseUrl/user/cash-referral-details";
   static const rewardCashOut = "$baseUrl/user/referral-cash-out-request";
+  static const extraCashStatus = "$baseUrl/user/show-extra-cash";
 
 }
