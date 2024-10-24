@@ -34,8 +34,7 @@ import '../../../models/setUser.model.dart';
 import '../components/getSpinDialog.component.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  final Rxn<AnimationController> _animationController =
-      Rxn<AnimationController>();
+  final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
   AnimationController? get animationController => _animationController.value;
   late AnimationController turnAnimationController;
   late AnimationController pointHandBgAnimationController;
@@ -277,7 +276,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (cashOutModel.responseCode == 200) {
       Get.back();
-      // setUserData.value.setEarnedAmount = cashOutModel.data?.earnedAmount ?? 0;
       setUserData.value.setEarnedAmount =
           ((cashOutModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() /
               100;
@@ -483,8 +481,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   inviteRewards() {
-    String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-cash %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -496,14 +493,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onContinueToGetMoreSpin() {
     Get.back();
     String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-spin %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
 
   onInviteForSpins() {
     String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-spin %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -511,7 +508,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onCopyClick() async {
     html.window.navigator.clipboard
         ?.writeText(
-            "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-spin \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+            "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
         .then((_) {
       SnackBarHelper.show("Copied to Clipboard");
     }).catchError((e) {
@@ -552,8 +549,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-    String message =
-        "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode}-spin \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+    String message = "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
 
     if (index == 0) {
       final String whatsappUrl =
