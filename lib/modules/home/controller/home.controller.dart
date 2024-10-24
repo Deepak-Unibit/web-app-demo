@@ -51,6 +51,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   TextEditingController upiController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   RxBool showExtraCash = false.obs;
+  String shareLink = "";
 
   @override
   void onInit() {
@@ -100,8 +101,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       if (userModel.id != null &&
           userModel.firstName != null &&
           userModel.lastName != null) {
-        Future.delayed(
-            200.milliseconds, () => verifySubscription(userModel.id ?? 0));
+        Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
       }
     } catch (e) {
       print(e);
@@ -173,6 +173,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       totalSpinCount.value = ((setUserData.value.spinCount ?? 0) + (setUserData.value.referralSpins ?? 0)) as int;
       setUserData.value.setEarnedAmount = ((setUserData.value.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
       goalAmount.value = ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
+      shareLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
       extraCashStatus();
     } else {
 
@@ -481,7 +482,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   inviteRewards() {
-    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink = shareLink;
 
     html.window.open(telegramLink, '_blank');
   }
@@ -492,23 +493,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   onContinueToGetMoreSpin() {
     Get.back();
-    String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink = shareLink;
 
     html.window.open(telegramLink, '_blank');
   }
 
   onInviteForSpins() {
-    String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink = shareLink;
 
     html.window.open(telegramLink, '_blank');
   }
 
   onCopyClick() async {
     html.window.navigator.clipboard
-        ?.writeText(
-            "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+        ?.writeText(shareLink)
         .then((_) {
       SnackBarHelper.show("Copied to Clipboard");
     }).catchError((e) {
@@ -549,19 +547,16 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-    String message = "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+    String message = shareLink;
 
     if (index == 0) {
-      final String whatsappUrl =
-          'https://wa.me/?text=${Uri.encodeComponent(message)}';
+      final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
       js.context.callMethod('open', [whatsappUrl, '_blank']);
     } else if (index == 1) {
-      final String twitterUrl =
-          'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(message)}';
+      final String twitterUrl = 'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(message)}';
       js.context.callMethod('open', [twitterUrl, '_blank']);
     } else if (index == 2) {
-      final String facebookUrl =
-          'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
+      final String facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(message)}';
       js.context.callMethod('open', [facebookUrl, '_blank']);
     } else {
       html.window.navigator
