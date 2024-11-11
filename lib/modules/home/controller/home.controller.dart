@@ -89,6 +89,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
 
+      print(userData);
+
       // Development
       // userModel = UserModel(
       //   id: 1146609325,
@@ -100,8 +102,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       if (userModel.id != null &&
           userModel.firstName != null &&
           userModel.lastName != null) {
-        Future.delayed(
-            200.milliseconds, () => verifySubscription(userModel.id ?? 0));
+        Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
       }
     } catch (e) {
       print(e);
@@ -119,20 +120,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   verifySubscription(num telegramId) async {
     // Production
-    // LoadingPage.show();
-    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    // LoadingPage.close();
+    LoadingPage.show();
+    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    LoadingPage.close();
+    print(resp);
 
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-      responseCode: 200,
-      data: VerifySubscriptionData(
-        joinedChannel1: true,
-        joinedChannel2: true,
-      ),
-    );
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+    //   responseCode: 200,
+    //   data: VerifySubscriptionData(
+    //     joinedChannel1: true,
+    //     joinedChannel2: true,
+    //   ),
+    // );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
