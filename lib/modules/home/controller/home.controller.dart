@@ -99,9 +99,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       //   allowsWriteToPm: true,
       // );
 
-      if (userModel.id != null &&
-          userModel.firstName != null &&
-          userModel.lastName != null) {
+      if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
       }
     } catch (e) {
@@ -120,21 +118,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   verifySubscription(num telegramId) async {
     // Production
-    LoadingPage.show();
-    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    LoadingPage.close();
-    print(resp);
+    // LoadingPage.show();
+    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    // LoadingPage.close();
 
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-    //   responseCode: 200,
-    //   data: VerifySubscriptionData(
-    //     joinedChannel1: true,
-    //     joinedChannel2: true,
-    //   ),
-    // );
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+      responseCode: 200,
+      data: VerifySubscriptionData(
+        joinedChannel1: true,
+        joinedChannel2: true,
+      ),
+    );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
