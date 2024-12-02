@@ -31,6 +31,7 @@ import 'package:web_app_demo/modules/home/components/rewardsDialog.component.dar
 import 'package:web_app_demo/modules/home/components/spinWinAmountDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/withdrawHistoryDialog.component.dart';
 import '../../../models/setUser.model.dart';
+import '../components/extraTaskDialog.component.dart';
 import '../components/getSpinDialog.component.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
@@ -143,10 +144,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           text: "Join Channel & Get Spin",
           onJoinChannelClick: onJoinChannelClick,
           onContinueClick: onContinueClick,
-          channel1Status:
-              verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0,
-          channel2Status:
-              verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
+          channel1Status: verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0,
+          channel2Status: verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
         );
       }
     } else {
@@ -155,11 +154,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   setUser(UserModel userModel) async {
-    Map<String, dynamic> data = {
-      "id": userModel.id.toString(),
-      "firstName": userModel.firstName,
-      "lastName": userModel.lastName
-    };
+    Map<String, dynamic> data = {"id": userModel.id.toString(), "firstName": userModel.firstName, "lastName": userModel.lastName};
 
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.setUser, data);
@@ -173,9 +168,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       setUserData.value.setEarnedAmount = ((setUserData.value.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
       goalAmount.value = ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
       extraCashStatus();
-    } else {
-
-    }
+    } else {}
   }
 
   extraCashStatus() async {
@@ -183,10 +176,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     SettingsModel settingsModel = SettingsModel.fromJson(resp);
 
-    if(settingsModel.responseCode == 200) {
+    if (settingsModel.responseCode == 200) {
       showExtraCash.value = settingsModel.data ?? false;
     }
-
   }
 
   onRankClick() async {
@@ -220,8 +212,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     InvitationModel invitationModel = InvitationModel.fromJson(resp);
 
     if (invitationModel.responseCode == 200) {
-      InvitationListDialogComponent.show(
-          invitationDataList: invitationModel.data ?? []);
+      InvitationListDialogComponent.show(invitationDataList: invitationModel.data ?? []);
     }
   }
 
@@ -235,8 +226,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       var resp = await ApiCall.get(UrlApi.getWithdrawDetails);
       LoadingPage.close();
 
-      WithdrawDetailsModel withdrawDetailsModel =
-          WithdrawDetailsModel.fromJson(resp);
+      WithdrawDetailsModel withdrawDetailsModel = WithdrawDetailsModel.fromJson(resp);
 
       if (withdrawDetailsModel.responseCode == 200) {
         CashOutDialogComponent.show(
@@ -244,8 +234,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
             onWithdrawRecord: onWithdrawRecord,
             onWithdraw: onWithdraw,
             myProfileData: myProfileModel.data ?? MyProfileData(),
-            withdrawDetailsData:
-                withdrawDetailsModel.data ?? WithdrawDetailsData());
+            withdrawDetailsData: withdrawDetailsModel.data ?? WithdrawDetailsData());
       }
     } else {
       LoadingPage.close();
@@ -257,12 +246,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.get(UrlApi.getWithdrawList);
     LoadingPage.close();
 
-    WithdrawRequestModel withdrawRequestModel =
-        WithdrawRequestModel.fromJson(resp);
+    WithdrawRequestModel withdrawRequestModel = WithdrawRequestModel.fromJson(resp);
 
     if (withdrawRequestModel.responseCode == 200) {
-      WithdrawHistoryDialogComponent.show(
-          withdrawRequestDataList: withdrawRequestModel.data ?? []);
+      WithdrawHistoryDialogComponent.show(withdrawRequestDataList: withdrawRequestModel.data ?? []);
     }
   }
 
@@ -275,9 +262,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (cashOutModel.responseCode == 200) {
       Get.back();
-      setUserData.value.setEarnedAmount =
-          ((cashOutModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() /
-              100;
+      setUserData.value.setEarnedAmount = ((cashOutModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
       setUserData.refresh();
       onCashOut();
       SnackBarHelper.show(cashOutModel.message ?? "", maxWidth: 280);
@@ -313,17 +298,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     } else if (!(RegexHelper.upiIdRegex.hasMatch(upiController.text))) {
       SnackBarHelper.show("Enter valid UPI ID", maxWidth: 180);
       return;
-    } else if (!(RegexHelper.mobileRegex
-        .hasMatch(mobileNumberController.text))) {
+    } else if (!(RegexHelper.mobileRegex.hasMatch(mobileNumberController.text))) {
       SnackBarHelper.show("Enter valid mobile number");
       return;
     }
 
-    Map<String, dynamic> data = {
-      "upiId": upiController.text,
-      "phoneNumber": mobileNumberController.text,
-      "accountHolderName": nameController.text
-    };
+    Map<String, dynamic> data = {"upiId": upiController.text, "phoneNumber": mobileNumberController.text, "accountHolderName": nameController.text};
 
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.addUpiDetails, data);
@@ -354,8 +334,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (spinModel.responseCode == 200) {
       const duration = Duration(milliseconds: 1500);
-      _animationController.value =
-          AnimationController(vsync: this, duration: duration);
+      _animationController.value = AnimationController(vsync: this, duration: duration);
       _animationController.value?.forward();
 
       isSpinning.value = true;
@@ -376,26 +355,18 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
                 : 315;
       }
 
-      totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) +
-          (spinModel.data?.referralSpins ?? 0)) as int;
+      totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
 
       Future.delayed(2.seconds, () {
         isSpinning.value = false;
-        setUserData.value.setEarnedAmount =
-            ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() /
-                100;
+        setUserData.value.setEarnedAmount = ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;
         setUserData.value.setReferralSpins = spinModel.data?.referralSpins ?? 0;
         setUserData.refresh();
 
-        goalAmount.value =
-            ((((spinModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100)
-                as int;
+        goalAmount.value = ((((spinModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
 
-        SpinWinAmountDialogComponent.show(
-            amount:
-                ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() /
-                    100);
+        SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100);
       });
     } else {
       if (totalSpinCount.value <= 0) {
@@ -406,10 +377,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   inviteForSpin() {
-    InviteDialogComponent.show(
-        onClick: onContinueToGetMoreSpin,
-        setUserData: setUserData.value,
-        goalAmount: goalAmount.value);
+    InviteDialogComponent.show(onClick: onContinueToGetMoreSpin, setUserData: setUserData.value, goalAmount: goalAmount.value);
   }
 
   getMoreRewards() async {
@@ -431,8 +399,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  int inviteStatus(int index, num totalReferralCount,
-      List<ReferralSystemData> referralData) {
+  int inviteStatus(int index, num totalReferralCount, List<ReferralSystemData> referralData) {
     int prevReferralCount = 0;
     for (int i = 0; i <= index; i++) {
       prevReferralCount += referralData[i].referralCount as int;
@@ -480,13 +447,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   inviteRewards() {
-    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink =
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
-  }
-
-  bool claimStatus() {
-    return false;
   }
 
   onContinueToGetMoreSpin() {
@@ -548,7 +512,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-    String message = "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+    String message =
+        "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
 
     if (index == 0) {
       final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
@@ -572,4 +537,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
           });
     }
   }
+
+  void onExtraTaskClick() {
+    ExtraTaskDialogComponent.show();
+  }
+
 }

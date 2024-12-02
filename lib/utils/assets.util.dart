@@ -20,6 +20,11 @@ class AssetsUtil {
   static getPointHandBg() => 'assets/images/halo.webp';
   static getTwoCoin() => 'assets/images/twoCoin.webp';
   static getGiftBox() => 'assets/images/giftBox.webp';
+  static getDailyRewardsDialog() => 'assets/images/dailyRewards.webp';
+  static getExtraTask() => 'assets/images/extraTask.webp';
+  static getDiamond() => 'assets/images/diamond.webp';
+  static getLoop() => 'assets/images/loop.webp';
+  static getDailyFinish() => 'assets/images/dailyFinish.webp';
 
 
   static getLottie() => 'assets/images/bg-video.gif';

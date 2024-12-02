@@ -52,7 +52,7 @@ class RewardsDialogComponent {
                 ),
                 const SizedBox(height: 5),
                 Text(
-            "Note: You have to complete all the referrals by today, otherwise it will get reset.",
+                  "Note: You have to complete all the referrals by today, otherwise it will get reset.",
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
@@ -62,18 +62,14 @@ class RewardsDialogComponent {
                 const SizedBox(height: 15),
                 Expanded(
                   child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     itemCount: rewardsModel.data!.referralSystem!.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10),
+                    separatorBuilder: (context, index) => const SizedBox(height: 10),
                     itemBuilder: (context, index) => Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                       decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                         color: context.theme.colorScheme.onSurface,
                       ),
                       child: Row(
@@ -104,24 +100,20 @@ class RewardsDialogComponent {
                                   width: 120,
                                   child: LinearProgressBar(
                                     backgroundColor: context.theme.colorScheme.onSurfaceVariant.withOpacity(0.25),
-                                    progressColor: context
-                                        .theme.colorScheme.surfaceContainerHigh,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(100)),
+                                    progressColor: context.theme.colorScheme.surfaceContainerHigh,
+                                    borderRadius: const BorderRadius.all(Radius.circular(100)),
                                     minHeight: 12,
-                                    maxSteps: (rewardsModel.data!.referralSystem![index].referralCount??0) as int,
+                                    maxSteps: (rewardsModel.data!.referralSystem![index].referralCount ?? 0) as int,
                                     currentStep: inviteStatus(index, rewardsModel.data!.referralCountForCash, rewardsModel.data?.referralSystem!),
                                   ),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  "${inviteStatus(index, rewardsModel.data!.referralCountForCash, rewardsModel.data?.referralSystem!)}/${(rewardsModel.data!.referralSystem![index].referralCount??0)} Today",
+                                  "${inviteStatus(index, rewardsModel.data!.referralCountForCash, rewardsModel.data?.referralSystem!)}/${(rewardsModel.data!.referralSystem![index].referralCount ?? 0)} Today",
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
-                                    color: context
-                                        .theme.colorScheme.onSurfaceVariant
-                                        .withOpacity(0.5),
+                                    color: context.theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
                                   ),
                                 ),
                               ],
@@ -131,16 +123,16 @@ class RewardsDialogComponent {
                             children: [
                               RewardButtonComponent(
                                 text: "Claim",
-                                onClick: (rewardsModel.data?.cashClaimedCount??0)==index ?()=>cashOutRequest(rewardsModel.data!.referralSystem![index].referralReward??0) : (){},
+                                onClick: (rewardsModel.data?.cashClaimedCount ?? 0) == index ? () => cashOutRequest(rewardsModel.data!.referralSystem![index].referralReward ?? 0) : () {},
                                 height: 25,
                                 width: 49,
-                                startColor: (rewardsModel.data?.cashClaimedCount??0)==index ? context.theme.colorScheme.primaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
-                                endColor:(rewardsModel.data?.cashClaimedCount??0)==index ? context.theme.colorScheme.secondaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                startColor: (rewardsModel.data?.cashClaimedCount ?? 0) == index ? context.theme.colorScheme.primaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                endColor: (rewardsModel.data?.cashClaimedCount ?? 0) == index ? context.theme.colorScheme.secondaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
                               ),
                               const SizedBox(height: 10),
-                             RewardButtonComponent(
+                              RewardButtonComponent(
                                 text: "Invite",
-                                onClick: ()=>inviteReward(),
+                                onClick: () => inviteReward(),
                                 height: 25,
                                 width: 49,
                                 startColor: context.theme.colorScheme.scrim,
@@ -168,8 +160,7 @@ class RewardsDialogComponent {
                       height: 35,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -178,10 +169,7 @@ class RewardsDialogComponent {
                             context.theme.colorScheme.surfaceContainerHigh,
                           ],
                         ),
-                        border: Border.all(
-                            color: context.theme.colorScheme.onSurface
-                                .withOpacity(0.25),
-                            width: 1.5),
+                        border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
                       ),
                       child: Text(
                         "Close",
@@ -247,8 +235,8 @@ class RewardButtonComponent extends StatelessWidget {
             ],
           ),
           border: Border.all(
-              color: context.theme.colorScheme.onSurface.withOpacity(0.25),
-              width: 1,
+            color: context.theme.colorScheme.onSurface.withOpacity(0.25),
+            width: 1,
           ),
         ),
         child: Text(

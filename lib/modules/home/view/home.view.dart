@@ -331,11 +331,12 @@ class HomeView extends StatelessWidget {
                                           )
                                         : const SizedBox.shrink(),
                                   ),
+                                  const SizedBox(height: 10),
                                   buildColumn2(
                                     context,
-                                    homeController.inviteForSpin,
-                                    AssetsUtil.getSpinCard(),
-                                    "+1 Spin",
+                                    homeController.onExtraTaskClick,
+                                    AssetsUtil.getExtraTask(),
+                                    "Extra Task",
                                     context.theme.colorScheme.surfaceContainerHigh,
                                     context.theme.colorScheme.surfaceContainerLow,
                                   ),
