@@ -36,7 +36,6 @@ class HomeView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: ListView(
-                  // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -95,28 +94,17 @@ class HomeView extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
                       child: Obx(
                         () => LinearProgressBar(
-                          backgroundColor: context.theme.colorScheme.onSurface
-                              .withOpacity(0.25),
-                          progressColor:
-                              context.theme.colorScheme.secondaryFixed,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(100)),
+                          backgroundColor: context.theme.colorScheme.onSurface.withOpacity(0.25),
+                          progressColor: context.theme.colorScheme.secondaryFixed,
+                          borderRadius: const BorderRadius.all(Radius.circular(100)),
                           minHeight: 18,
-                          maxSteps: homeController.goalAmount.value <= 0
-                              ? 1
-                              : homeController.goalAmount.value,
-                          currentStep: (homeController
-                                          .setUserData.value.earnedAmount ??
-                                      0) >=
-                                  homeController.goalAmount.value
+                          maxSteps: homeController.goalAmount.value <= 0 ? 1 : homeController.goalAmount.value,
+                          currentStep: (homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value
                               ? homeController.goalAmount.value
-                              : homeController.setUserData.value.earnedAmount
-                                      ?.toInt() ??
-                                  0,
+                              : homeController.setUserData.value.earnedAmount?.toInt() ?? 0,
                         ),
                       ),
                     ),
@@ -126,11 +114,7 @@ class HomeView extends StatelessWidget {
                         () => RichText(
                           text: TextSpan(
                             text: "Only ",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: context.theme.colorScheme.onSurface,
-                                fontStyle: FontStyle.italic),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: context.theme.colorScheme.onSurface, fontStyle: FontStyle.italic),
                             children: [
                               TextSpan(
                                 text:
@@ -142,8 +126,7 @@ class HomeView extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                text:
-                                    " to cash out ₹${homeController.goalAmount.value} !",
+                                text: " to cash out ₹${homeController.goalAmount.value} !",
                               )
                             ],
                           ),
@@ -160,10 +143,7 @@ class HomeView extends StatelessWidget {
                               animation: homeController.turnAnimationController,
                               builder: (context, child) {
                                 return Transform.rotate(
-                                  angle: homeController
-                                          .turnAnimationController.value *
-                                      2 *
-                                      math.pi,
+                                  angle: homeController.turnAnimationController.value * 2 * math.pi,
                                   child: Image.asset(
                                     AssetsUtil.getTurn(),
                                     width: double.infinity,
@@ -184,19 +164,12 @@ class HomeView extends StatelessWidget {
                               padding: const EdgeInsets.all(50),
                               child: Obx(
                                 () => AnimatedBuilder(
-                                  animation:
-                                      homeController.animationController!,
+                                  animation: homeController.animationController!,
                                   builder: (context, child) {
                                     return Transform.rotate(
-                                      angle: homeController
-                                              .animationController!.value *
-                                          2 *
-                                          math.pi,
+                                      angle: homeController.animationController!.value * 2 * math.pi,
                                       child: RotationTransition(
-                                        turns: AlwaysStoppedAnimation(
-                                            (homeController
-                                                    .selectedSector.value) /
-                                                365),
+                                        turns: AlwaysStoppedAnimation((homeController.selectedSector.value) / 365),
                                         child: Image.asset(
                                           AssetsUtil.getBackground(),
                                           width: double.infinity,
@@ -217,8 +190,7 @@ class HomeView extends StatelessWidget {
                               splashColor: Colors.transparent,
                               focusColor: Colors.transparent,
                               hoverColor: Colors.transparent,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               child: Container(
                                 height: 80,
                                 width: 80,
@@ -239,8 +211,7 @@ class HomeView extends StatelessWidget {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600,
-                                          color: context
-                                              .theme.colorScheme.onSurface,
+                                          color: context.theme.colorScheme.onSurface,
                                           height: 1,
                                         ),
                                       ),
@@ -250,9 +221,7 @@ class HomeView extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.w300,
-                                        color: context
-                                            .theme.colorScheme.onSurface
-                                            .withOpacity(0.5),
+                                        color: context.theme.colorScheme.onSurface.withOpacity(0.5),
                                         fontStyle: FontStyle.italic,
                                       ),
                                     ),
@@ -261,14 +230,11 @@ class HomeView extends StatelessWidget {
                               ),
                             ),
                             Obx(
-                              () => homeController.totalSpinCount.value > 0 &&
-                                      !homeController.isSpinning.value
+                              () => homeController.totalSpinCount.value > 0 && !homeController.isSpinning.value
                                   ? Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 22, left: 35),
+                                      padding: const EdgeInsets.only(top: 22, left: 35),
                                       child: MaterialButton(
-                                        onPressed: () =>
-                                            homeController.onSpin(),
+                                        onPressed: () => homeController.onSpin(),
                                         minWidth: 0,
                                         padding: EdgeInsets.zero,
                                         visualDensity: VisualDensity.compact,
@@ -276,18 +242,12 @@ class HomeView extends StatelessWidget {
                                         splashColor: Colors.transparent,
                                         focusColor: Colors.transparent,
                                         hoverColor: Colors.transparent,
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         child: AnimatedBuilder(
-                                          animation: homeController
-                                              .pointHandBgAnimationController,
+                                          animation: homeController.pointHandBgAnimationController,
                                           builder: (context, child) {
                                             return Transform.rotate(
-                                              angle: homeController
-                                                      .pointHandBgAnimationController
-                                                      .value *
-                                                  2 *
-                                                  math.pi,
+                                              angle: homeController.pointHandBgAnimationController.value * 2 * math.pi,
                                               child: Image.asset(
                                                 AssetsUtil.getPointHandBg(),
                                                 height: 45,
@@ -302,14 +262,11 @@ class HomeView extends StatelessWidget {
                                   : const SizedBox.shrink(),
                             ),
                             Obx(
-                              () => homeController.totalSpinCount.value > 0 &&
-                                      !homeController.isSpinning.value
+                              () => homeController.totalSpinCount.value > 0 && !homeController.isSpinning.value
                                   ? Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 55, left: 70),
+                                      padding: const EdgeInsets.only(top: 55, left: 70),
                                       child: MaterialButton(
-                                        onPressed: () =>
-                                            homeController.onSpin(),
+                                        onPressed: () => homeController.onSpin(),
                                         minWidth: 0,
                                         padding: EdgeInsets.zero,
                                         visualDensity: VisualDensity.compact,
@@ -317,16 +274,13 @@ class HomeView extends StatelessWidget {
                                         splashColor: Colors.transparent,
                                         focusColor: Colors.transparent,
                                         hoverColor: Colors.transparent,
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         child: AnimatedBuilder(
-                                          animation: homeController
-                                              .pointHandBgAnimationController,
+                                          animation: homeController.pointHandBgAnimationController,
                                           builder: (context, child) {
                                             return Obx(
                                               () => Transform.scale(
-                                                scale:
-                                                    homeController.scale.value,
+                                                scale: homeController.scale.value,
                                                 child: Image.asset(
                                                   AssetsUtil.getPointHand(),
                                                   height: 45,
@@ -356,27 +310,36 @@ class HomeView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               buildColumn2(
-                                  context,
-                                  homeController.inviteForSpin,
-                                  AssetsUtil.getSpinCard(),
-                                  "+1 Spin",
-                                  context
-                                      .theme.colorScheme.surfaceContainerHigh,
-                                  context
-                                      .theme.colorScheme.surfaceContainerLow),
-                              Obx(
-                                () => homeController.showExtraCash.value
-                                    ? buildColumn2(
-                                        context,
-                                        homeController.getMoreRewards,
-                                        AssetsUtil.getChest(),
-                                        "Extra Cash",
-                                        context.theme.colorScheme
-                                            .surfaceContainerHigh,
-                                        context.theme.colorScheme
-                                            .surfaceContainerLow,
-                                      )
-                                    : const SizedBox.shrink(),
+                                context,
+                                homeController.inviteForSpin,
+                                AssetsUtil.getSpinCard(),
+                                "+1 Spin",
+                                context.theme.colorScheme.surfaceContainerHigh,
+                                context.theme.colorScheme.surfaceContainerLow,
+                              ),
+                              Column(
+                                children: [
+                                  Obx(
+                                    () => homeController.showExtraCash.value
+                                        ? buildColumn2(
+                                            context,
+                                            homeController.getMoreRewards,
+                                            AssetsUtil.getChest(),
+                                            "Extra Cash",
+                                            context.theme.colorScheme.surfaceContainerHigh,
+                                            context.theme.colorScheme.surfaceContainerLow,
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ),
+                                  buildColumn2(
+                                    context,
+                                    homeController.inviteForSpin,
+                                    AssetsUtil.getSpinCard(),
+                                    "+1 Spin",
+                                    context.theme.colorScheme.surfaceContainerHigh,
+                                    context.theme.colorScheme.surfaceContainerLow,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -390,48 +353,39 @@ class HomeView extends StatelessWidget {
                         Column(
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
                               child: Row(
                                 children: [
                                   Flexible(
                                     child: MaterialButton(
-                                      onPressed: () =>
-                                          homeController.onInviteForSpins(),
+                                      onPressed: () => homeController.onInviteForSpins(),
                                       minWidth: 0,
                                       padding: EdgeInsets.zero,
                                       visualDensity: VisualDensity.compact,
                                       highlightColor: Colors.transparent,
                                       splashColor: Colors.transparent,
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       elevation: 0,
                                       child: Container(
                                         width: double.infinity,
                                         height: 40,
                                         decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(8)),
+                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
                                           gradient: LinearGradient(
                                             begin: Alignment.topCenter,
                                             end: Alignment.bottomCenter,
                                             colors: [
-                                              context.theme.colorScheme
-                                                  .surfaceContainerHigh,
-                                              context.theme.colorScheme
-                                                  .surfaceContainerLow,
+                                              context.theme.colorScheme.surfaceContainerHigh,
+                                              context.theme.colorScheme.surfaceContainerLow,
                                             ],
                                           ),
                                           border: Border.all(
-                                            color: context
-                                                .theme.colorScheme.onSurface
-                                                .withOpacity(0.25),
+                                            color: context.theme.colorScheme.onSurface.withOpacity(0.25),
                                             width: 1.5,
                                           ),
                                         ),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
                                               AssetsUtil.getSpinCard(),
@@ -445,8 +399,7 @@ class HomeView extends StatelessWidget {
                                               style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600,
-                                                color: context.theme.colorScheme
-                                                    .onSurface,
+                                                color: context.theme.colorScheme.onSurface,
                                                 fontStyle: FontStyle.italic,
                                               ),
                                             )
@@ -457,44 +410,36 @@ class HomeView extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 10),
                                   MaterialButton(
-                                    onPressed: () =>
-                                        homeController.onCopyClick(),
+                                    onPressed: () => homeController.onCopyClick(),
                                     minWidth: 0,
                                     padding: EdgeInsets.zero,
                                     visualDensity: VisualDensity.compact,
                                     highlightColor: Colors.transparent,
                                     splashColor: Colors.transparent,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                     elevation: 0,
                                     child: Container(
                                       height: 40,
                                       width: 40,
                                       decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(8)),
+                                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                                         gradient: LinearGradient(
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                           colors: [
-                                            context.theme.colorScheme
-                                                .surfaceContainerHigh,
-                                            context.theme.colorScheme
-                                                .surfaceContainerLow,
+                                            context.theme.colorScheme.surfaceContainerHigh,
+                                            context.theme.colorScheme.surfaceContainerLow,
                                           ],
                                         ),
                                         border: Border.all(
-                                          color: context
-                                              .theme.colorScheme.onSurface
-                                              .withOpacity(0.25),
+                                          color: context.theme.colorScheme.onSurface.withOpacity(0.25),
                                           width: 1.5,
                                         ),
                                       ),
                                       child: Icon(
                                         Icons.copy,
                                         size: 18,
-                                        color:
-                                            context.theme.colorScheme.onSurface,
+                                        color: context.theme.colorScheme.onSurface,
                                       ),
                                     ),
                                   ),
@@ -515,15 +460,13 @@ class HomeView extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 10),
                                 MaterialButton(
-                                  onPressed: () =>
-                                      homeController.onShareClick(0),
+                                  onPressed: () => homeController.onShareClick(0),
                                   minWidth: 0,
                                   padding: EdgeInsets.zero,
                                   visualDensity: VisualDensity.compact,
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   child: Image.asset(
                                     AssetsUtil.getWhatsappIcon(),
                                     height: 22,
@@ -533,15 +476,13 @@ class HomeView extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 10),
                                 MaterialButton(
-                                  onPressed: () =>
-                                      homeController.onShareClick(1),
+                                  onPressed: () => homeController.onShareClick(1),
                                   minWidth: 0,
                                   padding: EdgeInsets.zero,
                                   visualDensity: VisualDensity.compact,
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   child: Image.asset(
                                     AssetsUtil.getXIcon(),
                                     height: 22,
@@ -551,15 +492,13 @@ class HomeView extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 10),
                                 MaterialButton(
-                                  onPressed: () =>
-                                      homeController.onShareClick(2),
+                                  onPressed: () => homeController.onShareClick(2),
                                   minWidth: 0,
                                   padding: EdgeInsets.zero,
                                   visualDensity: VisualDensity.compact,
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   child: Image.asset(
                                     AssetsUtil.getFacebookIcon(),
                                     height: 22,
@@ -572,14 +511,11 @@ class HomeView extends StatelessWidget {
                           ],
                         ),
                         Obx(
-                          () => homeController.totalSpinCount.value <= 0 &&
-                                  !homeController.isSpinning.value
+                          () => homeController.totalSpinCount.value <= 0 && !homeController.isSpinning.value
                               ? Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 145, bottom: 38),
+                                  padding: const EdgeInsets.only(left: 145, bottom: 38),
                                   child: MaterialButton(
-                                    onPressed: () =>
-                                        homeController.onInviteForSpins(),
+                                    onPressed: () => homeController.onInviteForSpins(),
                                     minWidth: 0,
                                     padding: EdgeInsets.zero,
                                     visualDensity: VisualDensity.compact,
@@ -587,18 +523,12 @@ class HomeView extends StatelessWidget {
                                     splashColor: Colors.transparent,
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                     child: AnimatedBuilder(
-                                      animation: homeController
-                                          .pointHandBgAnimationController,
+                                      animation: homeController.pointHandBgAnimationController,
                                       builder: (context, child) {
                                         return Transform.rotate(
-                                          angle: homeController
-                                                  .pointHandBgAnimationController
-                                                  .value *
-                                              2 *
-                                              math.pi,
+                                          angle: homeController.pointHandBgAnimationController.value * 2 * math.pi,
                                           child: Image.asset(
                                             AssetsUtil.getPointHandBg(),
                                             height: 45,
@@ -613,14 +543,11 @@ class HomeView extends StatelessWidget {
                               : const SizedBox.shrink(),
                         ),
                         Obx(
-                          () => homeController.totalSpinCount.value <= 0 &&
-                                  !homeController.isSpinning.value
+                          () => homeController.totalSpinCount.value <= 0 && !homeController.isSpinning.value
                               ? Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 178, bottom: 5),
+                                  padding: const EdgeInsets.only(left: 178, bottom: 5),
                                   child: MaterialButton(
-                                    onPressed: () =>
-                                        homeController.onInviteForSpins(),
+                                    onPressed: () => homeController.onInviteForSpins(),
                                     minWidth: 0,
                                     padding: EdgeInsets.zero,
                                     visualDensity: VisualDensity.compact,
@@ -628,11 +555,9 @@ class HomeView extends StatelessWidget {
                                     splashColor: Colors.transparent,
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                     child: AnimatedBuilder(
-                                      animation: homeController
-                                          .pointHandBgAnimationController,
+                                      animation: homeController.pointHandBgAnimationController,
                                       builder: (context, child) {
                                         return Obx(
                                           () => Transform.scale(
@@ -663,8 +588,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  MaterialButton buildColumn(BuildContext context, Function onClick,
-      String image, String text, Color startColor, Color endColor) {
+  MaterialButton buildColumn(BuildContext context, Function onClick, String image, String text, Color startColor, Color endColor) {
     return MaterialButton(
       onPressed: () => onClick(),
       minWidth: 0,
@@ -696,17 +620,11 @@ class HomeView extends StatelessWidget {
                   endColor,
                 ],
               ),
-              border: Border.all(
-                  color: context.theme.colorScheme.onSurface.withOpacity(0.25),
-                  width: 1.5),
+              border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
             ),
             child: Text(
               text,
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: context.theme.colorScheme.onSurface,
-                  height: 1),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: context.theme.colorScheme.onSurface, height: 1),
             ),
           )
         ],
@@ -714,8 +632,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  MaterialButton buildColumn2(BuildContext context, Function onClick,
-      String image, String text, Color startColor, Color endColor) {
+  MaterialButton buildColumn2(BuildContext context, Function onClick, String image, String text, Color startColor, Color endColor) {
     return MaterialButton(
       onPressed: () => onClick(),
       minWidth: 0,
@@ -747,17 +664,11 @@ class HomeView extends StatelessWidget {
                   endColor,
                 ],
               ),
-              border: Border.all(
-                  color: context.theme.colorScheme.onSurface.withOpacity(0.25),
-                  width: 1.5),
+              border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
             ),
             child: Text(
               text,
-              style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  color: context.theme.colorScheme.onSurface,
-                  height: 1),
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: context.theme.colorScheme.onSurface, height: 1),
             ),
           ),
         ],
