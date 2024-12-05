@@ -43,120 +43,180 @@ class MyProfileData {
   MyProfileData({
       String? id, 
       String? telegramId, 
-      String? username, 
       String? firstName, 
       String? lastName, 
+      String? phoneNumber, 
+      String? accountHolderName, 
+      String? upiId, 
+      bool? status, 
       num? earnedAmountTemp, 
       num? earnedAmount, 
       num? spinCount, 
       num? referralSpins, 
       String? referralCode, 
-      num? referralCount, 
-      num? referralCountDue, 
-      num? cashOutCount, 
-      String? accountHolderName, 
-      String? phoneNumber, 
-      String? upiId, 
       List<String>? referrals, 
-      bool? status,}){
+      num? referralCount, 
+      num? referralCountForCash, 
+      num? earnedReferralCash, 
+      num? cashClaimedCount, 
+      num? cashOutRequestFor10, 
+      num? newLogicStatus, 
+      num? referralCountDue, 
+      num? currentSpinRequired, 
+      num? cashOutCount, 
+      num? payOutCount, 
+      num? diamondsEarned, 
+      num? spinFromDiamond, 
+      String? createdAt, 
+      String? updatedAt,}){
     _id = id;
     _telegramId = telegramId;
-    _username = username;
     _firstName = firstName;
     _lastName = lastName;
+    _phoneNumber = phoneNumber;
+    _accountHolderName = accountHolderName;
+    _upiId = upiId;
+    _status = status;
     _earnedAmountTemp = earnedAmountTemp;
     _earnedAmount = earnedAmount;
     _spinCount = spinCount;
     _referralSpins = referralSpins;
     _referralCode = referralCode;
-    _referralCount = referralCount;
-    _referralCountDue = referralCountDue;
-    _cashOutCount = cashOutCount;
-    _accountHolderName = accountHolderName;
-    _phoneNumber = phoneNumber;
-    _upiId = upiId;
     _referrals = referrals;
-    _status = status;
+    _referralCount = referralCount;
+    _referralCountForCash = referralCountForCash;
+    _earnedReferralCash = earnedReferralCash;
+    _cashClaimedCount = cashClaimedCount;
+    _cashOutRequestFor10 = cashOutRequestFor10;
+    _newLogicStatus = newLogicStatus;
+    _referralCountDue = referralCountDue;
+    _currentSpinRequired = currentSpinRequired;
+    _cashOutCount = cashOutCount;
+    _payOutCount = payOutCount;
+    _diamondsEarned = diamondsEarned;
+    _spinFromDiamond = spinFromDiamond;
+    _createdAt = createdAt;
+    _updatedAt = updatedAt;
 }
 
   MyProfileData.fromJson(dynamic json) {
     _id = json['_id'];
     _telegramId = json['telegramId'];
-    _username = json['username'];
     _firstName = json['firstName'];
     _lastName = json['lastName'];
+    _phoneNumber = json['phoneNumber'];
+    _accountHolderName = json['accountHolderName'];
+    _upiId = json['upiId'];
+    _status = json['status'];
     _earnedAmountTemp = json['earnedAmountTemp'];
     _earnedAmount = json['earnedAmount'];
     _spinCount = json['spinCount'];
     _referralSpins = json['referralSpins'];
     _referralCode = json['referralCode'];
-    _referralCount = json['referralCount'];
-    _referralCountDue = json['referralCountDue'];
-    _cashOutCount = json['cashOutCount'];
-    _accountHolderName = json['accountHolderName'];
-    _phoneNumber = json['phoneNumber'];
-    _upiId = json['upiId'];
     _referrals = json['referrals'] != null ? json['referrals'].cast<String>() : [];
-    _status = json['status'];
+    _referralCount = json['referralCount'];
+    _referralCountForCash = json['referralCountForCash'];
+    _earnedReferralCash = json['earnedReferralCash'];
+    _cashClaimedCount = json['cashClaimedCount'];
+    _cashOutRequestFor10 = json['cashOutRequestFor10'];
+    _newLogicStatus = json['newLogicStatus'];
+    _referralCountDue = json['referralCountDue'];
+    _currentSpinRequired = json['currentSpinRequired'];
+    _cashOutCount = json['cashOutCount'];
+    _payOutCount = json['payOutCount'];
+    _diamondsEarned = json['diamondsEarned'];
+    _spinFromDiamond = json['spinFromDiamond'];
+    _createdAt = json['createdAt'];
+    _updatedAt = json['updatedAt'];
   }
   String? _id;
   String? _telegramId;
-  String? _username;
   String? _firstName;
   String? _lastName;
+  String? _phoneNumber;
+  String? _accountHolderName;
+  String? _upiId;
+  bool? _status;
   num? _earnedAmountTemp;
   num? _earnedAmount;
   num? _spinCount;
   num? _referralSpins;
   String? _referralCode;
-  num? _referralCount;
-  num? _referralCountDue;
-  num? _cashOutCount;
-  String? _accountHolderName;
-  String? _phoneNumber;
-  String? _upiId;
   List<String>? _referrals;
-  bool? _status;
+  num? _referralCount;
+  num? _referralCountForCash;
+  num? _earnedReferralCash;
+  num? _cashClaimedCount;
+  num? _cashOutRequestFor10;
+  num? _newLogicStatus;
+  num? _referralCountDue;
+  num? _currentSpinRequired;
+  num? _cashOutCount;
+  num? _payOutCount;
+  num? _diamondsEarned;
+  num? _spinFromDiamond;
+  String? _createdAt;
+  String? _updatedAt;
 
   String? get id => _id;
   String? get telegramId => _telegramId;
-  String? get username => _username;
   String? get firstName => _firstName;
   String? get lastName => _lastName;
+  String? get phoneNumber => _phoneNumber;
+  String? get accountHolderName => _accountHolderName;
+  String? get upiId => _upiId;
+  bool? get status => _status;
   num? get earnedAmountTemp => _earnedAmountTemp;
   num? get earnedAmount => _earnedAmount;
   num? get spinCount => _spinCount;
   num? get referralSpins => _referralSpins;
   String? get referralCode => _referralCode;
-  num? get referralCount => _referralCount;
-  num? get referralCountDue => _referralCountDue;
-  num? get cashOutCount => _cashOutCount;
-  String? get accountHolderName => _accountHolderName;
-  String? get phoneNumber => _phoneNumber;
-  String? get upiId => _upiId;
   List<String>? get referrals => _referrals;
-  bool? get status => _status;
+  num? get referralCount => _referralCount;
+  num? get referralCountForCash => _referralCountForCash;
+  num? get earnedReferralCash => _earnedReferralCash;
+  num? get cashClaimedCount => _cashClaimedCount;
+  num? get cashOutRequestFor10 => _cashOutRequestFor10;
+  num? get newLogicStatus => _newLogicStatus;
+  num? get referralCountDue => _referralCountDue;
+  num? get currentSpinRequired => _currentSpinRequired;
+  num? get cashOutCount => _cashOutCount;
+  num? get payOutCount => _payOutCount;
+  num? get diamondsEarned => _diamondsEarned;
+  num? get spinFromDiamond => _spinFromDiamond;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
     map['telegramId'] = _telegramId;
-    map['username'] = _username;
     map['firstName'] = _firstName;
     map['lastName'] = _lastName;
+    map['phoneNumber'] = _phoneNumber;
+    map['accountHolderName'] = _accountHolderName;
+    map['upiId'] = _upiId;
+    map['status'] = _status;
     map['earnedAmountTemp'] = _earnedAmountTemp;
     map['earnedAmount'] = _earnedAmount;
     map['spinCount'] = _spinCount;
     map['referralSpins'] = _referralSpins;
     map['referralCode'] = _referralCode;
-    map['referralCount'] = _referralCount;
-    map['referralCountDue'] = _referralCountDue;
-    map['cashOutCount'] = _cashOutCount;
-    map['accountHolderName'] = _accountHolderName;
-    map['phoneNumber'] = _phoneNumber;
-    map['upiId'] = _upiId;
     map['referrals'] = _referrals;
-    map['status'] = _status;
+    map['referralCount'] = _referralCount;
+    map['referralCountForCash'] = _referralCountForCash;
+    map['earnedReferralCash'] = _earnedReferralCash;
+    map['cashClaimedCount'] = _cashClaimedCount;
+    map['cashOutRequestFor10'] = _cashOutRequestFor10;
+    map['newLogicStatus'] = _newLogicStatus;
+    map['referralCountDue'] = _referralCountDue;
+    map['currentSpinRequired'] = _currentSpinRequired;
+    map['cashOutCount'] = _cashOutCount;
+    map['payOutCount'] = _payOutCount;
+    map['diamondsEarned'] = _diamondsEarned;
+    map['spinFromDiamond'] = _spinFromDiamond;
+    map['createdAt'] = _createdAt;
+    map['updatedAt'] = _updatedAt;
     return map;
   }
 

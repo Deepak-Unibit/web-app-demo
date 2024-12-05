@@ -54,6 +54,7 @@ class SetUserData {
     num? referralCount,
     num? referralCountDue,
     num? cashOutCount,
+    num? diamondsEarned,
     String? accountHolderName,
     String? phoneNumber,
     String? upiId,
@@ -72,6 +73,7 @@ class SetUserData {
     _referralCount = referralCount;
     _referralCountDue = referralCountDue;
     _cashOutCount = cashOutCount;
+    _diamondsEarned = diamondsEarned;
     _accountHolderName = accountHolderName;
     _phoneNumber = phoneNumber;
     _upiId = upiId;
@@ -92,6 +94,7 @@ class SetUserData {
     _referralCount = json['referralCount'];
     _referralCountDue = json['referralCountDue'];
     _cashOutCount = json['cashOutCount'];
+    _diamondsEarned = json['diamondsEarned'];
     _accountHolderName = json['accountHolderName'];
     _phoneNumber = json['phoneNumber'];
     _upiId = json['upiId'];
@@ -110,6 +113,7 @@ class SetUserData {
   num? _referralCount;
   num? _referralCountDue;
   num? _cashOutCount;
+  num? _diamondsEarned;
   String? _accountHolderName;
   String? _phoneNumber;
   String? _upiId;
@@ -128,6 +132,7 @@ class SetUserData {
   num? get referralCount => _referralCount;
   num? get referralCountDue => _referralCountDue;
   num? get cashOutCount => _cashOutCount;
+  num? get diamondsEarned => _diamondsEarned;
   String? get accountHolderName => _accountHolderName;
   String? get phoneNumber => _phoneNumber;
   String? get upiId => _upiId;
@@ -160,6 +165,7 @@ class SetUserData {
     map['referralCount'] = _referralCount;
     map['referralCountDue'] = _referralCountDue;
     map['cashOutCount'] = _cashOutCount;
+    map['diamondsEarned'] = _diamondsEarned;
     map['accountHolderName'] = _accountHolderName;
     map['phoneNumber'] = _phoneNumber;
     map['upiId'] = _upiId;

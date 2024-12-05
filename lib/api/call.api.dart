@@ -78,6 +78,7 @@ class ApiCall {
       String encryptedData = EncryptionHelper().encryptAESCryptoJS(urlPath, AppConst.encryptionKey);
       dio.options.headers['hash'] = encryptedData;
       final response = await dio.getUri(Uri.parse(url));
+
       if (response.data['responseCode'] == 501) {
         ResponseModel responseModel = ResponseModel.fromJson({
           "status": "error",
@@ -94,8 +95,7 @@ class ApiCall {
       if (response.data["data"] == null) {
         return response.data;
       }
-      String decryptedData = EncryptionHelper()
-          .decryptAESCryptoJS(response.data["data"], AppConst.encryptionKey);
+      String decryptedData = EncryptionHelper().decryptAESCryptoJS(response.data["data"], AppConst.encryptionKey);
       try {
         response.data["data"] = jsonDecode(decryptedData);
       } catch (e) {

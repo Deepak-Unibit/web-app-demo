@@ -2,12 +2,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_network/image_network.dart';
-import 'package:linear_progress_bar/linear_progress_bar.dart';
-import '../../../models/rewards.model.dart';
+import 'package:web_app_demo/models/taskList.model.dart';
 import '../../../utils/assets.util.dart';
 
 class ExtraTaskDialogComponent {
-  static show() {
+  static show({
+    required String totalDiamond,
+    required List<TaskListData> taskList,
+    required Function onInviteForSpin,
+    required Function onRedeemSpin,
+  }) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -97,7 +101,7 @@ class ExtraTaskDialogComponent {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            "700",
+                            totalDiamond,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -109,7 +113,7 @@ class ExtraTaskDialogComponent {
                             children: [
                               TaskButtonComponent(
                                 text: "Redeem Spin",
-                                onClick: () {},
+                                onClick: () => onRedeemSpin(),
                                 height: 30,
                                 width: 120,
                                 startColor: true ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
@@ -274,7 +278,7 @@ class ExtraTaskDialogComponent {
                             const SizedBox(height: 10),
                             TaskButtonComponent(
                               text: "Invite for Spin!",
-                              onClick: () {},
+                              onClick: () => onInviteForSpin(),
                               height: 30,
                               width: 120,
                               startColor: true ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
@@ -317,7 +321,7 @@ class ExtraTaskDialogComponent {
                         primary: false,
                         physics: const NeverScrollableScrollPhysics(),
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        itemCount: 5,
+                        itemCount: taskList.length,
                         separatorBuilder: (context, index) => const SizedBox(height: 10),
                         itemBuilder: (context, index) => Container(
                           width: double.infinity,
@@ -336,9 +340,8 @@ class ExtraTaskDialogComponent {
                           ),
                           child: Row(
                             children: [
-                              const ImageNetwork(
-                                image:
-                                    "https://img.freepik.com/free-vector/bicycle-shop-logo-design-vector_53876-40626.jpg?t=st=1733142967~exp=1733146567~hmac=827a03765350a77a0758bcd8e5f90ef44227b22c7f3f0742f6eaf4e5c59fe5b4&w=826",
+                              ImageNetwork(
+                                image: taskList[index].icon ?? "",
                                 height: 45,
                                 width: 45,
                                 fitAndroidIos: BoxFit.contain,
@@ -349,7 +352,7 @@ class ExtraTaskDialogComponent {
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Text(
-                                    "Register SocratesWeb3",
+                                    taskList[index].title ?? "",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -364,17 +367,17 @@ class ExtraTaskDialogComponent {
                                     text: "GO",
                                     onClick: () {},
                                     height: 25,
-                                    width: 65,
+                                    width: 80,
                                     startColor: context.theme.colorScheme.primaryFixed,
                                     endColor: context.theme.colorScheme.secondaryFixed,
                                   ),
                                   const SizedBox(height: 3),
                                   TaskButtonComponent(
-                                    text: "+300",
+                                    text: "+${taskList[index].diamonds ?? 0}",
                                     showDiamond: true,
                                     onClick: () {},
                                     height: 25,
-                                    width: 65,
+                                    width: 80,
                                     startColor: context.theme.colorScheme.onSurfaceVariant,
                                     endColor: context.theme.colorScheme.onSurfaceVariant,
                                   ),
@@ -496,7 +499,7 @@ class TaskButtonComponent extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w500,
                 color: context.theme.colorScheme.onSurface,
                 height: 1,

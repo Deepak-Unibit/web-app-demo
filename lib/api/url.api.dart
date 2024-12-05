@@ -28,4 +28,10 @@ class UrlApi {
   static const rewardCashOut = "$baseUrl/user/referral-cash-out-request";
   static const extraCashStatus = "$baseUrl/user/show-extra-cash";
 
+  // Task
+  static const getTasks = "$baseUrl/task/list";
+  static const getTaskHistory = "$baseUrl/task/task-history-list";
+  static const claimTaskReward = "$baseUrl/task/claim-reward";
+  static const verifyTaskSubscription = "$baseUrl/verify-subscription-task";
+  static const redeemTaskDiamond = "$baseUrl/task/redeem-diamond";
 }

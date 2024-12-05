@@ -16,6 +16,7 @@ import 'package:web_app_demo/models/response.model.dart';
 import 'package:web_app_demo/models/rewards.model.dart';
 import 'package:web_app_demo/models/settings.model.dart';
 import 'package:web_app_demo/models/spin.model.dart';
+import 'package:web_app_demo/models/taskList.model.dart';
 import 'dart:js' as js;
 import 'dart:html' as html;
 import 'package:web_app_demo/models/user.model.dart';
@@ -538,8 +539,38 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  void onExtraTaskClick() {
-    ExtraTaskDialogComponent.show();
+  Future<void> onExtraTaskClick() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.getTasks);
+    LoadingPage.close();
+    TaskListModel taskListModel = TaskListModel.fromJson(resp);
+
+    if (taskListModel.responseCode == 200) {
+      ExtraTaskDialogComponent.show(
+        totalDiamond: (setUserData.value.diamondsEarned ?? 0).toString(),
+        taskList: taskListModel.data ?? [],
+        onInviteForSpin: onInviteForSpins,
+        onRedeemSpin: onRedeemSpin,
+      );
+    } else {
+      SnackBarHelper.show(taskListModel.message);
+    }
+    return;
   }
 
+  Future<void> onRedeemSpin() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.redeemTaskDiamond);
+    LoadingPage.close();
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if (responseModel.responseCode == 200) {
+      Get.back();
+      SnackBarHelper.show(responseModel.message);
+    } else {
+      SnackBarHelper.show(responseModel.message);
+    }
+    return;
+  }
 }
