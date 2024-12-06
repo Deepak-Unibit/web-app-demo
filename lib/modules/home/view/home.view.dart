@@ -317,32 +317,33 @@ class HomeView extends StatelessWidget {
                                 context.theme.colorScheme.surfaceContainerHigh,
                                 context.theme.colorScheme.surfaceContainerLow,
                               ),
-                              Column(
-                                children: [
-                                  Obx(
-                                    () => homeController.showExtraCash.value
-                                        ? buildColumn2(
-                                            context,
-                                            homeController.getMoreRewards,
-                                            AssetsUtil.getChest(),
-                                            "Extra Cash",
-                                            context.theme.colorScheme.surfaceContainerHigh,
-                                            context.theme.colorScheme.surfaceContainerLow,
-                                          )
-                                        : const SizedBox.shrink(),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  buildColumn2(
-                                    context,
-                                    homeController.onExtraTaskClick,
-                                    AssetsUtil.getExtraTask(),
-                                    "Extra Task",
-                                    context.theme.colorScheme.surfaceContainerHigh,
-                                    context.theme.colorScheme.surfaceContainerLow,
-                                  ),
-                                ],
+                              Obx(
+                                () => homeController.showExtraCash.value
+                                    ? buildColumn2(
+                                        context,
+                                        homeController.getMoreRewards,
+                                        AssetsUtil.getChest(),
+                                        "Extra Cash",
+                                        context.theme.colorScheme.surfaceContainerHigh,
+                                        context.theme.colorScheme.surfaceContainerLow,
+                                      )
+                                    : const SizedBox.shrink(),
                               ),
                             ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 340, right: 10),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: buildColumn2(
+                              context,
+                              homeController.onExtraTaskClick,
+                              AssetsUtil.getExtraTask(),
+                              "Extra Task",
+                              context.theme.colorScheme.surfaceContainerHigh,
+                              context.theme.colorScheme.surfaceContainerLow,
+                            ),
                           ),
                         ),
                       ],

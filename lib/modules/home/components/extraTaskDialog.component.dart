@@ -224,7 +224,7 @@ class ExtraTaskDialogComponent {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "Daily Rewards event is over.\nInvite friends to get more spin!",
+                              true ? "Coming Soon..." : "Daily Rewards event is over.\nInvite friends to get more spin!",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 12,
@@ -370,6 +370,7 @@ class ExtraTaskDialogComponent {
                                     ),
                                   ),
                                 ),
+                                Text("${taskList[index].claimDuration??0}"),
                                 Column(
                                   children: [
                                     TaskButtonComponent(

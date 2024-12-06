@@ -727,5 +727,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     // });
   }
 
-  void onConfirmProofFileSubmit() {}
+  void onConfirmProofFileSubmit() {
+
+  }
+
+
+
 }
