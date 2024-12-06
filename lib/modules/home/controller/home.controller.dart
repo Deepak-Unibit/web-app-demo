@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
@@ -98,7 +96,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
 
-      print(userData);
+      // print(userData);
 
       // Development
       // userModel = UserModel(
@@ -127,20 +125,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   verifySubscription(num telegramId) async {
     // Production
-    // LoadingPage.show();
-    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    // LoadingPage.close();
+    LoadingPage.show();
+    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    LoadingPage.close();
 
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-      responseCode: 200,
-      data: VerifySubscriptionData(
-        joinedChannel1: true,
-        joinedChannel2: true,
-      ),
-    );
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+    //   responseCode: 200,
+    //   data: VerifySubscriptionData(
+    //     joinedChannel1: true,
+    //     joinedChannel2: true,
+    //   ),
+    // );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
@@ -167,8 +165,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
-
-    print(resp);
 
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
@@ -571,8 +567,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.close();
     TaskListModel taskListModel = TaskListModel.fromJson(resp);
 
-    Logger().i(resp);
-
     if (taskListModel.responseCode == 200) {
       taskDataList.clear();
       taskDataList.addAll(taskListModel.data ?? []);
@@ -639,7 +633,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       "taskId" : taskDataList[index].id
     };
     var resp = await ApiCall.post(UrlApi.initiateTaskReward, data);
-    print(resp);
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
@@ -654,7 +647,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void onClaimTaskRewardClick(int index) {
-    print(taskDataList[index].type);
     if (taskDataList[index].type == 1) {
       verifyTaskSubscription(taskDataList[index].channelUserName ?? "", taskDataList[index].id ?? "");
     }
@@ -691,14 +683,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.post(UrlApi.claimTaskReward, data);
     LoadingPage.close();
 
-    Logger().i(resp);
-
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
     if (responseModel.responseCode == 200) {
       setUserData.value.setDiamondsEarned = responseModel.data??0;
       totalDiamond.value = setUserData.value.diamondsEarned as int;
-      print(totalDiamond.value);
       await getTaskListData();
       SnackBarHelper.show(responseModel.message);
     }
