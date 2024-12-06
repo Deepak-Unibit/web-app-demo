@@ -138,6 +138,8 @@ class SetUserData {
   String? get upiId => _upiId;
   num? get goal => _goal;
 
+  set setDiamondsEarned(num value) => _diamondsEarned=value;
+
   set setEarnedAmount(num value) {
     _earnedAmount = value;
   }

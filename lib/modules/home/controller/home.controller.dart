@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
@@ -570,6 +571,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.close();
     TaskListModel taskListModel = TaskListModel.fromJson(resp);
 
+    Logger().i(resp);
+
     if (taskListModel.responseCode == 200) {
       taskDataList.clear();
       taskDataList.addAll(taskListModel.data ?? []);
@@ -688,15 +691,18 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.post(UrlApi.claimTaskReward, data);
     LoadingPage.close();
 
-    print(resp);
+    Logger().i(resp);
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
     if (responseModel.responseCode == 200) {
-      totalDiamond.value = (responseModel.data??0) as int;
+      setUserData.value.setDiamondsEarned = responseModel.data??0;
+      totalDiamond.value = setUserData.value.diamondsEarned as int;
+      print(totalDiamond.value);
       await getTaskListData();
       SnackBarHelper.show(responseModel.message);
-    } else {
+    }
+    else {
       SnackBarHelper.show(responseModel.message);
     }
     return;

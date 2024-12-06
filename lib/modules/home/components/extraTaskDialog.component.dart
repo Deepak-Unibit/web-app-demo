@@ -103,12 +103,14 @@ class ExtraTaskDialogComponent {
                             fit: BoxFit.contain,
                           ),
                           const SizedBox(width: 5),
-                          Text(
-                            "${totalDiamond.value}",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: context.theme.colorScheme.onSurface,
+                          Obx(
+                            ()=> Text(
+                              "${totalDiamond.value}",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: context.theme.colorScheme.onSurface,
+                              ),
                             ),
                           ),
                           const Spacer(),
