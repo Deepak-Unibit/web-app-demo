@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/api/call.api.dart';
@@ -17,6 +18,7 @@ import 'package:web_app_demo/models/rewards.model.dart';
 import 'package:web_app_demo/models/settings.model.dart';
 import 'package:web_app_demo/models/spin.model.dart';
 import 'package:web_app_demo/models/taskList.model.dart';
+import 'package:web_app_demo/models/taskRedeemHistory.model.dart';
 import 'dart:js' as js;
 import 'dart:html' as html;
 import 'package:web_app_demo/models/user.model.dart';
@@ -30,10 +32,12 @@ import 'package:web_app_demo/modules/home/components/inviteDialog.component.dart
 import 'package:web_app_demo/modules/home/components/rankDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/rewardsDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/spinWinAmountDialog.component.dart';
+import 'package:web_app_demo/modules/home/components/taskRedeemHistoryDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/withdrawHistoryDialog.component.dart';
 import '../../../models/setUser.model.dart';
 import '../components/extraTaskDialog.component.dart';
 import '../components/getSpinDialog.component.dart';
+import '../components/uploadProofDialog.component.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
   final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
@@ -53,6 +57,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   TextEditingController upiController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   RxBool showExtraCash = false.obs;
+  RxList<TaskListData> taskDataList = <TaskListData>[].obs;
+  RxInt totalDiamond = 0.obs;
 
   @override
   void onInit() {
@@ -95,7 +101,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
       // Development
       userModel = UserModel(
-        id: 1146609325,
+        id: 1146609300,
         firstName: "New3 Kumar",
         lastName: "Behera",
         allowsWriteToPm: true,
@@ -160,6 +166,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
+
+    print(resp);
 
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
@@ -420,7 +428,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  rewardCashOut(int amount) async {
+  Future<void> rewardCashOut(int amount) async {
     LoadingPage.show();
     var resp = await ApiCall.get("${UrlApi.rewardCashOut}/$amount");
     LoadingPage.close();
@@ -447,7 +455,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  inviteRewards() {
+  void inviteRewards() {
     String telegramLink =
         "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
@@ -463,8 +471,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onInviteForSpins() {
-    String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -540,22 +547,37 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   Future<void> onExtraTaskClick() async {
+    taskDataList.clear();
+    bool isListLoaded = await getTaskListData();
+    if (!isListLoaded) {
+      return;
+    }
+    totalDiamond.value = (setUserData.value.diamondsEarned ?? 0) as int;
+    ExtraTaskDialogComponent.show(
+      totalDiamond: totalDiamond,
+      taskList: taskDataList,
+      onInviteForSpin: onInviteForSpins,
+      onRedeemSpin: onRedeemSpin,
+      onDetailsClick: onTaskDetailsClick,
+      onTaskGoClick: onTaskGoClick,
+      onTaskClaimClick: onClaimTaskRewardClick,
+    );
+  }
+
+  Future<bool> getTaskListData() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getTasks);
     LoadingPage.close();
     TaskListModel taskListModel = TaskListModel.fromJson(resp);
 
     if (taskListModel.responseCode == 200) {
-      ExtraTaskDialogComponent.show(
-        totalDiamond: (setUserData.value.diamondsEarned ?? 0).toString(),
-        taskList: taskListModel.data ?? [],
-        onInviteForSpin: onInviteForSpins,
-        onRedeemSpin: onRedeemSpin,
-      );
+      taskDataList.clear();
+      taskDataList.addAll(taskListModel.data ?? []);
+      return true;
     } else {
       SnackBarHelper.show(taskListModel.message);
     }
-    return;
+    return false;
   }
 
   Future<void> onRedeemSpin() async {
@@ -573,4 +595,131 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
     return;
   }
+
+  Future<void> onTaskDetailsClick() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.getTaskHistory);
+    LoadingPage.close();
+
+    TaskRedeemHistoryModel taskRedeemHistoryModel = TaskRedeemHistoryModel.fromJson(resp);
+
+    if (taskRedeemHistoryModel.responseCode == 200) {
+      TaskRedeemHistoryDialogComponent.show(
+        redeemList: taskRedeemHistoryModel.data ?? [],
+      );
+    } else {
+      SnackBarHelper.show(taskRedeemHistoryModel.message);
+    }
+    return;
+  }
+
+  Future<void> onTaskGoClick(int index) async{
+    if (taskDataList[index].type == 1) {
+      String telegramLink = taskDataList[index].destinationLink ?? "";
+
+      html.window.open(telegramLink, '_blank');
+    } else if (taskDataList[index].type == 2) {
+      UploadProofDialogComponent.show(
+        task: taskDataList[index],
+        onUploadFile: pickProofFile,
+        onConfirm: onConfirmProofFileSubmit,
+      );
+    } else if (taskDataList[index].type == 3) {
+      String link = taskDataList[index].destinationLink ?? "";
+
+      html.window.open(link, '_blank');
+    } else if (taskDataList[index].type == 5) {
+      onInviteForSpins();
+    }
+
+    Map<String, dynamic> data = {
+      "taskId" : taskDataList[index].id
+    };
+    var resp = await ApiCall.post(UrlApi.initiateTaskReward, data);
+    print(resp);
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if(responseModel.responseCode == 200) {
+      taskDataList[index].setIsInitiated = true;
+      taskDataList.refresh();
+    }
+    else {
+      SnackBarHelper.show(responseModel.message);
+    }
+    return;
+  }
+
+  void onClaimTaskRewardClick(int index) {
+    print(taskDataList[index].type);
+    if (taskDataList[index].type == 1) {
+      verifyTaskSubscription(taskDataList[index].channelUserName ?? "", taskDataList[index].id ?? "");
+    }
+    else if (taskDataList[index].type == 3) {
+      claimTask(taskDataList[index].id ?? "");
+    }
+    else if (taskDataList[index].type == 5) {
+      claimTask(taskDataList[index].id ?? "");
+    }
+  }
+
+  void verifyTaskSubscription(String channelName, String id) async {
+    Map<String, dynamic> data = {"channel": channelName};
+    LoadingPage.show();
+    var resp = await ApiCall.postWithoutEncryption("${UrlApi.verifyTaskSubscription}/${setUserData.value.telegramId}", data);
+    LoadingPage.close();
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if (responseModel.responseCode == 200) {
+      if(responseModel.data) {
+        claimTask(id);
+      }
+    } else {
+      SnackBarHelper.show(responseModel.message);
+    }
+    return;
+  }
+
+  void claimTask(String taskId) async {
+    Map<String, dynamic> data = {"taskId": taskId};
+
+    LoadingPage.show();
+    var resp = await ApiCall.post(UrlApi.claimTaskReward, data);
+    LoadingPage.close();
+
+    print(resp);
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if (responseModel.responseCode == 200) {
+      totalDiamond.value = (responseModel.data??0) as int;
+      await getTaskListData();
+      SnackBarHelper.show(responseModel.message);
+    } else {
+      SnackBarHelper.show(responseModel.message);
+    }
+    return;
+  }
+
+  void pickProofFile() {
+    html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
+    uploadInput.accept = '*'; // You can specify file types like '.png', '.jpg', etc.
+    uploadInput.click();
+
+    // uploadInput.onChange.listen((e) {
+    //   final files = uploadInput.files;
+    //   if (files!.isNotEmpty) {
+    //     final reader = html.FileReader();
+    //
+    //     reader.onLoadEnd.listen((e) {
+    //       print('File content: ${reader.result}');
+    //     });
+    //
+    //     reader.readAsText(files[0]); // Read as text or binary
+    //   }
+    // });
+  }
+
+  void onConfirmProofFileSubmit() {}
 }

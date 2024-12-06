@@ -77,8 +77,7 @@ class CashOutDialogComponent {
                       const SizedBox(height: 10),
                       Divider(
                         height: 0.5,
-                        color: context.theme.colorScheme.onSurface
-                            .withOpacity(0.1),
+                        color: context.theme.colorScheme.onSurface.withOpacity(0.1),
                       ),
                       const SizedBox(height: 10),
                       Row(

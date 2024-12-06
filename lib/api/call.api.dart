@@ -26,10 +26,8 @@ class ApiCall {
   static post(String url, Map<String, dynamic> data) async {
     final Logger logger = Logger();
     try {
-      String encryptedData = EncryptionHelper()
-          .encryptAESCryptoJS(jsonEncode(data), AppConst.encryptionKey);
-      final response = await dio
-          .postUri(Uri.parse(url), data: {"data": encryptedData.toString()});
+      String encryptedData = EncryptionHelper().encryptAESCryptoJS(jsonEncode(data), AppConst.encryptionKey);
+      final response = await dio.postUri(Uri.parse(url), data: {"data": encryptedData.toString()});
       if (response.data['responseCode'] == 501) {
         ResponseModel responseModel = ResponseModel.fromJson({
           "status": "error",
@@ -53,6 +51,44 @@ class ApiCall {
         response.data["data"] = jsonDecode(decryptedData);
       } catch (e) {
         response.data["data"] = decryptedData;
+      }
+      return response.data;
+    } catch (e) {
+      logger.e(e);
+      ResponseModel responseModel = ResponseModel.fromJson({
+        "status": "error",
+        "message": "Something went wrong",
+        "responseCode": 500,
+        "data": null,
+      });
+      return responseModel.toJson();
+    }
+  }
+
+  static postWithoutEncryption(String url, Map<String, dynamic> data) async {
+    final Logger logger = Logger();
+    try {
+      final response = await dio.postUri(Uri.parse(url), data: data);
+      if (response.data['responseCode'] == 501) {
+        ResponseModel responseModel = ResponseModel.fromJson({
+          "status": "error",
+          "message": response.data['message'],
+          "responseCode": 500,
+          "data": null,
+        });
+        forceLogout();
+        return responseModel.toJson();
+      }
+      if (response.headers.value('Authorization') != null && response.headers.value('Authorization') != '') {
+        updateToken(response.headers.value('Authorization')!);
+      }
+      if (response.data["data"] == null) {
+        return response.data;
+      }
+      try {
+        response.data["data"] = response.data["data"];
+      } catch (e) {
+        response.data["data"] = response.data["data"];
       }
       return response.data;
     } catch (e) {

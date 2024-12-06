@@ -3,7 +3,7 @@ class ResponseModel {
     String? status,
     String? message,
     num? responseCode,
-    num? data,
+    dynamic data,
   }) {
     _status = status;
     _message = message;
@@ -20,12 +20,12 @@ class ResponseModel {
   String? _status;
   String? _message;
   num? _responseCode;
-  num? _data;
+  dynamic _data;
 
   String? get status => _status;
   String? get message => _message;
   num? get responseCode => _responseCode;
-  num? get data => _data;
+  dynamic get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

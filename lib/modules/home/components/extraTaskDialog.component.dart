@@ -7,10 +7,13 @@ import '../../../utils/assets.util.dart';
 
 class ExtraTaskDialogComponent {
   static show({
-    required String totalDiamond,
-    required List<TaskListData> taskList,
+    required RxInt totalDiamond,
+    required RxList<TaskListData> taskList,
     required Function onInviteForSpin,
     required Function onRedeemSpin,
+    required Function onDetailsClick,
+    required Function onTaskGoClick,
+    required Function onTaskClaimClick,
   }) {
     return showDialog(
       context: Get.context!,
@@ -46,7 +49,7 @@ class ExtraTaskDialogComponent {
                     ),
                     const Spacer(),
                     MaterialButton(
-                      onPressed: () => Get.back(),
+                      onPressed: () => onDetailsClick(),
                       minWidth: 0,
                       padding: EdgeInsets.zero,
                       visualDensity: VisualDensity.compact,
@@ -83,7 +86,7 @@ class ExtraTaskDialogComponent {
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -101,7 +104,7 @@ class ExtraTaskDialogComponent {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            totalDiamond,
+                            "${totalDiamond.value}",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -111,13 +114,15 @@ class ExtraTaskDialogComponent {
                           const Spacer(),
                           Column(
                             children: [
-                              TaskButtonComponent(
-                                text: "Redeem Spin",
-                                onClick: () => onRedeemSpin(),
-                                height: 30,
-                                width: 120,
-                                startColor: true ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
-                                endColor: true ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                              Obx(
+                                () => TaskButtonComponent(
+                                  text: "Redeem Spin",
+                                  onClick: totalDiamond.value >= 1000 ? () => onRedeemSpin() : () {},
+                                  height: 30,
+                                  width: 120,
+                                  startColor: totalDiamond.value >= 1000 ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.onSurface.withOpacity(0.65),
+                                  endColor: totalDiamond.value >= 1000 ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                ),
                               ),
                               const SizedBox(height: 5),
                               RichText(
@@ -242,9 +247,10 @@ class ExtraTaskDialogComponent {
                         width: double.infinity,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(15)),
-                            color: context.theme.colorScheme.surfaceContainerLow.withOpacity(0.9),
-                            border: Border.all(color: context.theme.colorScheme.onSurfaceVariant)),
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          color: const Color(0xFF8f00ff).withOpacity(0.75),
+                          border: Border.all(color: context.theme.colorScheme.onSurfaceVariant),
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -316,74 +322,104 @@ class ExtraTaskDialogComponent {
                           ),
                         ],
                       ),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        primary: false,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        itemCount: taskList.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 10),
-                        itemBuilder: (context, index) => Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(15)),
-                            border: Border.all(color: context.theme.colorScheme.onSurfaceVariant),
-                            gradient: const LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xFF8f00ff),
-                                Color(0xFF560099),
-                              ],
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              ImageNetwork(
-                                image: taskList[index].icon ?? "",
-                                height: 45,
-                                width: 45,
-                                fitAndroidIos: BoxFit.contain,
-                                fitWeb: BoxFitWeb.contain,
+                      Obx(
+                        () => ListView.separated(
+                          shrinkWrap: true,
+                          primary: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          itemCount: taskList.length,
+                          separatorBuilder: (context, index) => const SizedBox(height: 10),
+                          itemBuilder: (context, index) => Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(15)),
+                              border: Border.all(color: context.theme.colorScheme.onSurfaceVariant),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0xFF8f00ff),
+                                  Color(0xFF560099),
+                                ],
                               ),
-                              const SizedBox(width: 5),
-                              Flexible(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: Text(
-                                    taskList[index].title ?? "",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: context.theme.colorScheme.onSurface,
+                            ),
+                            child: Row(
+                              children: [
+                                ImageNetwork(
+                                  image: taskList[index].icon ?? "",
+                                  height: 45,
+                                  width: 45,
+                                  fitAndroidIos: BoxFit.contain,
+                                  fitWeb: BoxFitWeb.contain,
+                                ),
+                                const SizedBox(width: 5),
+                                Flexible(
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Text(
+                                      taskList[index].title ?? "",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: context.theme.colorScheme.onSurface,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Column(
-                                children: [
-                                  TaskButtonComponent(
-                                    text: "GO",
-                                    onClick: () {},
-                                    height: 25,
-                                    width: 80,
-                                    startColor: context.theme.colorScheme.primaryFixed,
-                                    endColor: context.theme.colorScheme.secondaryFixed,
-                                  ),
-                                  const SizedBox(height: 3),
-                                  TaskButtonComponent(
-                                    text: "+${taskList[index].diamonds ?? 0}",
-                                    showDiamond: true,
-                                    onClick: () {},
-                                    height: 25,
-                                    width: 80,
-                                    startColor: context.theme.colorScheme.onSurfaceVariant,
-                                    endColor: context.theme.colorScheme.onSurfaceVariant,
-                                  ),
-                                ],
-                              ),
-                            ],
+                                Column(
+                                  children: [
+                                    TaskButtonComponent(
+                                      text: "GO",
+                                      onClick: () => onTaskGoClick(index),
+                                      height: 25,
+                                      width: 80,
+                                      startColor: context.theme.colorScheme.primaryFixed,
+                                      endColor: context.theme.colorScheme.secondaryFixed,
+                                    ),
+                                    const SizedBox(height: 3),
+                                    taskList[index].isCompleted??false
+                                    ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                       Image.asset(
+                                          AssetsUtil.getDiamond(),
+                                          height: 18,
+                                          width: 18,
+                                        ),
+                                        Text(
+                                          "+${taskList[index].diamonds ?? 0}",
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            color: context.theme.colorScheme.onSurface,
+                                            height: 1,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 3),
+                                        Icon(
+                                          Icons.check_circle_rounded,
+                                          size: 15,
+                                          color: context.theme.colorScheme.scrim,
+                                        ),
+                                      ],
+                                    )
+                                    : TaskButtonComponent(
+                                      text: "+${taskList[index].diamonds ?? 0}",
+                                      showDiamond: true,
+                                      onClick: taskList[index].isInitiated??false ? () => onTaskClaimClick(index) : () {},
+                                      height: 25,
+                                      width: 80,
+                                      startColor: taskList[index].isInitiated??false ? context.theme.colorScheme.scrim : context.theme.colorScheme.onSurfaceVariant,
+                                      endColor: taskList[index].isInitiated??false ? context.theme.colorScheme.scrim : context.theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -500,7 +536,7 @@ class TaskButtonComponent extends StatelessWidget {
               text,
               style: TextStyle(
                 fontSize: 13,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 color: context.theme.colorScheme.onSurface,
                 height: 1,
                 fontStyle: FontStyle.italic,

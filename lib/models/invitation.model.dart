@@ -1,14 +1,15 @@
 class InvitationModel {
   InvitationModel({
-      String? status, 
-      String? message, 
-      num? responseCode, 
-      List<InvitationData>? data,}){
+    String? status,
+    String? message,
+    num? responseCode,
+    List<InvitationData>? data,
+  }) {
     _status = status;
     _message = message;
     _responseCode = responseCode;
     _data = data;
-}
+  }
 
   InvitationModel.fromJson(dynamic json) {
     _status = json['status'];
@@ -41,16 +42,16 @@ class InvitationModel {
     }
     return map;
   }
-
 }
 
 class InvitationData {
   InvitationData({
-      String? id, 
-      String? firstName,}){
+    String? id,
+    String? firstName,
+  }) {
     _id = id;
     _firstName = firstName;
-}
+  }
 
   InvitationData.fromJson(dynamic json) {
     _id = json['_id'];
@@ -68,5 +69,4 @@ class InvitationData {
     map['firstName'] = _firstName;
     return map;
   }
-
 }

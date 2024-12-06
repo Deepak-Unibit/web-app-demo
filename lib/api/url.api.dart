@@ -31,7 +31,8 @@ class UrlApi {
   // Task
   static const getTasks = "$baseUrl/task/list";
   static const getTaskHistory = "$baseUrl/task/task-history-list";
+  static const initiateTaskReward = "$baseUrl/task/initiate-reward";
   static const claimTaskReward = "$baseUrl/task/claim-reward";
-  static const verifyTaskSubscription = "$baseUrl/verify-subscription-task";
+  static const verifyTaskSubscription = "$baseUrl2/verify-subscription-task";
   static const redeemTaskDiamond = "$baseUrl/task/redeem-diamond";
 }
