@@ -307,21 +307,21 @@ class ExtraTaskDialogComponent {
                               color: context.theme.colorScheme.onSurface,
                             ),
                           ),
-                          MaterialButton(
-                            onPressed: () {},
-                            minWidth: 0,
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                            visualDensity: VisualDensity.compact,
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: const BorderRadius.all(Radius.circular(10)), side: BorderSide(color: context.theme.colorScheme.onSecondaryFixedVariant.withOpacity(0.5))),
-                            child: Icon(
-                              Icons.refresh,
-                              size: 20,
-                              color: context.theme.colorScheme.onSecondaryFixedVariant,
-                            ),
-                          ),
+                          // MaterialButton(
+                          //   onPressed: () {},
+                          //   minWidth: 0,
+                          //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                          //   visualDensity: VisualDensity.compact,
+                          //   highlightColor: Colors.transparent,
+                          //   splashColor: Colors.transparent,
+                          //   shape: RoundedRectangleBorder(
+                          //       borderRadius: const BorderRadius.all(Radius.circular(10)), side: BorderSide(color: context.theme.colorScheme.onSecondaryFixedVariant.withOpacity(0.5))),
+                          //   child: Icon(
+                          //     Icons.refresh,
+                          //     size: 20,
+                          //     color: context.theme.colorScheme.onSecondaryFixedVariant,
+                          //   ),
+                          // ),
                         ],
                       ),
                       Obx(
