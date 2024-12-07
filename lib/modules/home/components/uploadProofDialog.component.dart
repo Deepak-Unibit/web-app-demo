@@ -7,6 +7,7 @@ import '../../../models/taskList.model.dart';
 class UploadProofDialogComponent {
   static show({
     required TaskListData task,
+    required RxString uploadedFile,
     required Function onVisitWebsite,
     required Function onUploadFile,
     required Function onConfirm,
@@ -179,9 +180,20 @@ class UploadProofDialogComponent {
                     ),
                   ),
                 ),
+                Obx(
+                  ()=> Text(
+                    uploadedFile.value!="" ? "File uploaded successfully now click on Confirm" : "Upload a screenshot",
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                      color:  uploadedFile.value!="" ? context.theme.colorScheme.scrim : context.theme.colorScheme.secondaryFixed,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
                 MaterialButton(
-                  onPressed: () => onConfirm(),
+                  onPressed: () => onConfirm(task.id??""),
                   minWidth: 0,
                   padding: EdgeInsets.zero,
                   visualDensity: VisualDensity.compact,

@@ -293,12 +293,11 @@ class ApiCall {
         return response.data;
       }
       // response.data["data"] = DecryptUtils.decryptData(response.data["data"]);
-      String decryptedData = EncryptionHelper()
-          .decryptAESCryptoJS(response.data["data"], AppConst.encryptionKey);
+      // String decryptedData = EncryptionHelper().decryptAESCryptoJS(response.data["data"], AppConst.encryptionKey);
       try {
-        response.data["data"] = jsonDecode(decryptedData);
+        response.data["data"] = jsonDecode(response.data["data"]);
       } catch (e) {
-        response.data["data"] = decryptedData;
+        response.data["data"] = response.data["data"];
       }
       return response.data;
     } catch (e) {

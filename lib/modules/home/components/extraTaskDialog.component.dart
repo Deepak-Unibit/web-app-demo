@@ -230,13 +230,13 @@ class ExtraTaskDialogComponent {
                                   mainAxisSpacing: 15,
                                 ),
                                 children: [
-                                  DailyRewardComponent(day: 1, diamond: dailyReward.value.dailyReward?.day1 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 1),
-                                  DailyRewardComponent(day: 2, diamond: dailyReward.value.dailyReward?.day2 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 2),
-                                  DailyRewardComponent(day: 3, diamond: dailyReward.value.dailyReward?.day3 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 3),
-                                  DailyRewardComponent(day: 4, diamond: dailyReward.value.dailyReward?.day4 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 4),
-                                  DailyRewardComponent(day: 5, diamond: dailyReward.value.dailyReward?.day5 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 5),
-                                  DailyRewardComponent(day: 6, diamond: dailyReward.value.dailyReward?.day6 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 6),
-                                  DailyRewardComponent(day: 7, diamond: dailyReward.value.dailyReward?.day7 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 7),
+                                  DailyRewardComponent(day: 1, diamond: dailyReward.value.dailyReward?.day1 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 1),
+                                  DailyRewardComponent(day: 2, diamond: dailyReward.value.dailyReward?.day2 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 2),
+                                  DailyRewardComponent(day: 3, diamond: dailyReward.value.dailyReward?.day3 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 3),
+                                  DailyRewardComponent(day: 4, diamond: dailyReward.value.dailyReward?.day4 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 4),
+                                  DailyRewardComponent(day: 5, diamond: dailyReward.value.dailyReward?.day5 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 5),
+                                  DailyRewardComponent(day: 6, diamond: dailyReward.value.dailyReward?.day6 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 6),
+                                  DailyRewardComponent(day: 7, diamond: dailyReward.value.dailyReward?.day7 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 7),
                                 ],
                               )
                             : Column(
@@ -401,7 +401,7 @@ class ExtraTaskDialogComponent {
                                       endColor: context.theme.colorScheme.secondaryFixed,
                                     ),
                                     const SizedBox(height: 3),
-                                    taskList[index].isCompleted ?? false
+                                    (taskList[index].isCompleted ?? false) && (taskList[index].type != 5)
                                         ? Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/api/call.api.dart';
@@ -22,6 +23,8 @@ import 'package:web_app_demo/models/taskList.model.dart';
 import 'package:web_app_demo/models/taskRedeemHistory.model.dart';
 import 'dart:js' as js;
 import 'dart:html' as html;
+import 'package:dio/dio.dart' as dio;
+import 'package:http_parser/http_parser.dart' as http;
 import 'package:web_app_demo/models/user.model.dart';
 import 'package:web_app_demo/models/verifySubscription.model.dart';
 import 'package:web_app_demo/models/withdrawDetails.model.dart';
@@ -63,6 +66,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   RxList<int> activeTimerIndexList = <int>[].obs;
   final RxList<int> remainingTimes = <int>[].obs;
   Rx<DailyRewardsData> dailyRewardsData = DailyRewardsData().obs;
+  RxString uploadedProofFile = "".obs;
 
   @override
   void onInit() {
@@ -576,13 +580,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.get(UrlApi.getDailyRewards);
     LoadingPage.close();
 
+    print(resp);
+
     DailyRewardsModel dailyRewardsModel = DailyRewardsModel.fromJson(resp);
 
-    if(dailyRewardsModel.responseCode == 200) {
+    if (dailyRewardsModel.responseCode == 200) {
       dailyRewardsData.value = dailyRewardsModel.data ?? DailyRewardsData();
       return true;
-    }
-    else {
+    } else {
       SnackBarHelper.show(dailyRewardsModel.message);
     }
     return false;
@@ -643,8 +648,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
       html.window.open(telegramLink, '_blank');
     } else if (taskDataList[index].type == 2) {
+      uploadedProofFile.value = "";
       UploadProofDialogComponent.show(
         task: taskDataList[index],
+        uploadedFile: uploadedProofFile,
         onVisitWebsite: onVisitWebsite,
         onUploadFile: pickProofFile,
         onConfirm: onConfirmProofFileSubmit,
@@ -705,8 +712,12 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     return;
   }
 
-  Future<void> claimTask(String taskId) async {
+  Future<void> claimTask(String taskId, {String proofFile = ""}) async {
     Map<String, dynamic> data = {"taskId": taskId};
+
+    if(proofFile != "") {
+      data["proofFile"] = uploadedProofFile.value;
+    }
 
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.claimTaskReward, data);
@@ -730,25 +741,67 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     uploadInput.accept = '*';
     uploadInput.click();
 
-    // uploadInput.onChange.listen((e) {
-    //   final files = uploadInput.files;
-    //   if (files!.isNotEmpty) {
-    //     final reader = html.FileReader();
-    //
-    //     reader.onLoadEnd.listen((e) {
-    //       print('File content: ${reader.result}');
-    //     });
-    //
-    //     reader.readAsText(files[0]); // Read as text or binary
-    //   }
-    // });
+    uploadInput.onChange.listen((e) {
+      final files = uploadInput.files;
+      if (files != null && files.isNotEmpty) {
+        final file = files.first;
+
+        final reader = html.FileReader();
+        reader.readAsArrayBuffer(file);
+
+        reader.onLoadEnd.listen((e) async {
+          final fileBytes = reader.result as Uint8List;
+
+          final imageUrl = await getImageUrl(file.name, fileBytes);
+          if (imageUrl != null) {
+            uploadedProofFile.value = imageUrl;
+          }
+        });
+      }
+    });
+  }
+
+  Future<String?> getImageUrl(String fileName, Uint8List fileBytes) async {
+    var multipartFile = dio.MultipartFile.fromBytes(
+      fileBytes,
+      filename: fileName,
+      contentType: http.MediaType('image', fileName.split('.').last),
+    );
+
+    var imageData = {
+      "image": multipartFile,
+    };
+
+    LoadingPage.show();
+    var res = await ApiCall.postForm(UrlApi.imageUpload, imageData);
+    LoadingPage.close();
+
+    ResponseModel responseModel = ResponseModel.fromJson(res);
+
+    if (responseModel.responseCode == 200) {
+      return responseModel.data;
+    } else {
+      SnackBarHelper.show(responseModel.message);
+      return null;
+    }
   }
 
   onVisitWebsite(String url) {
     html.window.open(url, '_blank');
   }
 
-  void onConfirmProofFileSubmit() {}
+  void onConfirmProofFileSubmit(String taskId) {
+    if(uploadedProofFile.value == "") {
+      SnackBarHelper.show("Please upload a proof screenshot");
+      return;
+    }
+
+    print(taskId);
+    print(uploadedProofFile);
+
+    Get.back();
+    claimTask(taskId, proofFile: uploadedProofFile.value);
+  }
 
   void startTimer(int index, int duration) {
     if (remainingTimes.length <= index) {
