@@ -105,7 +105,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
 
-      // print(userData);
+      print(userData);
 
       // Development
       // userModel = UserModel(
@@ -175,6 +175,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
 
+    print(resp);
+
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
     if (setUserModel.responseCode == 200) {
@@ -183,7 +185,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       setUserData.value.setEarnedAmount = ((setUserData.value.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
       goalAmount.value = ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
       extraCashStatus();
-    } else {}
+    }
+    else {
+      SnackBarHelper.show(setUserModel.message);
+    }
+    return;
   }
 
   extraCashStatus() async {
@@ -581,6 +587,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     LoadingPage.close();
 
     print(resp);
+    print(setUserData.value.diamondsEarned);
 
     DailyRewardsModel dailyRewardsModel = DailyRewardsModel.fromJson(resp);
 
