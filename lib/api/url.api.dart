@@ -35,4 +35,8 @@ class UrlApi {
   static const claimTaskReward = "$baseUrl/task/claim-reward";
   static const verifyTaskSubscription = "$baseUrl2/verify-subscription-task";
   static const redeemTaskDiamond = "$baseUrl/task/redeem-diamond";
+  static const getDailyRewards = "$baseUrl/task/daily-reward";
+
+  // Upload Image
+  static const imageUpload = "$baseUrl/task/upload-image";
 }

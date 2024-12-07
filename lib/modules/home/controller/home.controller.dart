@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
 import 'package:web_app_demo/helper/regex.helper.dart';
 import 'package:web_app_demo/helper/snackBar.helper.dart';
 import 'package:web_app_demo/models/cashOut.model.dart';
+import 'package:web_app_demo/models/dailyRewards.model.dart';
 import 'package:web_app_demo/models/invitation.model.dart';
 import 'package:web_app_demo/models/myProfile.model.dart';
 import 'package:web_app_demo/models/myRank.model.dart';
@@ -58,6 +60,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   RxBool showExtraCash = false.obs;
   RxList<TaskListData> taskDataList = <TaskListData>[].obs;
   RxInt totalDiamond = 0.obs;
+  RxList<int> activeTimerIndexList = <int>[].obs;
+  final RxList<int> remainingTimes = <int>[].obs;
+  Rx<DailyRewardsData> dailyRewardsData = DailyRewardsData().obs;
 
   @override
   void onInit() {
@@ -92,19 +97,19 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
-
-      // print(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
+      //
+      // // print(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609300,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609300,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
@@ -125,20 +130,20 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   verifySubscription(num telegramId) async {
     // Production
-    LoadingPage.show();
-    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    LoadingPage.close();
-
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    // LoadingPage.show();
+    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    // LoadingPage.close();
+    //
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-    //   responseCode: 200,
-    //   data: VerifySubscriptionData(
-    //     joinedChannel1: true,
-    //     joinedChannel2: true,
-    //   ),
-    // );
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+      responseCode: 200,
+      data: VerifySubscriptionData(
+        joinedChannel1: true,
+        joinedChannel2: true,
+      ),
+    );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
@@ -468,7 +473,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onInviteForSpins() {
-    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink =
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -546,7 +552,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   Future<void> onExtraTaskClick() async {
     taskDataList.clear();
     bool isListLoaded = await getTaskListData();
-    if (!isListLoaded) {
+    bool isDailyReward = await getDailyRewards();
+    if (!(isListLoaded && isDailyReward)) {
       return;
     }
     totalDiamond.value = (setUserData.value.diamondsEarned ?? 0) as int;
@@ -558,7 +565,27 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       onDetailsClick: onTaskDetailsClick,
       onTaskGoClick: onTaskGoClick,
       onTaskClaimClick: onClaimTaskRewardClick,
+      activeTimerIndexList: activeTimerIndexList,
+      remainingTimes: remainingTimes,
+      dailyReward: dailyRewardsData,
     );
+  }
+
+  Future<bool> getDailyRewards() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.getDailyRewards);
+    LoadingPage.close();
+
+    DailyRewardsModel dailyRewardsModel = DailyRewardsModel.fromJson(resp);
+
+    if(dailyRewardsModel.responseCode == 200) {
+      dailyRewardsData.value = dailyRewardsModel.data ?? DailyRewardsData();
+      return true;
+    }
+    else {
+      SnackBarHelper.show(dailyRewardsModel.message);
+    }
+    return false;
   }
 
   Future<bool> getTaskListData() async {
@@ -610,7 +637,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     return;
   }
 
-  Future<void> onTaskGoClick(int index) async{
+  Future<void> onTaskGoClick(int index) async {
     if (taskDataList[index].type == 1) {
       String telegramLink = taskDataList[index].destinationLink ?? "";
 
@@ -618,6 +645,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     } else if (taskDataList[index].type == 2) {
       UploadProofDialogComponent.show(
         task: taskDataList[index],
+        onVisitWebsite: onVisitWebsite,
         onUploadFile: pickProofFile,
         onConfirm: onConfirmProofFileSubmit,
       );
@@ -629,18 +657,21 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       onInviteForSpins();
     }
 
-    Map<String, dynamic> data = {
-      "taskId" : taskDataList[index].id
-    };
+    Map<String, dynamic> data = {"taskId": taskDataList[index].id};
     var resp = await ApiCall.post(UrlApi.initiateTaskReward, data);
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
-    if(responseModel.responseCode == 200) {
-      taskDataList[index].setIsInitiated = true;
-      taskDataList.refresh();
-    }
-    else {
+    if (responseModel.responseCode == 200) {
+      if (taskDataList[index].type != 3) {
+        taskDataList[index].setIsInitiated = true;
+        taskDataList.refresh();
+      } else {
+        activeTimerIndexList.add(index);
+        activeTimerIndexList.refresh();
+        startTimer(index, (taskDataList[index].claimDuration ?? 0) as int);
+      }
+    } else {
       SnackBarHelper.show(responseModel.message);
     }
     return;
@@ -649,16 +680,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void onClaimTaskRewardClick(int index) {
     if (taskDataList[index].type == 1) {
       verifyTaskSubscription(taskDataList[index].channelUserName ?? "", taskDataList[index].id ?? "");
-    }
-    else if (taskDataList[index].type == 3) {
+    } else if (taskDataList[index].type == 3) {
       claimTask(taskDataList[index].id ?? "");
-    }
-    else if (taskDataList[index].type == 5) {
+    } else if (taskDataList[index].type == 5) {
       claimTask(taskDataList[index].id ?? "");
     }
   }
 
-  void verifyTaskSubscription(String channelName, String id) async {
+  Future<void> verifyTaskSubscription(String channelName, String id) async {
     Map<String, dynamic> data = {"channel": channelName};
     LoadingPage.show();
     var resp = await ApiCall.postWithoutEncryption("${UrlApi.verifyTaskSubscription}/${setUserData.value.telegramId}", data);
@@ -667,7 +696,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
     if (responseModel.responseCode == 200) {
-      if(responseModel.data) {
+      if (responseModel.data) {
         claimTask(id);
       }
     } else {
@@ -676,7 +705,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     return;
   }
 
-  void claimTask(String taskId) async {
+  Future<void> claimTask(String taskId) async {
     Map<String, dynamic> data = {"taskId": taskId};
 
     LoadingPage.show();
@@ -686,12 +715,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
     if (responseModel.responseCode == 200) {
-      setUserData.value.setDiamondsEarned = responseModel.data??0;
+      setUserData.value.setDiamondsEarned = responseModel.data ?? 0;
       totalDiamond.value = setUserData.value.diamondsEarned as int;
       await getTaskListData();
       SnackBarHelper.show(responseModel.message);
-    }
-    else {
+    } else {
       SnackBarHelper.show(responseModel.message);
     }
     return;
@@ -699,7 +727,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   void pickProofFile() {
     html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
-    uploadInput.accept = '*'; // You can specify file types like '.png', '.jpg', etc.
+    uploadInput.accept = '*';
     uploadInput.click();
 
     // uploadInput.onChange.listen((e) {
@@ -716,10 +744,30 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     // });
   }
 
-  void onConfirmProofFileSubmit() {
-
+  onVisitWebsite(String url) {
+    html.window.open(url, '_blank');
   }
 
+  void onConfirmProofFileSubmit() {}
 
+  void startTimer(int index, int duration) {
+    if (remainingTimes.length <= index) {
+      remainingTimes.addAll(List.filled(index - remainingTimes.length + 1, 0));
+    }
 
+    remainingTimes[index] = duration;
+
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (remainingTimes[index] <= 0) {
+        timer.cancel();
+        taskDataList[index].setIsInitiated = true;
+        taskDataList.refresh();
+        activeTimerIndexList.remove(index);
+        activeTimerIndexList.refresh();
+      } else {
+        remainingTimes[index]--;
+        update();
+      }
+    });
+  }
 }

@@ -2,19 +2,22 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_network/image_network.dart';
+import 'package:web_app_demo/models/dailyRewards.model.dart';
 import 'package:web_app_demo/models/taskList.model.dart';
 import '../../../utils/assets.util.dart';
 
 class ExtraTaskDialogComponent {
-  static show({
-    required RxInt totalDiamond,
-    required RxList<TaskListData> taskList,
-    required Function onInviteForSpin,
-    required Function onRedeemSpin,
-    required Function onDetailsClick,
-    required Function onTaskGoClick,
-    required Function onTaskClaimClick,
-  }) {
+  static show(
+      {required RxInt totalDiamond,
+      required RxList<TaskListData> taskList,
+      required Function onInviteForSpin,
+      required Function onRedeemSpin,
+      required Function onDetailsClick,
+      required Function onTaskGoClick,
+      required Function onTaskClaimClick,
+      required RxList<int> activeTimerIndexList,
+      required RxList<int> remainingTimes,
+      required Rx<DailyRewardsData> dailyReward}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -104,7 +107,7 @@ class ExtraTaskDialogComponent {
                           ),
                           const SizedBox(width: 5),
                           Obx(
-                            ()=> Text(
+                            () => Text(
                               "${totalDiamond.value}",
                               style: TextStyle(
                                 fontSize: 18,
@@ -214,26 +217,48 @@ class ExtraTaskDialogComponent {
                             ],
                           ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              AssetsUtil.getDailyFinish(),
-                              height: 60,
-                              fit: BoxFit.contain,
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              true ? "Coming Soon..." : "Daily Rewards event is over.\nInvite friends to get more spin!",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: context.theme.colorScheme.onSurfaceVariant,
+                        child: true
+                            ? GridView(
+                                shrinkWrap: true,
+                                primary: false,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.all(10),
+                                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 60,
+                                  mainAxisExtent: 50,
+                                  crossAxisSpacing: 15,
+                                  mainAxisSpacing: 15,
+                                ),
+                                children: [
+                                  DailyRewardComponent(day: 1, diamond: dailyReward.value.dailyReward?.day1 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 1),
+                                  DailyRewardComponent(day: 2, diamond: dailyReward.value.dailyReward?.day2 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 2),
+                                  DailyRewardComponent(day: 3, diamond: dailyReward.value.dailyReward?.day3 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 3),
+                                  DailyRewardComponent(day: 4, diamond: dailyReward.value.dailyReward?.day4 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 4),
+                                  DailyRewardComponent(day: 5, diamond: dailyReward.value.dailyReward?.day5 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 5),
+                                  DailyRewardComponent(day: 6, diamond: dailyReward.value.dailyReward?.day6 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 6),
+                                  DailyRewardComponent(day: 7, diamond: dailyReward.value.dailyReward?.day7 ?? 0, isCompleted: (dailyReward.value.dailyRewardDay ?? 0 - 1) >= 7),
+                                ],
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    AssetsUtil.getDailyFinish(),
+                                    height: 60,
+                                    fit: BoxFit.contain,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "Daily Rewards event is over.\nInvite friends to get more spin!",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: context.theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
                       ),
                       const SizedBox(height: 15),
                       Text(
@@ -289,40 +314,20 @@ class ExtraTaskDialogComponent {
                               onClick: () => onInviteForSpin(),
                               height: 30,
                               width: 120,
-                              startColor: true ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
-                              endColor: true ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                              startColor: context.theme.colorScheme.surfaceContainerLow,
+                              endColor: context.theme.colorScheme.surfaceContainerHigh,
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Task List",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
-                          ),
-                          // MaterialButton(
-                          //   onPressed: () {},
-                          //   minWidth: 0,
-                          //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                          //   visualDensity: VisualDensity.compact,
-                          //   highlightColor: Colors.transparent,
-                          //   splashColor: Colors.transparent,
-                          //   shape: RoundedRectangleBorder(
-                          //       borderRadius: const BorderRadius.all(Radius.circular(10)), side: BorderSide(color: context.theme.colorScheme.onSecondaryFixedVariant.withOpacity(0.5))),
-                          //   child: Icon(
-                          //     Icons.refresh,
-                          //     size: 20,
-                          //     color: context.theme.colorScheme.onSecondaryFixedVariant,
-                          //   ),
-                          // ),
-                        ],
+                      Text(
+                        "Task List",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: context.theme.colorScheme.onSurface,
+                        ),
                       ),
                       Obx(
                         () => ListView.separated(
@@ -370,7 +375,21 @@ class ExtraTaskDialogComponent {
                                     ),
                                   ),
                                 ),
-                                Text("${taskList[index].claimDuration??0}"),
+                                Obx(
+                                  () => activeTimerIndexList.contains(index)
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(right: 5),
+                                          child: Text(
+                                            "Verifying in ${remainingTimes[index] ~/ 60}:${(remainingTimes[index] % 60) < 10 ? "0${remainingTimes[index] % 60}" : remainingTimes[index] % 60}",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
+                                              color: context.theme.colorScheme.primaryFixed,
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                ),
                                 Column(
                                   children: [
                                     TaskButtonComponent(
@@ -382,43 +401,47 @@ class ExtraTaskDialogComponent {
                                       endColor: context.theme.colorScheme.secondaryFixed,
                                     ),
                                     const SizedBox(height: 3),
-                                    taskList[index].isCompleted??false
-                                    ? Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                       Image.asset(
-                                          AssetsUtil.getDiamond(),
-                                          height: 18,
-                                          width: 18,
-                                        ),
-                                        Text(
-                                          "+${taskList[index].diamonds ?? 0}",
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w600,
-                                            color: context.theme.colorScheme.onSurface,
-                                            height: 1,
-                                            fontStyle: FontStyle.italic,
+                                    taskList[index].isCompleted ?? false
+                                        ? Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.asset(
+                                                AssetsUtil.getDiamond(),
+                                                height: 18,
+                                                width: 18,
+                                              ),
+                                              Text(
+                                                "+${taskList[index].diamonds ?? 0}",
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: context.theme.colorScheme.onSurface,
+                                                  height: 1,
+                                                  fontStyle: FontStyle.italic,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 3),
+                                              Icon(
+                                                Icons.check_circle_rounded,
+                                                size: 15,
+                                                color: context.theme.colorScheme.scrim,
+                                              ),
+                                            ],
+                                          )
+                                        : TaskButtonComponent(
+                                            text: "+${taskList[index].diamonds ?? 0}",
+                                            showDiamond: true,
+                                            onClick: ((taskList[index].isInitiated ?? false) && !(activeTimerIndexList.contains(index))) ? () => onTaskClaimClick(index) : () {},
+                                            height: 25,
+                                            width: 80,
+                                            startColor: ((taskList[index].isInitiated ?? false) && !(activeTimerIndexList.contains(index)))
+                                                ? context.theme.colorScheme.scrim
+                                                : context.theme.colorScheme.onSurfaceVariant,
+                                            endColor: ((taskList[index].isInitiated ?? false) && !(activeTimerIndexList.contains(index)))
+                                                ? context.theme.colorScheme.scrim
+                                                : context.theme.colorScheme.onSurfaceVariant,
                                           ),
-                                        ),
-                                        const SizedBox(width: 3),
-                                        Icon(
-                                          Icons.check_circle_rounded,
-                                          size: 15,
-                                          color: context.theme.colorScheme.scrim,
-                                        ),
-                                      ],
-                                    )
-                                    : TaskButtonComponent(
-                                      text: "+${taskList[index].diamonds ?? 0}",
-                                      showDiamond: true,
-                                      onClick: taskList[index].isInitiated??false ? () => onTaskClaimClick(index) : () {},
-                                      height: 25,
-                                      width: 80,
-                                      startColor: taskList[index].isInitiated??false ? context.theme.colorScheme.scrim : context.theme.colorScheme.onSurfaceVariant,
-                                      endColor: taskList[index].isInitiated??false ? context.theme.colorScheme.scrim : context.theme.colorScheme.onSurfaceVariant,
-                                    ),
                                   ],
                                 ),
                               ],
@@ -472,6 +495,82 @@ class ExtraTaskDialogComponent {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class DailyRewardComponent extends StatelessWidget {
+  const DailyRewardComponent({
+    super.key,
+    required this.day,
+    required this.diamond,
+    required this.isCompleted,
+  });
+
+  final int day;
+  final num diamond;
+  final bool isCompleted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      width: 60,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            context.theme.colorScheme.surfaceContainerLow,
+            context.theme.colorScheme.surfaceContainerHigh,
+          ],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Day $day",
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+              color: context.theme.colorScheme.onSurface,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                AssetsUtil.getDiamond(),
+                height: 12,
+                width: 12,
+              ),
+              const SizedBox(width: 3),
+              Text(
+                "$diamond",
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: context.theme.colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          isCompleted
+              ? Icon(
+                  Icons.check_circle_rounded,
+                  size: 15,
+                  color: context.theme.colorScheme.scrim,
+                )
+              : const SizedBox.shrink(),
+        ],
       ),
     );
   }

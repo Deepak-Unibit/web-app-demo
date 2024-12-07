@@ -311,9 +311,9 @@ class HomeView extends StatelessWidget {
                             children: [
                               buildColumn2(
                                 context,
-                                homeController.inviteForSpin,
-                                AssetsUtil.getSpinCard(),
-                                "+1 Spin",
+                                homeController.onExtraTaskClick,
+                                AssetsUtil.getExtraTask(),
+                                "Extra Task",
                                 context.theme.colorScheme.surfaceContainerHigh,
                                 context.theme.colorScheme.surfaceContainerLow,
                               ),
@@ -338,9 +338,9 @@ class HomeView extends StatelessWidget {
                             alignment: Alignment.bottomRight,
                             child: buildColumn2(
                               context,
-                              homeController.onExtraTaskClick,
-                              AssetsUtil.getExtraTask(),
-                              "Extra Task",
+                              homeController.inviteForSpin,
+                              AssetsUtil.getSpinCard(),
+                              "+1 Spin",
                               context.theme.colorScheme.surfaceContainerHigh,
                               context.theme.colorScheme.surfaceContainerLow,
                             ),

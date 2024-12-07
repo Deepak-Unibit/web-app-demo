@@ -1,15 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:web_app_demo/modules/home/components/secondaryButton.component.dart';
-import 'package:web_app_demo/modules/home/components/textField.component.dart';
-import 'package:web_app_demo/utils/assets.util.dart';
 
 import '../../../models/taskList.model.dart';
 
 class UploadProofDialogComponent {
   static show({
     required TaskListData task,
+    required Function onVisitWebsite,
     required Function onUploadFile,
     required Function onConfirm,
   }) {
@@ -77,7 +75,7 @@ class UploadProofDialogComponent {
                       ),
                     ),
                     MaterialButton(
-                      onPressed: () {},
+                      onPressed: () => onVisitWebsite(task.destinationLink??""),
                       minWidth: 0,
                       padding: EdgeInsets.zero,
                       visualDensity: VisualDensity.compact,
