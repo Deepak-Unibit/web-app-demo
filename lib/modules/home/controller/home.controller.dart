@@ -104,8 +104,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       var state = js.JsObject.fromBrowserObject(js.context['state']);
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
-
-      print(userData);
+      //
+      // print(userData);
 
       // Development
       // userModel = UserModel(
@@ -175,8 +175,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.post(UrlApi.setUser, data);
     LoadingPage.close();
 
-    print(resp);
-
     SetUserModel setUserModel = SetUserModel.fromJson(resp);
 
     if (setUserModel.responseCode == 200) {
@@ -185,8 +183,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       setUserData.value.setEarnedAmount = ((setUserData.value.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
       goalAmount.value = ((((setUserModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
       extraCashStatus();
-    }
-    else {
+      updateDailyRewardDiamond();
+    } else {
       SnackBarHelper.show(setUserModel.message);
     }
     return;
@@ -199,6 +197,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (settingsModel.responseCode == 200) {
       showExtraCash.value = settingsModel.data ?? false;
+    }
+  }
+
+  Future<void> updateDailyRewardDiamond() async {
+    var resp = await ApiCall.get(UrlApi.getProfile);
+    MyProfileModel myProfileModel = MyProfileModel.fromJson(resp);
+    if (myProfileModel.responseCode == 200) {
+      setUserData.value.setDiamondsEarned = myProfileModel.data?.diamondsEarned ?? 0;
     }
   }
 
@@ -586,9 +592,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.get(UrlApi.getDailyRewards);
     LoadingPage.close();
 
-    print(resp);
-    print(setUserData.value.diamondsEarned);
-
     DailyRewardsModel dailyRewardsModel = DailyRewardsModel.fromJson(resp);
 
     if (dailyRewardsModel.responseCode == 200) {
@@ -722,7 +725,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   Future<void> claimTask(String taskId, {String proofFile = ""}) async {
     Map<String, dynamic> data = {"taskId": taskId};
 
-    if(proofFile != "") {
+    if (proofFile != "") {
       data["proofFile"] = uploadedProofFile.value;
     }
 
@@ -798,13 +801,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void onConfirmProofFileSubmit(String taskId) {
-    if(uploadedProofFile.value == "") {
+    if (uploadedProofFile.value == "") {
       SnackBarHelper.show("Please upload a proof screenshot");
       return;
     }
-
-    print(taskId);
-    print(uploadedProofFile);
 
     Get.back();
     claimTask(taskId, proofFile: uploadedProofFile.value);
