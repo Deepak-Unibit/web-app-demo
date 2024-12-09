@@ -104,8 +104,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       var state = js.JsObject.fromBrowserObject(js.context['state']);
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
-      //
-      // print(userData);
+
+      print(userData);
 
       // Development
       // userModel = UserModel(
@@ -657,24 +657,39 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       String telegramLink = taskDataList[index].destinationLink ?? "";
 
       html.window.open(telegramLink, '_blank');
-    } else if (taskDataList[index].type == 2) {
+    }
+    else if (taskDataList[index].type == 2) {
       uploadedProofFile.value = "";
       UploadProofDialogComponent.show(
+        index: index,
         task: taskDataList[index],
         uploadedFile: uploadedProofFile,
         onVisitWebsite: onVisitWebsite,
         onUploadFile: pickProofFile,
         onConfirm: onConfirmProofFileSubmit,
       );
-    } else if (taskDataList[index].type == 3) {
+      return;
+    }
+    else if (taskDataList[index].type == 3) {
       String link = taskDataList[index].destinationLink ?? "";
 
       html.window.open(link, '_blank');
-    } else if (taskDataList[index].type == 5) {
+    }
+    else if (taskDataList[index].type == 5) {
       onInviteForSpins();
     }
 
-    Map<String, dynamic> data = {"taskId": taskDataList[index].id};
+    initiateTaskReward(index);
+
+    return;
+  }
+
+  Future<void> initiateTaskReward(int index, {String proofFile = ""}) async{
+    Map<String, dynamic> data = {"taskId": taskDataList[index].id ?? ""};
+
+    if (proofFile != "") {
+      data["proofFile"] = uploadedProofFile.value;
+    }
     var resp = await ApiCall.post(UrlApi.initiateTaskReward, data);
 
     ResponseModel responseModel = ResponseModel.fromJson(resp);
@@ -683,25 +698,26 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       if (taskDataList[index].type != 3) {
         taskDataList[index].setIsInitiated = true;
         taskDataList.refresh();
-      } else {
+      }
+      else {
         activeTimerIndexList.add(index);
         activeTimerIndexList.refresh();
         startTimer(index, (taskDataList[index].claimDuration ?? 0) as int);
       }
-    } else {
+    }
+    else {
       SnackBarHelper.show(responseModel.message);
     }
-    return;
   }
 
   void onClaimTaskRewardClick(int index) {
     if (taskDataList[index].type == 1) {
       verifyTaskSubscription(taskDataList[index].channelUserName ?? "", taskDataList[index].id ?? "");
-    } else if (taskDataList[index].type == 3) {
-      claimTask(taskDataList[index].id ?? "");
-    } else if (taskDataList[index].type == 5) {
+    }
+    else {
       claimTask(taskDataList[index].id ?? "");
     }
+
   }
 
   Future<void> verifyTaskSubscription(String channelName, String id) async {
@@ -722,12 +738,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     return;
   }
 
-  Future<void> claimTask(String taskId, {String proofFile = ""}) async {
+  Future<void> claimTask(String taskId) async {
     Map<String, dynamic> data = {"taskId": taskId};
-
-    if (proofFile != "") {
-      data["proofFile"] = uploadedProofFile.value;
-    }
 
     LoadingPage.show();
     var resp = await ApiCall.post(UrlApi.claimTaskReward, data);
@@ -740,7 +752,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       totalDiamond.value = setUserData.value.diamondsEarned as int;
       await getTaskListData();
       SnackBarHelper.show(responseModel.message);
-    } else {
+    }
+    else {
       SnackBarHelper.show(responseModel.message);
     }
     return;
@@ -800,14 +813,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     html.window.open(url, '_blank');
   }
 
-  void onConfirmProofFileSubmit(String taskId) {
+  void onConfirmProofFileSubmit(int index) {
     if (uploadedProofFile.value == "") {
       SnackBarHelper.show("Please upload a proof screenshot");
       return;
     }
 
     Get.back();
-    claimTask(taskId, proofFile: uploadedProofFile.value);
+    initiateTaskReward(index, proofFile: uploadedProofFile.value);
   }
 
   void startTimer(int index, int duration) {

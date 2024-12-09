@@ -6,6 +6,7 @@ import '../../../models/taskList.model.dart';
 
 class UploadProofDialogComponent {
   static show({
+    required int index,
     required TaskListData task,
     required RxString uploadedFile,
     required Function onVisitWebsite,
@@ -193,7 +194,7 @@ class UploadProofDialogComponent {
                 ),
                 const SizedBox(height: 20),
                 MaterialButton(
-                  onPressed: () => onConfirm(task.id??""),
+                  onPressed: () => onConfirm(index),
                   minWidth: 0,
                   padding: EdgeInsets.zero,
                   visualDensity: VisualDensity.compact,
