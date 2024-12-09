@@ -105,7 +105,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
 
-      print(userData);
+      // print(userData);
 
       // Development
       // userModel = UserModel(
@@ -731,6 +731,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (responseModel.responseCode == 200) {
       if (responseModel.data) {
         claimTask(id);
+      }
+      else {
+        SnackBarHelper.show("Please join the channel first");
       }
     } else {
       SnackBarHelper.show(responseModel.message);
