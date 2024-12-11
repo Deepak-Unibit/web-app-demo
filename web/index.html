@@ -16,6 +16,10 @@
   <!-- Favicon -->
   <link rel="icon" type="image/webp" href="favicon.webp"/>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    Telegram.WebApp.ready();
+    Telegram.WebApp.preventClosing();
+  </script>
   <script src="app.js" defer></script>
 
   <script type="text/javascript">
