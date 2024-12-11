@@ -106,7 +106,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
 
-      print(userData);
+      // print(userData);
 
       // Development
       // userModel = UserModel(
@@ -598,8 +598,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       setUserData.value.setReferralSpins = myProfileModel.data?.referralSpins ?? 0;
       totalSpinCount.value = ((myProfileModel.data?.spinCount ?? 0) + (myProfileModel.data?.referralSpins ?? 0)) as int;
       return true;
-    }
-    else {
+    } else {
       SnackBarHelper.show(myProfileModel.message);
     }
     return false;
@@ -643,7 +642,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (responseModel.responseCode == 200) {
       Get.back();
-      DiamondToSpinDialogComponent.show(spinCount: ((setUserData.value.diamondsEarned??0)/1000).toInt());
+      DiamondToSpinDialogComponent.show(spinCount: ((setUserData.value.diamondsEarned ?? 0) / 1000).toInt());
       await updateProfileData();
       Future.delayed(1.seconds, () => Get.back());
     } else {
