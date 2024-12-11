@@ -7,17 +7,18 @@ import 'package:web_app_demo/models/taskList.model.dart';
 import '../../../utils/assets.util.dart';
 
 class ExtraTaskDialogComponent {
-  static show(
-      {required RxInt totalDiamond,
-      required RxList<TaskListData> taskList,
-      required Function onInviteForSpin,
-      required Function onRedeemSpin,
-      required Function onDetailsClick,
-      required Function onTaskGoClick,
-      required Function onTaskClaimClick,
-      required RxList<int> activeTimerIndexList,
-      required RxList<int> remainingTimes,
-      required Rx<DailyRewardsData> dailyReward}) {
+  static show({
+    required RxInt totalDiamond,
+    required RxList<TaskListData> taskList,
+    required Function onInviteForSpin,
+    required Function onRedeemSpin,
+    required Function onDetailsClick,
+    required Function onTaskGoClick,
+    required Function onTaskClaimClick,
+    required RxList<int> activeTimerIndexList,
+    required RxList<int> remainingTimes,
+    required Rx<DailyRewardsData> dailyReward,
+  }) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -30,71 +31,74 @@ class ExtraTaskDialogComponent {
             width: double.infinity,
             padding: const EdgeInsets.all(15),
             constraints: const BoxConstraints(maxWidth: 500),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      AssetsUtil.getExtraTask(),
-                      height: 60,
-                      width: 60,
-                      fit: BoxFit.contain,
-                    ),
-                    const SizedBox(width: 5),
-                    Text(
-                      "My Gems",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: context.theme.colorScheme.onSurface,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        AssetsUtil.getExtraTask(),
+                        height: 60,
+                        width: 60,
+                        fit: BoxFit.contain,
                       ),
-                    ),
-                    const Spacer(),
-                    MaterialButton(
-                      onPressed: () => onDetailsClick(),
-                      minWidth: 0,
-                      padding: EdgeInsets.zero,
-                      visualDensity: VisualDensity.compact,
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      child: Container(
-                        width: 80,
-                        height: 35,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: context.theme.colorScheme.onSurface.withOpacity(0.1),
-                          border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
+                      const SizedBox(width: 5),
+                      Text(
+                        "My Gems",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: context.theme.colorScheme.onSurface,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Details",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: context.theme.colorScheme.onSurface,
-                                height: 1,
-                                fontStyle: FontStyle.italic,
+                      ),
+                      const Spacer(),
+                      MaterialButton(
+                        onPressed: () => onDetailsClick(),
+                        minWidth: 0,
+                        padding: EdgeInsets.zero,
+                        visualDensity: VisualDensity.compact,
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        child: Container(
+                          width: 80,
+                          height: 35,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(Radius.circular(8)),
+                            color: context.theme.colorScheme.onSurface.withOpacity(0.1),
+                            border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Details",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: context.theme.colorScheme.onSurface,
+                                  height: 1,
+                                  fontStyle: FontStyle.italic,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 5),
-                            Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 12,
-                              color: context.theme.colorScheme.onSurface,
-                            ),
-                          ],
+                              const SizedBox(width: 5),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 12,
+                                color: context.theme.colorScheme.onSurface,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: ListView(
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  ListView(
+                    shrinkWrap: true,
+                    primary: false,
+                    physics: const NeverScrollableScrollPhysics(),
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -451,47 +455,47 @@ class ExtraTaskDialogComponent {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.center,
-                  child: MaterialButton(
-                    onPressed: () => Get.back(),
-                    minWidth: 0,
-                    padding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    child: Container(
-                      width: 150,
-                      height: 35,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(8)),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            context.theme.colorScheme.surfaceContainerLow,
-                            context.theme.colorScheme.surfaceContainerHigh,
-                          ],
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.center,
+                    child: MaterialButton(
+                      onPressed: () => Get.back(),
+                      minWidth: 0,
+                      padding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      child: Container(
+                        width: 150,
+                        height: 35,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              context.theme.colorScheme.surfaceContainerLow,
+                              context.theme.colorScheme.surfaceContainerHigh,
+                            ],
+                          ),
+                          border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
                         ),
-                        border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
-                      ),
-                      child: Text(
-                        "Close",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: context.theme.colorScheme.onSurface,
-                          height: 1,
-                          fontStyle: FontStyle.italic,
+                        child: Text(
+                          "Close",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: context.theme.colorScheme.onSurface,
+                            height: 1,
+                            fontStyle: FontStyle.italic,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
