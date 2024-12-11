@@ -29,9 +29,11 @@ class ExtraTaskDialogComponent {
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.98,
             padding: const EdgeInsets.all(15),
-            constraints: const BoxConstraints(maxWidth: 500),
+            constraints: BoxConstraints(
+              maxWidth: 500,
+              maxHeight: MediaQuery.of(context).size.height * 0.95,
+            ),
             child: GestureDetector(
               onVerticalDragUpdate: (details) {},
               child: ListView(
