@@ -31,6 +31,7 @@ import 'package:web_app_demo/models/withdrawDetails.model.dart';
 import 'package:web_app_demo/models/withdrawRequest.model.dart';
 import 'package:web_app_demo/modules/home/components/accountInfoDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/cashOutDialog.component.dart';
+import 'package:web_app_demo/modules/home/components/diamondToSpinDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/invitationListDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/inviteDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/rankDialog.component.dart';
@@ -101,19 +102,19 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
-
-      print(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
+      //
+      // print(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609300,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609300,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
@@ -642,8 +643,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (responseModel.responseCode == 200) {
       Get.back();
+      DiamondToSpinDialogComponent.show(spinCount: ((setUserData.value.diamondsEarned??0)/1000).toInt());
       updateProfileData();
-      SnackBarHelper.show(responseModel.message);
+      Future.delayed(5.seconds, () => Get.back());
     } else {
       SnackBarHelper.show(responseModel.message);
     }

@@ -93,9 +93,10 @@ class ExtraTaskDialogComponent {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 Expanded(
                   child: ListView(
+                    padding: const EdgeInsets.only(top: 5),
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
