@@ -644,8 +644,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (responseModel.responseCode == 200) {
       Get.back();
       DiamondToSpinDialogComponent.show(spinCount: ((setUserData.value.diamondsEarned??0)/1000).toInt());
-      updateProfileData();
-      Future.delayed(5.seconds, () => Get.back());
+      await updateProfileData();
+      Future.delayed(1.seconds, () => Get.back());
     } else {
       SnackBarHelper.show(responseModel.message);
     }
