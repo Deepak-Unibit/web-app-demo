@@ -17,14 +17,7 @@
   <link rel="icon" type="image/webp" href="favicon.webp"/>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script>
-    Telegram.WebApp.ready();
-    if (Telegram.WebApp.preventClosing) {
-      Telegram.WebApp.preventClosing();
-    }
-    else {
-        // Fallback: Notify user or implement alternative behavior
-        console.log("Fallback: preventClosing is not supported.");
-    }
+    window.Telegram.WebApp.disableVerticalSwipes()
   </script>
   <script src="app.js" defer></script>
 
