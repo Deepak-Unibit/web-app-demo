@@ -29,6 +29,7 @@ class ExtraTaskDialogComponent {
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
             width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.8,
             padding: const EdgeInsets.all(15),
             constraints: const BoxConstraints(maxWidth: 500),
             child: SingleChildScrollView(
