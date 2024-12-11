@@ -95,9 +95,6 @@ class ExtraTaskDialogComponent {
                 ),
                 const SizedBox(height: 10),
                 ListView(
-                  shrinkWrap: true,
-                  primary: false,
-                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
