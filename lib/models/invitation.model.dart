@@ -1,15 +1,14 @@
 class InvitationModel {
   InvitationModel({
-    String? status,
-    String? message,
-    num? responseCode,
-    List<InvitationData>? data,
-  }) {
+      String? status, 
+      String? message, 
+      num? responseCode, 
+      List<InvitationData>? data,}){
     _status = status;
     _message = message;
     _responseCode = responseCode;
     _data = data;
-  }
+}
 
   InvitationModel.fromJson(dynamic json) {
     _status = json['status'];
@@ -42,31 +41,44 @@ class InvitationModel {
     }
     return map;
   }
+
 }
 
 class InvitationData {
   InvitationData({
-    String? id,
-    String? firstName,
-  }) {
+      String? id, 
+      String? telegramId, 
+      String? firstName, 
+      bool? joinedChannels,}){
     _id = id;
+    _telegramId = telegramId;
     _firstName = firstName;
-  }
+    _joinedChannels = joinedChannels;
+}
 
   InvitationData.fromJson(dynamic json) {
     _id = json['_id'];
+    _telegramId = json['telegramId'];
     _firstName = json['firstName'];
+    _joinedChannels = json['joinedChannels'];
   }
   String? _id;
+  String? _telegramId;
   String? _firstName;
+  bool? _joinedChannels;
 
   String? get id => _id;
+  String? get telegramId => _telegramId;
   String? get firstName => _firstName;
+  bool? get joinedChannels => _joinedChannels;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
+    map['telegramId'] = _telegramId;
     map['firstName'] = _firstName;
+    map['joinedChannels'] = _joinedChannels;
     return map;
   }
+
 }

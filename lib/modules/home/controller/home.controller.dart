@@ -233,7 +233,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     InvitationModel invitationModel = InvitationModel.fromJson(resp);
 
     if (invitationModel.responseCode == 200) {
-      InvitationListDialogComponent.show(invitationDataList: invitationModel.data ?? []);
+      InvitationListDialogComponent.show(
+        invitationDataList: invitationModel.data ?? [],
+        onRemind: onInviteForSpins,
+      );
     }
   }
 
@@ -402,8 +405,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
             Get.back();
             if (totalSpinCount.value > 0) {
               onSpin();
-            }
-            else {
+            } else {
               isAutoSpin.value = false;
               inviteForSpin();
             }
@@ -515,11 +517,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onCopyClick() async {
-    ClaimDiamondDialogComponent.show(diamondCount: 10);
-    // await getTaskListData();
-    Future.delayed(10.seconds, () => Get.back());
-    return;
-
     html.window.navigator.clipboard
         ?.writeText(
             "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
@@ -752,8 +749,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void onClaimTaskRewardClick(int index) {
     if (taskDataList[index].type == 1) {
       verifyTaskSubscription(taskDataList[index].channelUserName ?? "", taskDataList[index].id ?? "", (taskDataList[index].diamonds ?? 0) as int);
-    }
-    else {
+    } else {
       claimTask(taskDataList[index].id ?? "", (taskDataList[index].diamonds ?? 0) as int);
     }
   }
@@ -792,7 +788,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       totalDiamond.value = setUserData.value.diamondsEarned as int;
       ClaimDiamondDialogComponent.show(diamondCount: diamondCount);
       await getTaskListData();
-      Future.delayed(10.seconds, () => Get.back());
+      Future.delayed(1.seconds, () => Get.back());
     } else {
       SnackBarHelper.show(responseModel.message);
     }

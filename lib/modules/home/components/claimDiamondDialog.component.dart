@@ -34,11 +34,6 @@ class ClaimDiamondDialogComponent {
                       width: 150,
                       fit: BoxFit.cover,
                     ),
-                    // LottieHelper.lottie(
-                    //   animationAsset: AssetsUtil.getClaimDiamondLottie(),
-                    //   height: 120,
-                    //   width: 120,
-                    // ),
                     Image.asset(
                       AssetsUtil.getDiamond(),
                       height: 60,
