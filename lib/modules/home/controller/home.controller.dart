@@ -401,7 +401,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
             Get.back();
             if (totalSpinCount.value > 0) {
               onSpin();
-            } else {
+            }
+            else {
               isAutoSpin.value = false;
               inviteForSpin();
             }

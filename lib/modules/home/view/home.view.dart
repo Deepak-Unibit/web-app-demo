@@ -333,12 +333,12 @@ class HomeView extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 340, right: 10),
+                          padding: const EdgeInsets.only(top: 340, left: 10, right: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Obx(
-                                ()=> buildColumn2(
+                                () => buildColumn2(
                                   context,
                                   homeController.onAutoSpin,
                                   AssetsUtil.getSpinCard(),
