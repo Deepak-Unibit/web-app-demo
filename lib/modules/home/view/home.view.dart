@@ -341,7 +341,7 @@ class HomeView extends StatelessWidget {
                                 () => buildColumn2(
                                   context,
                                   homeController.onAutoSpin,
-                                  AssetsUtil.getSpinCard(),
+                                  AssetsUtil.getAutoSpin(),
                                   homeController.isAutoSpin.value ? "Stop Spin" : "Auto Spin",
                                   context.theme.colorScheme.surfaceContainerHigh,
                                   context.theme.colorScheme.surfaceContainerLow,

@@ -25,6 +25,7 @@ class AssetsUtil {
   static getDiamond() => 'assets/images/diamond.webp';
   static getLoop() => 'assets/images/loop.webp';
   static getDailyFinish() => 'assets/images/dailyFinish.webp';
+  static getAutoSpin() => 'assets/images/autoSpin.webp';
 
 
   static getLottie() => 'assets/images/bg-video.gif';
