@@ -29,7 +29,7 @@ class ClaimDiamondDialogComponent {
                   alignment: Alignment.center,
                   children: [
                     Image.asset(
-                      AssetsUtil.getClaimDiamond(),
+                      AssetsUtil.getClaimDiamondLottie(),
                       height: 150,
                       width: 150,
                       fit: BoxFit.cover,

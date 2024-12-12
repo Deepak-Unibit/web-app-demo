@@ -47,15 +47,14 @@ class InvitationListDialogComponent {
                   text: TextSpan(
                     text: "You Have Invited",
                     style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: context.theme.colorScheme.onSurface,
-                        fontStyle: FontStyle.italic,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: context.theme.colorScheme.onSurface,
+                      fontStyle: FontStyle.italic,
                     ),
                     children: [
                       TextSpan(
-                        text:
-                        " ${invitationDataList.length}",
+                        text: " ${invitationDataList.length}",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -82,7 +81,7 @@ class InvitationListDialogComponent {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      color: context.theme.colorScheme.onSurface.withOpacity(0.1),
+                      color: context.theme.colorScheme.onSurface.withOpacity(0.25),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,10 +93,9 @@ class InvitationListDialogComponent {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                              color: context.theme.colorScheme.onSurface
-                                  .withOpacity(0.75),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                             ),
                           ),
                         ),
@@ -105,32 +103,32 @@ class InvitationListDialogComponent {
                           height: 1,
                           color: context.theme.colorScheme.onSurface.withOpacity(0.05),
                         ),
-                        Expanded(child: ListView.separated(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          itemCount: invitationDataList.length,
-                          separatorBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Divider(
-                              height: 0.5,
-                              color: context.theme.colorScheme.onSurface.withOpacity(0.05),
+                        Expanded(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            itemCount: invitationDataList.length,
+                            separatorBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Divider(
+                                height: 0.5,
+                                color: context.theme.colorScheme.onSurface.withOpacity(0.05),
+                              ),
                             ),
-                          ),
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              "${invitationDataList[index].firstName}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w300,
-                                color: context.theme.colorScheme.onSurface
-                                    .withOpacity(0.75),
+                            itemBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                "${invitationDataList[index].firstName}",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: context.theme.colorScheme.onSurface.withOpacity(0.75),
+                                ),
                               ),
                             ),
                           ),
-                        ),),
-                  
+                        ),
                       ],
                     ),
                   ),
@@ -150,8 +148,7 @@ class InvitationListDialogComponent {
                       height: 35,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        borderRadius:
-                        const BorderRadius.all(Radius.circular(8)),
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -160,10 +157,7 @@ class InvitationListDialogComponent {
                             context.theme.colorScheme.surfaceContainerHigh,
                           ],
                         ),
-                        border: Border.all(
-                            color: context.theme.colorScheme.onSurface
-                                .withOpacity(0.25),
-                            width: 1.5),
+                        border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
                       ),
                       child: Text(
                         "Close",
