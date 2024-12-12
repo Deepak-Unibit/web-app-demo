@@ -31,6 +31,7 @@ import 'package:web_app_demo/models/withdrawDetails.model.dart';
 import 'package:web_app_demo/models/withdrawRequest.model.dart';
 import 'package:web_app_demo/modules/home/components/accountInfoDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/cashOutDialog.component.dart';
+import 'package:web_app_demo/modules/home/components/claimDiamondDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/diamondToSpinDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/invitationListDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/inviteDialog.component.dart';
@@ -514,6 +515,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onCopyClick() async {
+    ClaimDiamondDialogComponent.show(diamondCount: 10);
+    // await getTaskListData();
+    Future.delayed(10.seconds, () => Get.back());
+    return;
+
     html.window.navigator.clipboard
         ?.writeText(
             "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
@@ -745,13 +751,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   void onClaimTaskRewardClick(int index) {
     if (taskDataList[index].type == 1) {
-      verifyTaskSubscription(taskDataList[index].channelUserName ?? "", taskDataList[index].id ?? "");
-    } else {
-      claimTask(taskDataList[index].id ?? "");
+      verifyTaskSubscription(taskDataList[index].channelUserName ?? "", taskDataList[index].id ?? "", (taskDataList[index].diamonds ?? 0) as int);
+    }
+    else {
+      claimTask(taskDataList[index].id ?? "", (taskDataList[index].diamonds ?? 0) as int);
     }
   }
 
-  Future<void> verifyTaskSubscription(String channelName, String id) async {
+  Future<void> verifyTaskSubscription(String channelName, String id, int diamondCount) async {
     Map<String, dynamic> data = {"channel": channelName};
     LoadingPage.show();
     var resp = await ApiCall.postWithoutEncryption("${UrlApi.verifyTaskSubscription}/${setUserData.value.telegramId}", data);
@@ -761,7 +768,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
     if (responseModel.responseCode == 200) {
       if (responseModel.data) {
-        claimTask(id);
+        claimTask(id, diamondCount);
       } else {
         SnackBarHelper.show("Please join the channel first");
       }
@@ -771,7 +778,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     return;
   }
 
-  Future<void> claimTask(String taskId) async {
+  Future<void> claimTask(String taskId, int diamondCount) async {
     Map<String, dynamic> data = {"taskId": taskId};
 
     LoadingPage.show();
@@ -783,8 +790,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (responseModel.responseCode == 200) {
       setUserData.value.setDiamondsEarned = responseModel.data ?? 0;
       totalDiamond.value = setUserData.value.diamondsEarned as int;
+      ClaimDiamondDialogComponent.show(diamondCount: diamondCount);
       await getTaskListData();
-      SnackBarHelper.show(responseModel.message);
+      Future.delayed(10.seconds, () => Get.back());
     } else {
       SnackBarHelper.show(responseModel.message);
     }

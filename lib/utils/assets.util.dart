@@ -31,4 +31,6 @@ class AssetsUtil {
   static getLottie() => 'assets/images/bg-video.gif';
   static getConfettiLottie() => 'assets/images/confetti-animation.json';
   static getRupeeLottie() => 'assets/images/rupee-animation.json';
+  static getClaimDiamond() => 'assets/images/claimDiamondAnimation.gif';
+  static getClaimDiamondLottie() => 'assets/images/claimDiamondLottie.json';
 }
