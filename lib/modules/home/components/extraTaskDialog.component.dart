@@ -207,7 +207,7 @@ class ExtraTaskDialogComponent {
                       ),
                       Container(
                         width: double.infinity,
-                        height: 140,
+                        height: 160,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
                           gradient: LinearGradient(
@@ -226,8 +226,8 @@ class ExtraTaskDialogComponent {
                                 physics: const NeverScrollableScrollPhysics(),
                                 padding: const EdgeInsets.all(10),
                                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 60,
-                                  mainAxisExtent: 50,
+                                  maxCrossAxisExtent: 65,
+                                  mainAxisExtent: 60,
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 15,
                                 ),
@@ -517,8 +517,8 @@ class DailyRewardComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
-      width: 60,
+      height: 60,
+      width: 65,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         gradient: LinearGradient(
@@ -539,7 +539,7 @@ class DailyRewardComponent extends StatelessWidget {
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 14,
               fontWeight: FontWeight.w400,
               color: context.theme.colorScheme.onSurface,
             ),
@@ -549,8 +549,8 @@ class DailyRewardComponent extends StatelessWidget {
             children: [
               Image.asset(
                 AssetsUtil.getDiamond(),
-                height: 12,
-                width: 12,
+                height: 13,
+                width: 13,
               ),
               const SizedBox(width: 3),
               Text(
@@ -558,11 +558,30 @@ class DailyRewardComponent extends StatelessWidget {
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 11,
                   fontWeight: FontWeight.w400,
                   color: context.theme.colorScheme.onSurface,
                 ),
               ),
+              if (day == 7) ...[
+                const SizedBox(width: 3),
+                Image.asset(
+                  AssetsUtil.getSpinCard(),
+                  height: 13,
+                  width: 13,
+                ),
+                const SizedBox(width: 3),
+                Text(
+                  "1",
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: context.theme.colorScheme.onSurface,
+                  ),
+                ),
+              ],
             ],
           ),
           isCompleted
