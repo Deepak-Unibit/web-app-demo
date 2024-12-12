@@ -226,7 +226,7 @@ class ExtraTaskDialogComponent {
                                 physics: const NeverScrollableScrollPhysics(),
                                 padding: const EdgeInsets.all(10),
                                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 65,
+                                  maxCrossAxisExtent: 75,
                                   mainAxisExtent: 60,
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 15,
@@ -518,7 +518,7 @@ class DailyRewardComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
-      width: 65,
+      width: 70,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         gradient: LinearGradient(
