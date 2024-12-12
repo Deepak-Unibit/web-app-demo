@@ -228,8 +228,8 @@ class ExtraTaskDialogComponent {
                                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: 75,
                                   mainAxisExtent: 60,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
                                 ),
                                 children: [
                                   DailyRewardComponent(day: 1, diamond: dailyReward.value.dailyReward?.day1 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 1),
