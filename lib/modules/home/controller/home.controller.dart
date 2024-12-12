@@ -68,6 +68,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   final RxList<int> remainingTimes = <int>[].obs;
   Rx<DailyRewardsData> dailyRewardsData = DailyRewardsData().obs;
   RxString uploadedProofFile = "".obs;
+  RxBool isAutoSpin = false.obs;
 
   @override
   void onInit() {
@@ -106,7 +107,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
 
-      // print(userData);
+      print(userData);
 
       // Development
       // userModel = UserModel(
@@ -233,6 +234,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (invitationModel.responseCode == 200) {
       InvitationListDialogComponent.show(invitationDataList: invitationModel.data ?? []);
     }
+  }
+
+  void onAutoSpin() {
+    if (totalSpinCount.value > 0) {
+      isAutoSpin.value = !isAutoSpin.value;
+      onSpin();
+    }
+    return;
   }
 
   onCashOut() async {
@@ -386,6 +395,18 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         goalAmount.value = ((((spinModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
 
         SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100);
+
+        if (isAutoSpin.value) {
+          Future.delayed(1.seconds, () {
+            Get.back();
+            if (totalSpinCount.value > 0) {
+              onSpin();
+            } else {
+              isAutoSpin.value = false;
+              inviteForSpin();
+            }
+          });
+        }
       });
     } else {
       if (totalSpinCount.value <= 0) {

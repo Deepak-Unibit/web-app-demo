@@ -334,16 +334,28 @@ class HomeView extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 340, right: 10),
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: buildColumn2(
-                              context,
-                              homeController.inviteForSpin,
-                              AssetsUtil.getSpinCard(),
-                              "+1 Spin",
-                              context.theme.colorScheme.surfaceContainerHigh,
-                              context.theme.colorScheme.surfaceContainerLow,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Obx(
+                                ()=> buildColumn2(
+                                  context,
+                                  homeController.onAutoSpin,
+                                  AssetsUtil.getSpinCard(),
+                                  homeController.isAutoSpin.value ? "Stop Spin" : "Auto Spin",
+                                  context.theme.colorScheme.surfaceContainerHigh,
+                                  context.theme.colorScheme.surfaceContainerLow,
+                                ),
+                              ),
+                              buildColumn2(
+                                context,
+                                homeController.inviteForSpin,
+                                AssetsUtil.getSpinCard(),
+                                "+1 Spin",
+                                context.theme.colorScheme.surfaceContainerHigh,
+                                context.theme.colorScheme.surfaceContainerLow,
+                              ),
+                            ],
                           ),
                         ),
                       ],
