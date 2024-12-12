@@ -107,8 +107,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       var state = js.JsObject.fromBrowserObject(js.context['state']);
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
-
-      print(userData);
+      //
+      // print(userData);
 
       // Development
       // userModel = UserModel(
@@ -736,7 +736,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       if (taskDataList[index].type != 3) {
         taskDataList[index].setIsInitiated = true;
         taskDataList.refresh();
-      } else {
+      }
+      else {
+        if(taskDataList[index].isInitiated??false) {
+          return;
+        }
         activeTimerIndexList.add(index);
         activeTimerIndexList.refresh();
         startTimer(index, (taskDataList[index].claimDuration ?? 0) as int);
@@ -788,7 +792,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       totalDiamond.value = setUserData.value.diamondsEarned as int;
       ClaimDiamondDialogComponent.show(diamondCount: diamondCount);
       await getTaskListData();
-      Future.delayed(1.seconds, () => Get.back());
+      Future.delayed(500.milliseconds, () => Get.back());
     } else {
       SnackBarHelper.show(responseModel.message);
     }

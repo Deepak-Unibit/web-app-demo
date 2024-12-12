@@ -338,14 +338,16 @@ class HomeView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Obx(
-                                () => buildColumn2(
-                                  context,
-                                  homeController.onAutoSpin,
-                                  AssetsUtil.getAutoSpin(),
-                                  homeController.isAutoSpin.value ? "Stop Spin" : "Auto Spin",
-                                  context.theme.colorScheme.surfaceContainerHigh,
-                                  context.theme.colorScheme.surfaceContainerLow,
-                                ),
+                                () => homeController.totalSpinCount >= 10 || homeController.isAutoSpin.value
+                                    ? buildColumn2(
+                                        context,
+                                        homeController.onAutoSpin,
+                                        AssetsUtil.getAutoSpin(),
+                                        homeController.isAutoSpin.value ? "Stop Spin" : "Auto Spin",
+                                        context.theme.colorScheme.surfaceContainerHigh,
+                                        context.theme.colorScheme.surfaceContainerLow,
+                                      )
+                                    : const SizedBox.shrink(),
                               ),
                               buildColumn2(
                                 context,
