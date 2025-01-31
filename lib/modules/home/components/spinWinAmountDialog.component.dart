@@ -67,7 +67,7 @@ class SpinWinAmountDialogComponent {
                     const SizedBox(height: 20),
                     SecondaryButtonComponent(
                       text: "GO ON!",
-                      onClick: ()=>Get.back(),
+                      onClick: () => Get.back(),
                       height: 35,
                       width: 150,
                     ),
