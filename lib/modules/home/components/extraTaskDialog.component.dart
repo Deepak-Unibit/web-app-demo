@@ -293,7 +293,7 @@ class ExtraTaskDialogComponent {
                                 children: [
                                   WidgetSpan(
                                     child: Image.asset(
-                                      AssetsUtil.getInvitation(),
+                                      AssetsUtil.getInvite(),
                                       height: 25,
                                       width: 25,
                                     ),

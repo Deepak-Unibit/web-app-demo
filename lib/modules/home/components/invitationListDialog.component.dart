@@ -26,7 +26,7 @@ class InvitationListDialogComponent {
                 Row(
                   children: [
                     Image.asset(
-                      AssetsUtil.getInvitation(),
+                      AssetsUtil.getInvite(),
                       height: 60,
                       width: 60,
                       fit: BoxFit.contain,

@@ -2,13 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scratcher/scratcher.dart';
 import 'package:web_app_demo/modules/home/components/secondaryButton.component.dart';
 
 import '../../../helper/lottie.helper.dart';
 import '../../../utils/assets.util.dart';
 
 class SpinWinAmountDialogComponent {
-  static show({required num amount}) {
+  static show({required num amount, required Function onScratched, required Key scratcherKey, required RxBool showConfetti}) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -20,58 +21,66 @@ class SpinWinAmountDialogComponent {
           child: Container(
             width: double.infinity,
             constraints: const BoxConstraints(maxWidth: 500),
-            child: Stack(
-              alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                LottieHelper.lottie(
-                  animationAsset: AssetsUtil.getConfettiLottie(),
-                  repeat: false,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: "Congratulations! You Get ",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: context.theme.colorScheme.onSurface,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: " ₹ $amount",
+                Scratcher(
+                  key: scratcherKey,
+                  brushSize: 30,
+                  threshold: 30,
+                  image: Image.asset("assets/images/cover1.png"),
+                  onChange: (value) {},
+                  onThreshold: () => onScratched(),
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Image.asset(
+                        "assets/images/csk.png",
+                        height: 200,
+                        width: 200,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: RichText(
+                          text: TextSpan(
+                            text: "₹ ",
                             style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: context.theme.colorScheme.primaryFixed,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: context.theme.colorScheme.secondaryFixed,
                             ),
+                            children: [
+                              TextSpan(
+                                text: "$amount",
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    LottieHelper.lottie(
-                      animationAsset: AssetsUtil.getRupeeLottie(),
-                      height: 100,
-                      width: 100,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "₹ $amount",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        color: context.theme.colorScheme.primaryFixed,
+                      Obx(
+                            () => showConfetti.value
+                            ? LottieHelper.lottie(
+                          animationAsset: AssetsUtil.getConfettiLottie(),
+                          repeat: true,
+                        )
+                            : const SizedBox.shrink(),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    SecondaryButtonComponent(
-                      text: "GO ON!",
-                      onClick: () => Get.back(),
-                      height: 35,
-                      width: 150,
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Obx(
+                  () => showConfetti.value
+                      ? SecondaryButtonComponent(
+                          text: "GO ON!",
+                          onClick: () => Get.back(),
+                          height: 35,
+                          width: 150,
+                        )
+                      : const SizedBox.shrink(),
                 ),
               ],
             ),
