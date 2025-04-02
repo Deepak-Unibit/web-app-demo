@@ -135,7 +135,7 @@ class RewardsDialogComponent {
                                 onClick: () => inviteReward(),
                                 height: 25,
                                 width: 49,
-                                startColor: context.theme.colorScheme.scrim,
+                                startColor: context.theme.colorScheme.secondary,
                                 endColor: context.theme.colorScheme.scrim,
                               ),
                             ],
@@ -165,8 +165,8 @@ class RewardsDialogComponent {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            context.theme.colorScheme.surfaceContainerLow,
-                            context.theme.colorScheme.surfaceContainerHigh,
+                            context.theme.colorScheme.primaryFixed,
+                            context.theme.colorScheme.secondaryFixed,
                           ],
                         ),
                         border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
@@ -176,7 +176,7 @@ class RewardsDialogComponent {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: context.theme.colorScheme.onSurface,
+                          color: context.theme.colorScheme.surface,
                           height: 1,
                           fontStyle: FontStyle.italic,
                         ),

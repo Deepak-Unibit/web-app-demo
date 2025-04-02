@@ -51,7 +51,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   Rx<SetUserData> setUserData = SetUserData().obs;
   RxInt goalAmount = 0.obs;
   RxInt totalSpinCount = 0.obs;
-  RxBool isSpinning = false.obs;
   TextEditingController nameController = TextEditingController();
   TextEditingController upiController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
@@ -62,8 +61,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   final RxList<int> remainingTimes = <int>[].obs;
   Rx<DailyRewardsData> dailyRewardsData = DailyRewardsData().obs;
   RxString uploadedProofFile = "".obs;
-  RxBool isAutoSpin = false.obs;
 
+  RxList<String> cardsList = <String>[].obs;
   final GlobalKey<ScratcherState> scratchKey = GlobalKey<ScratcherState>();
 
   HomeController() {
@@ -88,6 +87,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       }
     } catch (e) {
       print(e);
+    }
+
+    for (int i = 0; i < 10; i++) {
+      cardsList.add(getCoverImage());
     }
   }
 
@@ -196,14 +199,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  void onAutoSpin() {
-    if (totalSpinCount.value > 0) {
-      isAutoSpin.value = !isAutoSpin.value;
-      onSpin();
-    }
-    return;
-  }
-
   onCashOut() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getProfile);
@@ -310,13 +305,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   RxBool showConfetti = false.obs;
-  Future<void> onSpin() async {
+  Future<void> onSpin(int index) async {
     showConfetti.value = false;
-    SpinWinAmountDialogComponent.show(amount: 100, scratcherKey: scratchKey, onScratched: onScratched, showConfetti: showConfetti);
-    return;
-    if (isSpinning.value) {
-      return;
-    }
 
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getSpin);
@@ -325,12 +315,19 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     SpinModel spinModel = SpinModel.fromJson(resp);
 
     if (spinModel.responseCode == 200) {
-      isSpinning.value = true;
-
-      SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100, scratcherKey: scratchKey, onScratched: onScratched, showConfetti: showConfetti);
+      SpinWinAmountDialogComponent.show(
+        amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100,
+        scratcherKey: scratchKey,
+        onScratched: onScratched,
+        showConfetti: showConfetti,
+        coverImage: cardsList[index],
+        revealImage: "assets/images/team${getRandomTeamNumber()}.png",
+      );
+      cardsList.removeAt(index);
+      cardsList.add(getCoverImage());
+      // SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100, scratcherKey: scratchKey, onScratched: onScratched, showConfetti: showConfetti);
 
       Future.delayed(2.seconds, () {
-        isSpinning.value = false;
         totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
         setUserData.value.setEarnedAmount = ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;
@@ -358,10 +355,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   getMoreRewards() async {
-    if (isSpinning.value) {
-      return;
-    }
-
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getRewardsList);
     LoadingPage.close();
@@ -520,9 +513,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   Future<void> onExtraTaskClick() async {
-    if (isSpinning.value) {
-      return;
-    }
     taskDataList.clear();
     LoadingPage.show();
     bool isListLoaded = await getTaskListData();
@@ -819,5 +809,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   String getCoverImage() {
     int randomNumber = Random().nextInt(4) + 1;
     return "assets/images/cover$randomNumber.png";
+  }
+
+  int getRandomTeamNumber() {
+    return Random().nextInt(10) + 1;
   }
 }

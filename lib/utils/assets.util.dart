@@ -14,6 +14,7 @@ class AssetsUtil {
   static getPointHandBg() => 'assets/images/halo.webp';
   static getTwoCoin() => 'assets/images/twoCoin.webp';
   static getGiftBox() => 'assets/images/giftBox.webp';
+  static getExtraTaskChest() => 'assets/images/extraTaskChest.webp';
   static getDailyRewardsDialog() => 'assets/images/dailyRewards.webp';
   static getDiamond() => 'assets/images/diamond.webp';
   static getLoop() => 'assets/images/loop.webp';
@@ -31,4 +32,5 @@ class AssetsUtil {
   static getCashOut() => 'assets/images/cashOut.png';
   static getExtraCash() => 'assets/images/extraCash.png';
   static getExtraTask() => 'assets/images/extraTask.png';
+  static getCopyIcon() => 'assets/images/copyIcon.png';
 }

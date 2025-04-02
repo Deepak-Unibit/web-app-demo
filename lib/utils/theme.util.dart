@@ -31,7 +31,8 @@ class ThemesUtil {
       primaryFixed: Color(0xFFFEFE68),
       secondaryFixed: Color(0xFFF3A80A),
       onSurfaceVariant: Color(0xFF808080),
-      scrim: Color(0xFF4CBB17),
+      scrim: Color(0xFF137000),
+      secondary: Color(0xFF2BFF00),
       surfaceTint: Color(0xFFff0000),
     ),
     appBarTheme: const AppBarTheme(

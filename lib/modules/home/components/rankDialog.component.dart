@@ -89,8 +89,7 @@ class RankDialogComponent {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w300,
-                                color: context.theme.colorScheme.onSurface
-                                    .withOpacity(0.75),
+                                color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                               ),
                             ),
                           ),
@@ -107,7 +106,7 @@ class RankDialogComponent {
                         Icon(
                           Icons.person,
                           size: 18,
-                          color: context.theme.colorScheme.surfaceContainerLow,
+                          color: context.theme.colorScheme.secondaryFixed,
                         ),
                       ],
                     ),
@@ -117,9 +116,7 @@ class RankDialogComponent {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)),
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
                     gradient: LinearGradient(
                       colors: [
                         Colors.black,
@@ -153,8 +150,7 @@ class RankDialogComponent {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w300,
-                                  color: context.theme.colorScheme.onSurface
-                                      .withOpacity(0.75),
+                                  color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                 ),
                               ),
                             ),
@@ -171,8 +167,7 @@ class RankDialogComponent {
                           Icon(
                             Icons.person,
                             size: 18,
-                            color:
-                                context.theme.colorScheme.surfaceContainerLow,
+                            color: context.theme.colorScheme.secondaryFixed,
                           ),
                         ],
                       ),
@@ -189,27 +184,23 @@ class RankDialogComponent {
                           height: 35,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
+                            borderRadius: const BorderRadius.all(Radius.circular(8)),
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                context.theme.colorScheme.surfaceContainerLow,
-                                context.theme.colorScheme.surfaceContainerHigh,
+                                context.theme.colorScheme.primaryFixed,
+                                context.theme.colorScheme.secondaryFixed,
                               ],
                             ),
-                            border: Border.all(
-                                color: context.theme.colorScheme.onSurface
-                                    .withOpacity(0.25),
-                                width: 1.5),
+                            border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
                           ),
                           child: Text(
                             "Close",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: context.theme.colorScheme.onSurface,
+                              color: context.theme.colorScheme.surface,
                               height: 1,
                               fontStyle: FontStyle.italic,
                             ),

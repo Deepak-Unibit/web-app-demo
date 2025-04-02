@@ -63,8 +63,7 @@ class WithdrawHistoryDialogComponent {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
-                                  color: context.theme.colorScheme.onSurface
-                                      .withOpacity(0.75),
+                                  color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -75,8 +74,7 @@ class WithdrawHistoryDialogComponent {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
-                                  color: context.theme.colorScheme.onSurface
-                                      .withOpacity(0.75),
+                                  color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                 ),
                               ),
                               const Spacer(),
@@ -89,8 +87,7 @@ class WithdrawHistoryDialogComponent {
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
-                                    color: context.theme.colorScheme.onSurface
-                                        .withOpacity(0.75),
+                                    color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                   ),
                                 ),
                               ),
@@ -119,8 +116,7 @@ class WithdrawHistoryDialogComponent {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: Divider(
                                 height: 0.5,
-                                color: context.theme.colorScheme.onSurface
-                                    .withOpacity(0.05),
+                                color: context.theme.colorScheme.onSurface.withOpacity(0.05),
                               ),
                             ),
                             itemBuilder: (context, index) => Row(
@@ -129,14 +125,13 @@ class WithdrawHistoryDialogComponent {
                                 SizedBox(
                                   width: 37,
                                   child: Text(
-                                    "${index+1}.",
+                                    "${index + 1}.",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: context.theme.colorScheme.onSurface
-                                          .withOpacity(0.75),
+                                      color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                     ),
                                   ),
                                 ),
@@ -148,22 +143,26 @@ class WithdrawHistoryDialogComponent {
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: context.theme.colorScheme.onSurface
-                                        .withOpacity(0.75),
+                                    color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                   ),
                                 ),
                                 const Spacer(),
                                 SizedBox(
                                   width: 80,
                                   child: Text(
-                                    withdrawRequestDataList[index].status==1 ? "Pending" : withdrawRequestDataList[index].status==2 ? "Success" : withdrawRequestDataList[index].status==3 ? "Rejected" : "",
+                                    withdrawRequestDataList[index].status == 1
+                                        ? "Pending"
+                                        : withdrawRequestDataList[index].status == 2
+                                            ? "Success"
+                                            : withdrawRequestDataList[index].status == 3
+                                                ? "Rejected"
+                                                : "",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w300,
-                                      color: context.theme.colorScheme.onSurface
-                                          .withOpacity(0.75),
+                                      color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                     ),
                                   ),
                                 ),
@@ -171,14 +170,13 @@ class WithdrawHistoryDialogComponent {
                                 SizedBox(
                                   width: 130,
                                   child: Text(
-                                    DateHelper().dateFormat(date: withdrawRequestDataList[index].createdAt??"", format: "dd-MM-yy hh:mm:ss a"),
+                                    DateHelper().dateFormat(date: withdrawRequestDataList[index].createdAt ?? "", format: "dd-MM-yy hh:mm:ss a"),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w300,
-                                      color: context.theme.colorScheme.onSurface
-                                          .withOpacity(0.75),
+                                      color: context.theme.colorScheme.onSurface.withOpacity(0.75),
                                     ),
                                   ),
                                 ),
@@ -205,27 +203,23 @@ class WithdrawHistoryDialogComponent {
                       height: 35,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            context.theme.colorScheme.surfaceContainerLow,
-                            context.theme.colorScheme.surfaceContainerHigh,
+                            context.theme.colorScheme.primaryFixed,
+                            context.theme.colorScheme.secondaryFixed,
                           ],
                         ),
-                        border: Border.all(
-                            color: context.theme.colorScheme.onSurface
-                                .withOpacity(0.25),
-                            width: 1.5),
+                        border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
                       ),
                       child: Text(
                         "Close",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: context.theme.colorScheme.onSurface,
+                          color: context.theme.colorScheme.surface,
                           height: 1,
                           fontStyle: FontStyle.italic,
                         ),
