@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scratcher/scratcher.dart';
 import 'package:web_app_demo/api/call.api.dart';
 import 'package:web_app_demo/api/url.api.dart';
 import 'package:web_app_demo/components/loadingPage/loadingPage.component.dart';
@@ -46,19 +46,11 @@ import '../components/getSpinDialog.component.dart';
 import '../components/uploadProofDialog.component.dart';
 
 class HomeController extends GetxController with GetTickerProviderStateMixin {
-  final Rxn<AnimationController> _animationController = Rxn<AnimationController>();
-  AnimationController? get animationController => _animationController.value;
-  late AnimationController turnAnimationController;
-  late AnimationController pointHandBgAnimationController;
-  late AnimationController pointHandAnimationController;
-  RxDouble scale = 0.0.obs;
-  RxDouble selectedSector = 0.0.obs;
   UserModel userModel = UserModel();
   VerifySubscriptionData verifySubscriptionData = VerifySubscriptionData();
   Rx<SetUserData> setUserData = SetUserData().obs;
   RxInt goalAmount = 0.obs;
   RxInt totalSpinCount = 0.obs;
-  RxBool isSpinning = false.obs;
   TextEditingController nameController = TextEditingController();
   TextEditingController upiController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
@@ -69,54 +61,26 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   final RxList<int> remainingTimes = <int>[].obs;
   Rx<DailyRewardsData> dailyRewardsData = DailyRewardsData().obs;
   RxString uploadedProofFile = "".obs;
-  RxBool isAutoSpin = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    const duration = Duration(milliseconds: 0);
-    _animationController.value = AnimationController(
-      vsync: this,
-      duration: duration,
-    );
-    _animationController.value?.forward();
+  RxList<String> cardsList = <String>[].obs;
+  final GlobalKey<ScratcherState> scratchKey = GlobalKey<ScratcherState>();
 
-    turnAnimationController = AnimationController(
-      vsync: this,
-      duration: 60.seconds,
-    )..repeat();
-
-    pointHandBgAnimationController = AnimationController(
-      vsync: this,
-      duration: 2500.milliseconds,
-    )..repeat();
-
-    pointHandAnimationController = AnimationController(
-      vsync: this,
-      duration: 2.seconds,
-      lowerBound: 0.8,
-      upperBound: 1.2,
-    )..repeat(reverse: true);
-
-    pointHandAnimationController.addListener(() {
-      scale.value = pointHandAnimationController.value;
-    });
-
+  HomeController() {
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
       //
       // print(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609300,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609300,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
@@ -124,15 +88,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     } catch (e) {
       print(e);
     }
-  }
 
-  @override
-  void onClose() {
-    _animationController.value?.dispose();
-    turnAnimationController.dispose();
-    pointHandBgAnimationController.dispose();
-    pointHandAnimationController.dispose();
-    super.onClose();
+    for (int i = 0; i < 10; i++) {
+      cardsList.add(getCoverImage());
+    }
   }
 
   verifySubscription(num telegramId) async {
@@ -240,14 +199,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  void onAutoSpin() {
-    if (totalSpinCount.value > 0) {
-      isAutoSpin.value = !isAutoSpin.value;
-      onSpin();
-    }
-    return;
-  }
-
   onCashOut() async {
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getProfile);
@@ -353,10 +304,9 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  onSpin() async {
-    if (isSpinning.value) {
-      return;
-    }
+  RxBool showConfetti = false.obs;
+  Future<void> onSpin(int index) async {
+    showConfetti.value = false;
 
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getSpin);
@@ -365,52 +315,26 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     SpinModel spinModel = SpinModel.fromJson(resp);
 
     if (spinModel.responseCode == 200) {
-      const duration = Duration(milliseconds: 1500);
-      _animationController.value = AnimationController(vsync: this, duration: duration);
-      _animationController.value?.forward();
-
-      isSpinning.value = true;
-
-      if ((spinModel.data?.spinAmount ?? 0) >= 50) {
-        selectedSector.value = 180;
-      } else if ((spinModel.data?.spinAmount ?? 0) >= 10) {
-        selectedSector.value = 90;
-      } else if ((spinModel.data?.spinAmount ?? 0) >= 5) {
-        selectedSector.value = 270;
-      } else if ((spinModel.data?.spinAmount ?? 0) < 5) {
-        Random random = Random();
-        int randomNumber = random.nextInt(3);
-        selectedSector.value = randomNumber == 0
-            ? 225
-            : randomNumber == 1
-                ? 135
-                : 315;
-      }
-
-      totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
+      SpinWinAmountDialogComponent.show(
+        amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100,
+        scratcherKey: scratchKey,
+        onScratched: onScratched,
+        showConfetti: showConfetti,
+        coverImage: cardsList[index],
+        revealImage: "assets/images/team${getRandomTeamNumber()}.png",
+      );
+      cardsList.removeAt(index);
+      cardsList.add(getCoverImage());
+      // SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100, scratcherKey: scratchKey, onScratched: onScratched, showConfetti: showConfetti);
 
       Future.delayed(2.seconds, () {
-        isSpinning.value = false;
+        totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
         setUserData.value.setEarnedAmount = ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;
         setUserData.value.setReferralSpins = spinModel.data?.referralSpins ?? 0;
         setUserData.refresh();
 
         goalAmount.value = ((((spinModel.data?.goal ?? 0.0) as int) * 100).truncate() / 100) as int;
-
-        SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100);
-
-        if (isAutoSpin.value) {
-          Future.delayed(1.seconds, () {
-            Get.back();
-            if (totalSpinCount.value > 0) {
-              onSpin();
-            } else {
-              isAutoSpin.value = false;
-              inviteForSpin();
-            }
-          });
-        }
       });
     } else {
       if (totalSpinCount.value <= 0) {
@@ -420,15 +344,17 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
+  void onScratched() {
+    print("scratched");
+    scratchKey.currentState?.reveal();
+    showConfetti.value = true;
+  }
+
   inviteForSpin() {
     InviteDialogComponent.show(onClick: onContinueToGetMoreSpin, setUserData: setUserData.value, goalAmount: goalAmount.value);
   }
 
   getMoreRewards() async {
-    if (isSpinning.value) {
-      return;
-    }
-
     LoadingPage.show();
     var resp = await ApiCall.get(UrlApi.getRewardsList);
     LoadingPage.close();
@@ -510,7 +436,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onInviteForSpins() {
-    String telegramLink = "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+    String telegramLink =
+        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -559,7 +486,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   onShareClick(int index) {
-    String message = "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+    String message =
+        "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
 
     if (index == 0) {
       final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
@@ -585,9 +513,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   Future<void> onExtraTaskClick() async {
-    if (isSpinning.value) {
-      return;
-    }
     taskDataList.clear();
     LoadingPage.show();
     bool isListLoaded = await getTaskListData();
@@ -734,9 +659,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       if (taskDataList[index].type != 3) {
         taskDataList[index].setIsInitiated = true;
         taskDataList.refresh();
-      }
-      else {
-        if(taskDataList[index].isInitiated??false) {
+      } else {
+        if (taskDataList[index].isInitiated ?? false) {
           return;
         }
         activeTimerIndexList.add(index);
@@ -880,5 +804,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
         update();
       }
     });
+  }
+
+  String getCoverImage() {
+    int randomNumber = Random().nextInt(4) + 1;
+    return "assets/images/cover$randomNumber.png";
+  }
+
+  int getRandomTeamNumber() {
+    return Random().nextInt(10) + 1;
   }
 }

@@ -37,9 +37,9 @@ class ExtraTaskDialogComponent {
                 Row(
                   children: [
                     Image.asset(
-                      AssetsUtil.getExtraTask(),
-                      height: 60,
-                      width: 60,
+                      AssetsUtil.getExtraTaskChest(),
+                      height: 50,
+                      width: 50,
                       fit: BoxFit.contain,
                     ),
                     const SizedBox(width: 5),
@@ -123,7 +123,7 @@ class ExtraTaskDialogComponent {
                             children: [
                               Obx(
                                 () => TaskButtonComponent(
-                                  text: "Redeem Spin",
+                                  text: "Redeem Card",
                                   onClick: totalDiamond.value >= 1000 ? () => onRedeemSpin() : () {},
                                   height: 30,
                                   width: 120,
@@ -148,7 +148,7 @@ class ExtraTaskDialogComponent {
                                         width: 15,
                                       ),
                                     ),
-                                    const TextSpan(text: " = 1 spin)"),
+                                    const TextSpan(text: " = 1 Card)"),
                                   ],
                                 ),
                               ),
@@ -219,48 +219,27 @@ class ExtraTaskDialogComponent {
                             ],
                           ),
                         ),
-                        child: true
-                            ? GridView(
-                                shrinkWrap: true,
-                                primary: false,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.all(10),
-                                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 85,
-                                  mainAxisExtent: 60,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                ),
-                                children: [
-                                  DailyRewardComponent(day: 1, diamond: dailyReward.value.dailyReward?.day1 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 1),
-                                  DailyRewardComponent(day: 2, diamond: dailyReward.value.dailyReward?.day2 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 2),
-                                  DailyRewardComponent(day: 3, diamond: dailyReward.value.dailyReward?.day3 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 3),
-                                  DailyRewardComponent(day: 4, diamond: dailyReward.value.dailyReward?.day4 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 4),
-                                  DailyRewardComponent(day: 5, diamond: dailyReward.value.dailyReward?.day5 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 5),
-                                  DailyRewardComponent(day: 6, diamond: dailyReward.value.dailyReward?.day6 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 6),
-                                  DailyRewardComponent(day: 7, diamond: dailyReward.value.dailyReward?.day7 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 7),
-                                ],
-                              )
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    AssetsUtil.getDailyFinish(),
-                                    height: 60,
-                                    fit: BoxFit.contain,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "Daily Rewards event is over.\nInvite friends to get more spin!",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      color: context.theme.colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                        child: GridView(
+                          shrinkWrap: true,
+                          primary: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(10),
+                          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 85,
+                            mainAxisExtent: 60,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          children: [
+                            DailyRewardComponent(day: 1, diamond: dailyReward.value.dailyReward?.day1 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 1),
+                            DailyRewardComponent(day: 2, diamond: dailyReward.value.dailyReward?.day2 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 2),
+                            DailyRewardComponent(day: 3, diamond: dailyReward.value.dailyReward?.day3 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 3),
+                            DailyRewardComponent(day: 4, diamond: dailyReward.value.dailyReward?.day4 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 4),
+                            DailyRewardComponent(day: 5, diamond: dailyReward.value.dailyReward?.day5 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 5),
+                            DailyRewardComponent(day: 6, diamond: dailyReward.value.dailyReward?.day6 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 6),
+                            DailyRewardComponent(day: 7, diamond: dailyReward.value.dailyReward?.day7 ?? 0, isCompleted: ((dailyReward.value.dailyRewardDay ?? 0) - 1) >= 7),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 15),
                       Text(
@@ -293,7 +272,7 @@ class ExtraTaskDialogComponent {
                                 children: [
                                   WidgetSpan(
                                     child: Image.asset(
-                                      AssetsUtil.getInvitation(),
+                                      AssetsUtil.getInvite(),
                                       height: 25,
                                       width: 25,
                                     ),
@@ -306,16 +285,16 @@ class ExtraTaskDialogComponent {
                                       width: 25,
                                     ),
                                   ),
-                                  const TextSpan(text: " 1 Spin"),
+                                  const TextSpan(text: " 1 Card"),
                                 ],
                               ),
                             ),
                             const SizedBox(height: 10),
                             TaskButtonComponent(
-                              text: "Invite for Spin!",
+                              text: "Invite for Scratch Card!",
                               onClick: () => onInviteForSpin(),
                               height: 30,
-                              width: 120,
+                              width: 150,
                               startColor: context.theme.colorScheme.surfaceContainerLow,
                               endColor: context.theme.colorScheme.surfaceContainerHigh,
                             ),
@@ -345,12 +324,12 @@ class ExtraTaskDialogComponent {
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(Radius.circular(15)),
                               border: Border.all(color: context.theme.colorScheme.onSurfaceVariant),
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  Color(0xFF8f00ff),
-                                  Color(0xFF560099),
+                                  context.theme.colorScheme.primaryFixed,
+                                  context.theme.colorScheme.secondaryFixed,
                                 ],
                               ),
                             ),
@@ -372,7 +351,7 @@ class ExtraTaskDialogComponent {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
-                                        color: context.theme.colorScheme.onSurface,
+                                        color: context.theme.colorScheme.surface,
                                       ),
                                     ),
                                   ),
@@ -399,8 +378,8 @@ class ExtraTaskDialogComponent {
                                       onClick: () => onTaskGoClick(index),
                                       height: 25,
                                       width: 80,
-                                      startColor: context.theme.colorScheme.primaryFixed,
-                                      endColor: context.theme.colorScheme.secondaryFixed,
+                                      startColor: context.theme.colorScheme.surface,
+                                      endColor: context.theme.colorScheme.surface,
                                     ),
                                     const SizedBox(height: 3),
                                     (taskList[index].isCompleted ?? false) && (taskList[index].type != 5)
@@ -474,8 +453,8 @@ class ExtraTaskDialogComponent {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            context.theme.colorScheme.surfaceContainerLow,
-                            context.theme.colorScheme.surfaceContainerHigh,
+                            context.theme.colorScheme.primaryFixed,
+                            context.theme.colorScheme.secondaryFixed,
                           ],
                         ),
                         border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
@@ -485,7 +464,7 @@ class ExtraTaskDialogComponent {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: context.theme.colorScheme.onSurface,
+                          color: context.theme.colorScheme.surface,
                           height: 1,
                           fontStyle: FontStyle.italic,
                         ),

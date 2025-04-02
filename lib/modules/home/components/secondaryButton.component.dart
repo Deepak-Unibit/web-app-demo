@@ -45,7 +45,7 @@ class SecondaryButtonComponent extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: context.theme.colorScheme.onSurface,
+            color: context.theme.colorScheme.surface,
             height: 1,
             fontStyle: FontStyle.italic,
           ),

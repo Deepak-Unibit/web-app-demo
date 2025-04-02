@@ -26,7 +26,7 @@ class InvitationListDialogComponent {
                 Row(
                   children: [
                     Image.asset(
-                      AssetsUtil.getInvitation(),
+                      AssetsUtil.getInvite(),
                       height: 60,
                       width: 60,
                       fit: BoxFit.contain,
@@ -206,8 +206,8 @@ class InvitationListDialogComponent {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            context.theme.colorScheme.surfaceContainerLow,
-                            context.theme.colorScheme.surfaceContainerHigh,
+                            context.theme.colorScheme.primaryFixed,
+                            context.theme.colorScheme.secondaryFixed,
                           ],
                         ),
                         border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
@@ -217,7 +217,7 @@ class InvitationListDialogComponent {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: context.theme.colorScheme.onSurface,
+                          color: context.theme.colorScheme.surface,
                           height: 1,
                           fontStyle: FontStyle.italic,
                         ),
