@@ -27,7 +27,7 @@ class GetSpinDialogComponent {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(
-                  AssetsUtil.getSpinCard(),
+                  AssetsUtil.getScratchCard(),
                   height: 100,
                   fit: BoxFit.contain,
                 ),

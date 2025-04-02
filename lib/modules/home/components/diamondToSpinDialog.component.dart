@@ -44,7 +44,7 @@ class DiamondToSpinDialogComponent {
                     ),
                     const SizedBox(width: 5),
                     Image.asset(
-                      AssetsUtil.getSpinCard(),
+                      AssetsUtil.getScratchCard(),
                       height: 60,
                       width: 60,
                       fit: BoxFit.contain,

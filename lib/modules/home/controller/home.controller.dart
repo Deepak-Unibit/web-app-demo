@@ -69,19 +69,19 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   HomeController() {
     try {
       // Production
-      var state = js.JsObject.fromBrowserObject(js.context['state']);
-      Map<String, dynamic> userData = jsonDecode(state['userData']);
-      userModel = UserModel.fromJson(userData);
-
-      print(userData);
+      // var state = js.JsObject.fromBrowserObject(js.context['state']);
+      // Map<String, dynamic> userData = jsonDecode(state['userData']);
+      // userModel = UserModel.fromJson(userData);
+      //
+      // print(userData);
 
       // Development
-      // userModel = UserModel(
-      //   id: 1146609300,
-      //   firstName: "New3 Kumar",
-      //   lastName: "Behera",
-      //   allowsWriteToPm: true,
-      // );
+      userModel = UserModel(
+        id: 1146609300,
+        firstName: "New3 Kumar",
+        lastName: "Behera",
+        allowsWriteToPm: true,
+      );
 
       if (userModel.id != null && userModel.firstName != null && userModel.lastName != null) {
         Future.delayed(200.milliseconds, () => verifySubscription(userModel.id ?? 0));
@@ -326,9 +326,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       );
       cardsList.removeAt(index);
       cardsList.add(getCoverImage());
+      cardsList.refresh();
       // SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100, scratcherKey: scratchKey, onScratched: onScratched, showConfetti: showConfetti);
 
-      Future.delayed(2.seconds, () {
+      Future.delayed(1.seconds, () {
         totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
         setUserData.value.setEarnedAmount = ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;

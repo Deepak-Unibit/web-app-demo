@@ -280,7 +280,7 @@ class ExtraTaskDialogComponent {
                                   const TextSpan(text: " Invite 1 Friend = "),
                                   WidgetSpan(
                                     child: Image.asset(
-                                      AssetsUtil.getSpinCard(),
+                                      AssetsUtil.getScratchCard(),
                                       height: 25,
                                       width: 25,
                                     ),
@@ -545,7 +545,7 @@ class DailyRewardComponent extends StatelessWidget {
               if (day == 7) ...[
                 const SizedBox(width: 3),
                 Image.asset(
-                  AssetsUtil.getSpinCard(),
+                  AssetsUtil.getScratchCard(),
                   height: 13,
                   width: 13,
                 ),
