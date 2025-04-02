@@ -79,7 +79,7 @@ class RewardsDialogComponent {
                             AssetsUtil.getGiftBox(),
                             height: 55,
                             width: 55,
-                            fit: BoxFit.contain,
+                            fit: BoxFit.cover,
                           ),
                           ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 170),
@@ -126,7 +126,8 @@ class RewardsDialogComponent {
                                 onClick: (rewardsModel.data?.cashClaimedCount ?? 0) == index ? () => cashOutRequest(rewardsModel.data!.referralSystem![index].referralReward ?? 0) : () {},
                                 height: 25,
                                 width: 49,
-                                startColor: (rewardsModel.data?.cashClaimedCount ?? 0) == index ? context.theme.colorScheme.primaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                startColor:
+                                    (rewardsModel.data?.cashClaimedCount ?? 0) == index ? context.theme.colorScheme.secondaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
                                 endColor: (rewardsModel.data?.cashClaimedCount ?? 0) == index ? context.theme.colorScheme.secondaryFixed : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
                               ),
                               const SizedBox(height: 10),

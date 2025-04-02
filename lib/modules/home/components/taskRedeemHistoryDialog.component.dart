@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_app_demo/helper/date.helper.dart';
 import 'package:web_app_demo/models/taskRedeemHistory.model.dart';
-import 'package:web_app_demo/models/withdrawRequest.model.dart';
 import '../../../utils/assets.util.dart';
 
 class TaskRedeemHistoryDialogComponent {
@@ -137,8 +136,8 @@ class TaskRedeemHistoryDialogComponent {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            context.theme.colorScheme.surfaceContainerLow,
-                            context.theme.colorScheme.surfaceContainerHigh,
+                            context.theme.colorScheme.primaryFixed,
+                            context.theme.colorScheme.secondaryFixed,
                           ],
                         ),
                         border: Border.all(color: context.theme.colorScheme.onSurface.withOpacity(0.25), width: 1.5),
@@ -148,7 +147,7 @@ class TaskRedeemHistoryDialogComponent {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: context.theme.colorScheme.onSurface,
+                          color: context.theme.colorScheme.surface,
                           height: 1,
                           fontStyle: FontStyle.italic,
                         ),

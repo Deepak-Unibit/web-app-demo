@@ -56,14 +56,14 @@ class GetSpinDialogComponent {
                 ),
                 channel1Status!=2 ? const SizedBox(height: 20) : const SizedBox.shrink(),
                 channel1Status!=2 ? SecondaryButtonComponent(
-                  text: channel1Status==0 ? "Join Channel & Get Spin" : channel1Status==1 ? "Continue" : "",
+                  text: channel1Status==0 ? "Join Channel & Get Scratch Card" : channel1Status==1 ? "Continue" : "",
                   onClick: channel1Status==0 ? ()=>onJoinChannelClick(0) : channel1Status==1 ? onContinueClick : (){},
                   height: 35,
                   width: double.infinity,
                 ) : const SizedBox.shrink(),
                 channel2Status!=2 ? const SizedBox(height: 20) : const SizedBox.shrink(),
                 channel2Status!=2 ? SecondaryButtonComponent(
-                  text: channel2Status==0 ? "Join Channel & Get Spin" : channel2Status==1 ? "Continue" : "",
+                  text: channel2Status==0 ? "Join Channel & Get Scratch Card" : channel2Status==1 ? "Continue" : "",
                   onClick: channel2Status==0 ? ()=>onJoinChannelClick(1) : channel2Status==1 ? onContinueClick : (){},
                   height: 35,
                   width: double.infinity,

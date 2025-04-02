@@ -47,7 +47,7 @@ class InviteDialogComponent {
                   ),
                 ),
                 Text(
-                  "Invite To Get More Spins",
+                  "Invite To Get More Scratch Card",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -120,7 +120,7 @@ class InviteDialogComponent {
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                   child: SecondaryButtonComponent(
-                    text: "Invite for Spins",
+                    text: "Invite for Scratch Card",
                     onClick: onClick,
                     height: 35,
                     width: double.infinity,

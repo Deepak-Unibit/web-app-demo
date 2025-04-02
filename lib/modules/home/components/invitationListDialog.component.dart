@@ -68,7 +68,7 @@ class InvitationListDialogComponent {
                   ),
                 ),
                 Text(
-                  "If the person you invite doesn't join our channel, you can't get spins!",
+                  "If the person you invite doesn't join our channel, you can't get scratch card!",
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
