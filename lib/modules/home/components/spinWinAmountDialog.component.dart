@@ -35,7 +35,7 @@ class SpinWinAmountDialogComponent {
                     child: Scratcher(
                       key: scratcherKey,
                       brushSize: 50,
-                      threshold: 30,
+                      threshold: 25,
                       image: Image.asset(coverImage),
                       onChange: (value) {},
                       onThreshold: () => onScratched(),

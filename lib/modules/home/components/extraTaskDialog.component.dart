@@ -170,8 +170,8 @@ class ExtraTaskDialogComponent {
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  context.theme.colorScheme.surfaceContainerHigh,
-                                  context.theme.colorScheme.surfaceContainerLow,
+                                  context.theme.colorScheme.secondaryFixed,
+                                  context.theme.colorScheme.secondaryFixed,
                                 ],
                               ),
                             ),
@@ -181,7 +181,7 @@ class ExtraTaskDialogComponent {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
-                                color: context.theme.colorScheme.onSecondaryFixedVariant,
+                                color: context.theme.colorScheme.surface,
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -256,7 +256,7 @@ class ExtraTaskDialogComponent {
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.all(Radius.circular(15)),
-                          color: const Color(0xFF8f00ff).withOpacity(0.75),
+                          color: const Color(0xFFFECB2F),
                           border: Border.all(color: context.theme.colorScheme.onSurfaceVariant),
                         ),
                         child: Column(
@@ -264,23 +264,16 @@ class ExtraTaskDialogComponent {
                           children: [
                             RichText(
                               text: TextSpan(
+                                text: " Invite 1 Friend = ",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
-                                  color: context.theme.colorScheme.onSurface,
+                                  color: context.theme.colorScheme.surface,
                                 ),
                                 children: [
                                   WidgetSpan(
                                     child: Image.asset(
-                                      AssetsUtil.getInvite(),
-                                      height: 25,
-                                      width: 25,
-                                    ),
-                                  ),
-                                  const TextSpan(text: " Invite 1 Friend = "),
-                                  WidgetSpan(
-                                    child: Image.asset(
-                                      AssetsUtil.getSpinCard(),
+                                      AssetsUtil.getScratchCard(),
                                       height: 25,
                                       width: 25,
                                     ),
@@ -317,21 +310,14 @@ class ExtraTaskDialogComponent {
                           physics: const NeverScrollableScrollPhysics(),
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           itemCount: taskList.length,
-                          separatorBuilder: (context, index) => const SizedBox(height: 10),
+                          separatorBuilder: (context, index) => const SizedBox(height: 20),
                           itemBuilder: (context, index) => Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(Radius.circular(15)),
-                              border: Border.all(color: context.theme.colorScheme.onSurfaceVariant),
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  context.theme.colorScheme.primaryFixed,
-                                  context.theme.colorScheme.secondaryFixed,
-                                ],
-                              ),
+                              border: Border.all(color: context.theme.colorScheme.surface.withOpacity(0.75)),
+                              color: const Color(0xFFFECB2F),
                             ),
                             child: Row(
                               children: [
@@ -378,8 +364,8 @@ class ExtraTaskDialogComponent {
                                       onClick: () => onTaskGoClick(index),
                                       height: 25,
                                       width: 80,
-                                      startColor: context.theme.colorScheme.surface,
-                                      endColor: context.theme.colorScheme.surface,
+                                      startColor: context.theme.colorScheme.surfaceContainerLow,
+                                      endColor: context.theme.colorScheme.surfaceContainerHigh,
                                     ),
                                     const SizedBox(height: 3),
                                     (taskList[index].isCompleted ?? false) && (taskList[index].type != 5)
@@ -397,7 +383,7 @@ class ExtraTaskDialogComponent {
                                                 style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w600,
-                                                  color: context.theme.colorScheme.onSurface,
+                                                  color: context.theme.colorScheme.surfaceContainerLow,
                                                   height: 1,
                                                   fontStyle: FontStyle.italic,
                                                 ),
@@ -417,7 +403,7 @@ class ExtraTaskDialogComponent {
                                             height: 25,
                                             width: 80,
                                             startColor: ((taskList[index].isInitiated ?? false) && !(activeTimerIndexList.contains(index)))
-                                                ? context.theme.colorScheme.scrim
+                                                ? context.theme.colorScheme.secondary
                                                 : context.theme.colorScheme.onSurfaceVariant,
                                             endColor: ((taskList[index].isInitiated ?? false) && !(activeTimerIndexList.contains(index)))
                                                 ? context.theme.colorScheme.scrim
@@ -500,14 +486,8 @@ class DailyRewardComponent extends StatelessWidget {
       width: 85,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(10)),
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            context.theme.colorScheme.surfaceContainerLow,
-            context.theme.colorScheme.surfaceContainerHigh,
-          ],
-        ),
+        color: const Color(0xFFFECB2F),
+        border: Border.all(color: context.theme.colorScheme.surface.withOpacity(0.5)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -520,7 +500,7 @@ class DailyRewardComponent extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,
-              color: context.theme.colorScheme.onSurface,
+              color: context.theme.colorScheme.surface,
             ),
           ),
           Row(
@@ -539,13 +519,13 @@ class DailyRewardComponent extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w400,
-                  color: context.theme.colorScheme.onSurface,
+                  color: context.theme.colorScheme.surface,
                 ),
               ),
               if (day == 7) ...[
                 const SizedBox(width: 3),
                 Image.asset(
-                  AssetsUtil.getSpinCard(),
+                  AssetsUtil.getScratchCard(),
                   height: 13,
                   width: 13,
                 ),
@@ -557,7 +537,7 @@ class DailyRewardComponent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w400,
-                    color: context.theme.colorScheme.onSurface,
+                    color: context.theme.colorScheme.surface,
                   ),
                 ),
               ],

@@ -2,7 +2,7 @@ class AssetsUtil {
   static getTrophy() => 'assets/images/trophy.webp';
   static getInvite() => 'assets/images/invite.webp';
   static getCoin() => 'assets/images/coin.webp';
-  static getSpinCard() => 'assets/images/spin.webp';
+  static getScratchCard() => 'assets/images/scratch.png';
   static getWhatsappIcon() => 'assets/images/whatsapp.webp';
   static getXIcon() => 'assets/images/twitter.webp';
   static getFacebookIcon() => 'assets/images/facebook.webp';

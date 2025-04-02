@@ -44,7 +44,7 @@ class DiamondToSpinDialogComponent {
                     ),
                     const SizedBox(width: 5),
                     Image.asset(
-                      AssetsUtil.getSpinCard(),
+                      AssetsUtil.getScratchCard(),
                       height: 60,
                       width: 60,
                       fit: BoxFit.contain,
@@ -53,7 +53,7 @@ class DiamondToSpinDialogComponent {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  "You've got $spinCount Spin!",
+                  "You've got $spinCount Scratch Card!",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,

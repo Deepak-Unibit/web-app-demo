@@ -326,9 +326,10 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       );
       cardsList.removeAt(index);
       cardsList.add(getCoverImage());
+      cardsList.refresh();
       // SpinWinAmountDialogComponent.show(amount: ((spinModel.data?.spinAmount ?? 0) * 100).truncateToDouble() / 100, scratcherKey: scratchKey, onScratched: onScratched, showConfetti: showConfetti);
 
-      Future.delayed(2.seconds, () {
+      Future.delayed(1.seconds, () {
         totalSpinCount.value = ((spinModel.data?.spinCount ?? 0) + (spinModel.data?.referralSpins ?? 0)) as int;
         setUserData.value.setEarnedAmount = ((spinModel.data?.earnedAmount ?? 0) * 100).truncateToDouble() / 100;
         setUserData.value.setSpinCount = spinModel.data?.spinCount ?? 0;

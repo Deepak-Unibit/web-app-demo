@@ -168,14 +168,14 @@ class UploadProofDialogComponent {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: context.theme.colorScheme.onSurface,
+                            color: context.theme.colorScheme.surface,
                           ),
                         ),
                         const SizedBox(width: 3),
                         Icon(
                           Icons.cloud_upload_rounded,
                           size: 15,
-                          color: context.theme.colorScheme.onSurface,
+                          color: context.theme.colorScheme.surface,
                         ),
                       ],
                     ),

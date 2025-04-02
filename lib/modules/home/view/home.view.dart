@@ -273,7 +273,7 @@ class HomeView extends StatelessWidget {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                   child: ColoredBox(
-                    color: context.theme.colorScheme.surface.withOpacity(0.4),
+                    color: const Color(0xFF151515).withOpacity(0.75),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
