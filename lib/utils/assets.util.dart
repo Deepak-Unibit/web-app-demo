@@ -10,16 +10,11 @@ class AssetsUtil {
   static getSecondRank() => 'assets/images/Rank 2.webp';
   static getThirdRank() => 'assets/images/Rank 3.webp';
   static getCardIcon() => 'assets/images/card.webp';
-  static getPointHand() => 'assets/images/pointHand.webp';
-  static getPointHandBg() => 'assets/images/halo.webp';
   static getTwoCoin() => 'assets/images/twoCoin.webp';
   static getGiftBox() => 'assets/images/giftBox.webp';
   static getExtraTaskChest() => 'assets/images/extraTaskChest.webp';
-  static getDailyRewardsDialog() => 'assets/images/dailyRewards.webp';
   static getDiamond() => 'assets/images/diamond.webp';
   static getLoop() => 'assets/images/loop.webp';
-  static getDailyFinish() => 'assets/images/dailyFinish.webp';
-  static getAutoSpin() => 'assets/images/autoSpin.webp';
 
 
   static getConfettiLottie() => 'assets/images/confetti-animation.json';
