@@ -25,6 +25,7 @@ class AssetsUtil {
   static getConfettiLottie() => 'assets/images/confetti-animation.json';
   static getRupeeLottie() => 'assets/images/rupee-animation.json';
   static getClaimDiamondLottie() => 'assets/images/claimDiamondAnimation.gif';
+  static getEnvelopLottie() => 'assets/images/envelopAnimation.gif';
 
   static getBackground() => 'assets/images/background.png';
   static getRank() => 'assets/images/rank.png';
