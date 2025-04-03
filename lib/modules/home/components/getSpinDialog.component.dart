@@ -5,7 +5,13 @@ import 'package:web_app_demo/modules/home/components/secondaryButton.component.d
 import 'package:web_app_demo/utils/assets.util.dart';
 
 class GetSpinDialogComponent {
-  static show({required Function onJoinChannelClick, required Function onContinueClick, required String text, required int channel1Status, required int channel2Status}) {
+  static show({
+    required Function onJoinChannelClick,
+    required Function onContinueClick,
+    required int channel1Status,
+    required int channel2Status,
+    required int channel3Status,
+  }) {
     return showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -48,26 +54,62 @@ class GetSpinDialogComponent {
                           color: context.theme.colorScheme.primaryFixed,
                         ),
                       ),
-                      const TextSpan(
-                        text: " Spin!"
-                      ),
+                      const TextSpan(text: " Scratch Card!"),
                     ],
                   ),
                 ),
-                channel1Status!=2 ? const SizedBox(height: 20) : const SizedBox.shrink(),
-                channel1Status!=2 ? SecondaryButtonComponent(
-                  text: channel1Status==0 ? "Join Channel & Get Scratch Card" : channel1Status==1 ? "Continue" : "",
-                  onClick: channel1Status==0 ? ()=>onJoinChannelClick(0) : channel1Status==1 ? onContinueClick : (){},
+                channel1Status != 2 ? const SizedBox(height: 20) : const SizedBox.shrink(),
+                channel1Status != 2
+                    ? SecondaryButtonComponent(
+                        text: channel1Status == 0
+                            ? "Join Channel & Get Scratch Card"
+                            : channel1Status == 1
+                                ? "Continue"
+                                : "",
+                        onClick: channel1Status == 0
+                            ? () => onJoinChannelClick(0)
+                            : channel1Status == 1
+                                ? onContinueClick
+                                : () {},
+                        height: 35,
+                        width: double.infinity,
+                      )
+                    : const SizedBox.shrink(),
+                channel2Status != 2 ? const SizedBox(height: 20) : const SizedBox.shrink(),
+                channel2Status != 2
+                    ? SecondaryButtonComponent(
+                        text: channel2Status == 0
+                            ? "Join Channel & Get Scratch Card"
+                            : channel2Status == 1
+                                ? "Continue"
+                                : "",
+                        onClick: channel2Status == 0
+                            ? () => onJoinChannelClick(1)
+                            : channel2Status == 1
+                                ? onContinueClick
+                                : () {},
+                        height: 35,
+                        width: double.infinity,
+                      )
+                    : const SizedBox.shrink(),
+
+                channel3Status != 2 ? const SizedBox(height: 20) : const SizedBox.shrink(),
+                channel3Status != 2
+                    ? SecondaryButtonComponent(
+                  text: channel3Status == 0
+                      ? "Join Channel & Get Scratch Card"
+                      : channel3Status == 1
+                      ? "Continue"
+                      : "",
+                  onClick: channel3Status == 0
+                      ? () => onJoinChannelClick(2)
+                      : channel3Status == 1
+                      ? onContinueClick
+                      : () {},
                   height: 35,
                   width: double.infinity,
-                ) : const SizedBox.shrink(),
-                channel2Status!=2 ? const SizedBox(height: 20) : const SizedBox.shrink(),
-                channel2Status!=2 ? SecondaryButtonComponent(
-                  text: channel2Status==0 ? "Join Channel & Get Scratch Card" : channel2Status==1 ? "Continue" : "",
-                  onClick: channel2Status==0 ? ()=>onJoinChannelClick(1) : channel2Status==1 ? onContinueClick : (){},
-                  height: 35,
-                  width: double.infinity,
-                ) : const SizedBox.shrink(),
+                )
+                    : const SizedBox.shrink(),
               ],
             ),
           ),

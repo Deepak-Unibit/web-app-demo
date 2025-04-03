@@ -95,11 +95,16 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
+  int channel1Status = 0;
+  int channel2Status = 0;
+  int channel3Status = 0;
   verifySubscription(num telegramId) async {
     // Production
     LoadingPage.show();
     var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
     LoadingPage.close();
+
+    print(resp);
 
     VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
@@ -115,15 +120,18 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
 
-      if ((verifySubscriptionData.joinedChannel1 ?? false) && (verifySubscriptionData.joinedChannel2 ?? false)) {
+      if ((verifySubscriptionData.joinedChannel1 ?? false) && (verifySubscriptionData.joinedChannel2 ?? false) && (verifySubscriptionData.joinedChannel3 ?? false)) {
         setUser(userModel);
       } else {
+        channel1Status = verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0;
+        channel2Status = verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0;
+        channel3Status = verifySubscriptionData.joinedChannel3 ?? false ? 2 : 0;
         GetSpinDialogComponent.show(
-          text: "Join Channel & Get Spin",
           onJoinChannelClick: onJoinChannelClick,
           onContinueClick: onContinueClick,
-          channel1Status: verifySubscriptionData.joinedChannel1 ?? false ? 2 : 0,
-          channel2Status: verifySubscriptionData.joinedChannel2 ?? false ? 2 : 0,
+          channel1Status: channel1Status,
+          channel2Status: channel2Status,
+          channel3Status: channel3Status,
         );
       }
     } else {
@@ -444,7 +452,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     html.window.open(telegramLink, '_blank');
   }
 
-  onCopyClick() {
+  void onCopyClick() {
     html.window.navigator.clipboard
         ?.writeText(
             "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
@@ -455,28 +463,25 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     });
   }
 
-  onJoinChannelClick(int type) {
+  void onJoinChannelClick(int type) {
     String telegramLink = "";
     if (type == 0) {
-      telegramLink = 'https://t.me/ludo24_app';
-    } else {
-      telegramLink = 'https://t.me/Wheel24';
+      channel1Status = 1;
+      telegramLink = 'https://t.me/webTestChannel';
+    } else if (type == 1) {
+      channel2Status = 1;
+      telegramLink = 'https://t.me/webTestChannel2';
+    } else if (type == 2) {
+      channel3Status = 1;
+      telegramLink = 'https://t.me/webTestChannel3';
     }
 
     html.window.open(telegramLink, '_blank');
     Get.back();
     GetSpinDialogComponent.show(
-      text: "Continue",
-      channel1Status: type == 0
-          ? 1
-          : (verifySubscriptionData.joinedChannel1 ?? false)
-              ? 2
-              : 0,
-      channel2Status: type == 1
-          ? 1
-          : (verifySubscriptionData.joinedChannel2 ?? false)
-              ? 2
-              : 0,
+      channel1Status: channel1Status,
+      channel2Status: channel2Status,
+      channel3Status: channel3Status,
       onJoinChannelClick: onJoinChannelClick,
       onContinueClick: onContinueClick,
     );
