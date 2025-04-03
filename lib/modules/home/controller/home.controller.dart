@@ -73,7 +73,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       Map<String, dynamic> userData = jsonDecode(state['userData']);
       userModel = UserModel.fromJson(userData);
 
-      print(userData);
+      // print(userData);
 
       // Development
       // userModel = UserModel(
@@ -104,7 +104,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
     LoadingPage.close();
 
-    print(resp);
 
     VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
@@ -355,7 +354,6 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void onScratched() {
-    print("scratched");
     scratchKey.currentState?.reveal();
     showConfetti.value = true;
   }
