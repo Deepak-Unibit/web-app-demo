@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Wheel24 - Spin & Win',
+      title: 'T20 Prize - Scratch & Win',
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       theme: ThemesUtil.light,

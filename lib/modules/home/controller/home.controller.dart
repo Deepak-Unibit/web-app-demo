@@ -432,7 +432,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   void inviteRewards() {
     String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+        "https://t.me/share/url?url=https://t.me/T20PrizeBot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -440,14 +440,14 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   onContinueToGetMoreSpin() {
     Get.back();
     String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+        "https://t.me/share/url?url=https://t.me/T20PrizeBot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
 
   onInviteForSpins() {
     String telegramLink =
-        "https://t.me/share/url?url=https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
+        "https://t.me/share/url?url=https://t.me/T20PrizeBot?start=${setUserData.value.referralCode} %0A%0A🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 %0AClick URL and play with me!%0A%0A💰Let's stike it rich together!💰";
 
     html.window.open(telegramLink, '_blank');
   }
@@ -455,7 +455,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   void onCopyClick() {
     html.window.navigator.clipboard
         ?.writeText(
-            "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
+            "https://t.me/T20PrizeBot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰")
         .then((_) {
       SnackBarHelper.show("Copied to Clipboard");
     }).catchError((e) {
@@ -494,7 +494,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   onShareClick(int index) {
     String message =
-        "https://t.me/Wheel24Bot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
+        "https://t.me/T20PrizeBot?start=${setUserData.value.referralCode} \n\n🎁I've won ₹${setUserData.value.earnedAmount} from this Game!🎁 \nClick URL and play with me!\n\n💰Let's stike it rich together!💰";
 
     if (index == 0) {
       final String whatsappUrl = 'https://wa.me/?text=${Uri.encodeComponent(message)}';
@@ -508,8 +508,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     } else {
       html.window.navigator
           .share({
-            'title': "Wheel24",
-            'text': "Wheel24",
+            'title': "T20PrizeBot",
+            'text': "T20PrizeBot",
             'url': message,
           })
           .then((_) {})
