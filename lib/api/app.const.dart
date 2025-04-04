@@ -12,5 +12,4 @@ class AppConst {
   static const String baseUrl = "https://tgb-2.ludo24.app/scratch";
   static const String baseUrl2 = "https://tgb-3.ludo24.app";
   static const String encryptionKey = "5648946198491298498_PROD";
-
 }
