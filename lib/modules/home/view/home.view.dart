@@ -27,283 +27,271 @@ class HomeView extends StatelessWidget {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              DecoratedBox(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0x00727272),
-                      Color(0xFF000000),
+              ListView(
+                padding: const EdgeInsets.only(bottom: 130),
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buildButton(
+                        context,
+                        homeController.onRankClick,
+                        AssetsUtil.getRank(),
+                      ),
+                      buildButton(
+                        context,
+                        homeController.onInvitation,
+                        AssetsUtil.getInvitation(),
+                      ),
+                      buildButton(
+                        context,
+                        homeController.onCashOut,
+                        AssetsUtil.getCashOut(),
+                      ),
                     ],
                   ),
-                ),
-                child: ListView(
-                  padding: const EdgeInsets.only(bottom: 130),
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildButton(
-                          context,
-                          homeController.onRankClick,
-                          AssetsUtil.getRank(),
-                        ),
-                        buildButton(
-                          context,
-                          homeController.onInvitation,
-                          AssetsUtil.getInvitation(),
-                        ),
-                        buildButton(
-                          context,
-                          homeController.onCashOut,
-                          AssetsUtil.getCashOut(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          AssetsUtil.getTwoCoin(),
-                          height: 30,
-                          width: 30,
-                          fit: BoxFit.contain,
-                        ),
-                        const SizedBox(width: 5),
-                        Obx(
-                          () => RichText(
-                            text: TextSpan(
-                              text: "₹ ",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                color: context.theme.colorScheme.secondaryFixed,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: "${homeController.setUserData.value.earnedAmount ?? 0}",
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                      child: Obx(
-                        () => LinearProgressBar(
-                          backgroundColor: context.theme.colorScheme.onSurface.withOpacity(0.25),
-                          progressColor: context.theme.colorScheme.secondaryFixed,
-                          borderRadius: const BorderRadius.all(Radius.circular(100)),
-                          minHeight: 18,
-                          maxSteps: homeController.goalAmount.value <= 0 ? 1 : homeController.goalAmount.value,
-                          currentStep: (homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value
-                              ? homeController.goalAmount.value
-                              : homeController.setUserData.value.earnedAmount?.toInt() ?? 0,
-                        ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        AssetsUtil.getTwoCoin(),
+                        height: 30,
+                        width: 30,
+                        fit: BoxFit.contain,
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Obx(
+                      const SizedBox(width: 5),
+                      Obx(
                         () => RichText(
                           text: TextSpan(
-                            text: "Only ",
+                            text: "₹ ",
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: context.theme.colorScheme.onSurface,
-                              fontStyle: FontStyle.italic,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: context.theme.colorScheme.secondaryFixed,
                             ),
                             children: [
                               TextSpan(
-                                text: " ₹",
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  color: context.theme.colorScheme.primaryFixed,
+                                text: "${homeController.setUserData.value.earnedAmount ?? 0}",
+                                style: const TextStyle(
+                                  fontSize: 18,
                                 ),
-                              ),
-                              TextSpan(
-                                text:
-                                    "${(homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value ? 0 : (homeController.goalAmount.value - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: context.theme.colorScheme.primaryFixed,
-                                ),
-                              ),
-                              const TextSpan(
-                                text: " to cash out",
-                              ),
-                              TextSpan(
-                                text: " ₹",
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  color: context.theme.colorScheme.primaryFixed,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "${homeController.goalAmount.value}",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: context.theme.colorScheme.primaryFixed,
-                                ),
-                              ),
-                              const TextSpan(
-                                text: " !",
                               ),
                             ],
                           ),
                         ),
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    child: Obx(
+                      () => LinearProgressBar(
+                        backgroundColor: context.theme.colorScheme.onSurface.withOpacity(0.25),
+                        progressColor: context.theme.colorScheme.secondaryFixed,
+                        borderRadius: const BorderRadius.all(Radius.circular(100)),
+                        minHeight: 18,
+                        maxSteps: homeController.goalAmount.value <= 0 ? 1 : homeController.goalAmount.value,
+                        currentStep: (homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value
+                            ? homeController.goalAmount.value
+                            : homeController.setUserData.value.earnedAmount?.toInt() ?? 0,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildButton(
-                          context,
-                          homeController.onExtraTaskClick,
-                          AssetsUtil.getExtraTask(),
-                        ),
-                        Obx(
-                          () => homeController.showExtraCash.value
-                              ? buildButton(
-                                  context,
-                                  homeController.getMoreRewards,
-                                  AssetsUtil.getExtraCash(),
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                      ],
-                    ),
-                    Obx(
-                      () => homeController.totalSpinCount.value > 0
-                          ? GridView.builder(
-                              primary: false,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 20,
-                                crossAxisSpacing: 20,
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Obx(
+                      () => RichText(
+                        text: TextSpan(
+                          text: "Only ",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: context.theme.colorScheme.onSurface,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: " ₹",
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: context.theme.colorScheme.primaryFixed,
                               ),
-                              itemCount: homeController.totalSpinCount.value > 10 ? 10 : homeController.totalSpinCount.value,
-                              itemBuilder: (context, index) => MaterialButton(
-                                onPressed: () => homeController.onSpin(index),
-                                minWidth: 0,
-                                padding: EdgeInsets.zero,
-                                visualDensity: VisualDensity.compact,
-                                highlightColor: Colors.transparent,
-                                splashColor: Colors.transparent,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        homeController.cardsList[index],
-                                      ),
+                            ),
+                            TextSpan(
+                              text:
+                                  "${(homeController.setUserData.value.earnedAmount ?? 0) >= homeController.goalAmount.value ? 0 : (homeController.goalAmount.value - (homeController.setUserData.value.earnedAmount ?? 0)).toStringAsFixed(2)}",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: context.theme.colorScheme.primaryFixed,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: " to cash out",
+                            ),
+                            TextSpan(
+                              text: " ₹",
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: context.theme.colorScheme.primaryFixed,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "${homeController.goalAmount.value}",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: context.theme.colorScheme.primaryFixed,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: " !",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      buildButton(
+                        context,
+                        homeController.onExtraTaskClick,
+                        AssetsUtil.getExtraTask(),
+                      ),
+                      Obx(
+                        () => homeController.showExtraCash.value
+                            ? buildButton(
+                                context,
+                                homeController.getMoreRewards,
+                                AssetsUtil.getExtraCash(),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                    ],
+                  ),
+                  Obx(
+                    () => homeController.totalSpinCount.value > 0
+                        ? GridView.builder(
+                            primary: false,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 20,
+                            ),
+                            itemCount: homeController.totalSpinCount.value > 10 ? 10 : homeController.totalSpinCount.value,
+                            itemBuilder: (context, index) => MaterialButton(
+                              onPressed: () => homeController.onSpin(index),
+                              minWidth: 0,
+                              padding: EdgeInsets.zero,
+                              visualDensity: VisualDensity.compact,
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      homeController.cardsList[index],
                                     ),
                                   ),
                                 ),
                               ),
-                            )
-                          : Column(
-                              children: [
-                                Image.asset(
-                                  AssetsUtil.getEnvelopLottie(),
-                                  height: 300,
-                                  width: 300,
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              Image.asset(
+                                AssetsUtil.getEnvelopLottie(),
+                                height: 300,
+                                width: 300,
+                              ),
+                              DecoratedBox(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(color: context.theme.colorScheme.surface.withOpacity(0.25), offset: const Offset(0, 0), blurRadius: 5, spreadRadius: 5),
+                                  ],
                                 ),
-                                DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(color: context.theme.colorScheme.surface.withOpacity(0.25), offset: const Offset(0, 0), blurRadius: 5, spreadRadius: 5),
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: "Invite friends to earn ",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: context.theme.colorScheme.onSurface,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: "Scratch Cards!",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: context.theme.colorScheme.primaryFixed,
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      text: "Invite friends to earn ",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: context.theme.colorScheme.onSurface,
-                                        fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
+                  Obx(
+                    () => homeController.totalSpinCount.value > 10
+                        ? Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                border: Border.all(color: context.theme.colorScheme.primaryFixed.withOpacity(0.5)),
+                                color: context.theme.colorScheme.surface.withOpacity(0.25),
+                              ),
+                              child: Obx(
+                                () => RichText(
+                                  text: TextSpan(
+                                    text: "",
+                                    children: [
+                                      WidgetSpan(
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 20,
+                                          color: context.theme.colorScheme.primaryFixed,
+                                          weight: 800,
+                                        ),
                                       ),
-                                      children: [
-                                        TextSpan(
-                                          text: "Scratch Cards!",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            color: context.theme.colorScheme.primaryFixed,
-                                          ),
+                                      TextSpan(
+                                        text: "${homeController.totalSpinCount.value - 10}",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: context.theme.colorScheme.primaryFixed,
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ),
-                    Obx(
-                      () => homeController.totalSpinCount.value > 10
-                          ? Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(Radius.circular(100)),
-                                  border: Border.all(color: context.theme.colorScheme.primaryFixed.withOpacity(0.5)),
-                                  color: context.theme.colorScheme.surface.withOpacity(0.25),
-                                ),
-                                child: Obx(
-                                  () => RichText(
-                                    text: TextSpan(
-                                      text: "",
-                                      children: [
-                                        WidgetSpan(
-                                          child: Icon(
-                                            Icons.add,
-                                            size: 20,
-                                            color: context.theme.colorScheme.primaryFixed,
-                                            weight: 800,
-                                          ),
+                                      ),
+                                      TextSpan(
+                                        text: " Cards more",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          color: context.theme.colorScheme.onPrimary,
                                         ),
-                                        TextSpan(
-                                          text: "${homeController.totalSpinCount.value - 10}",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
-                                            color: context.theme.colorScheme.primaryFixed,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: " Cards more",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            color: context.theme.colorScheme.onPrimary,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            )
-                          : const SizedBox.shrink(),
-                    ),
-                  ],
-                ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                ],
               ),
               ClipRRect(
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
