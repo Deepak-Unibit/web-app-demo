@@ -465,13 +465,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     String telegramLink = "";
     if (type == 0) {
       channel1Status = 1;
-      telegramLink = 'https://t.me/webTestChannel';
+      telegramLink = 'https://t.me/opizoin';
     } else if (type == 1) {
       channel2Status = 1;
-      telegramLink = 'https://t.me/webTestChannel2';
+      telegramLink = 'https://t.me/unibit11';
     } else if (type == 2) {
       channel3Status = 1;
-      telegramLink = 'https://t.me/webTestChannel3';
+      telegramLink = 'https://t.me/T20Prize';
     }
 
     html.window.open(telegramLink, '_blank');
