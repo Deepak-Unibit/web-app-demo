@@ -102,22 +102,22 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   int channel3Status = 0;
   verifySubscription(num telegramId) async {
     // Production
-    LoadingPage.show();
-    var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
-    LoadingPage.close();
-
-
-    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
+    // LoadingPage.show();
+    // var resp = await ApiCall.getWithOutEncryption("${UrlApi.verifySubscription}/$telegramId");
+    // LoadingPage.close();
+    //
+    //
+    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel.fromJson(resp);
 
     // Development
-    // VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
-    //   responseCode: 200,
-    //   data: VerifySubscriptionData(
-    //     joinedChannel1: true,
-    //     joinedChannel2: true,
-    //     joinedChannel3: true,
-    //   ),
-    // );
+    VerifySubscriptionModel verifySubscriptionModel = VerifySubscriptionModel(
+      responseCode: 200,
+      data: VerifySubscriptionData(
+        joinedChannel1: true,
+        joinedChannel2: true,
+        joinedChannel3: true,
+      ),
+    );
 
     if (verifySubscriptionModel.responseCode == 200) {
       verifySubscriptionData = verifySubscriptionModel.data!;
