@@ -9,9 +9,11 @@ import '../../../utils/assets.util.dart';
 class ExtraTaskDialogComponent {
   static show({
     required RxInt totalDiamond,
+    required RxInt totalCashFromTask,
     required RxList<TaskListData> taskList,
     required Function onInviteForSpin,
     required Function onRedeemSpin,
+    required Function onRedeemCashFromTask,
     required Function onDetailsClick,
     required Function onTaskGoClick,
     required Function onTaskClaimClick,
@@ -102,7 +104,7 @@ class ExtraTaskDialogComponent {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Image.asset(
-                            AssetsUtil.getDiamond(),
+                            AssetsUtil.getCoin(),
                             height: 30,
                             width: 30,
                             fit: BoxFit.contain,
@@ -110,7 +112,7 @@ class ExtraTaskDialogComponent {
                           const SizedBox(width: 5),
                           Obx(
                             () => Text(
-                              "${totalDiamond.value}",
+                              "${totalCashFromTask.value}",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -123,6 +125,65 @@ class ExtraTaskDialogComponent {
                             children: [
                               Obx(
                                 () => TaskButtonComponent(
+                                  text: "Cash Out",
+                                  onClick: totalCashFromTask.value >= 50 ? onRedeemCashFromTask : () {},
+                                  height: 30,
+                                  width: 120,
+                                  startColor: totalCashFromTask.value >= 50 ? context.theme.colorScheme.surfaceContainerLow : context.theme.colorScheme.onSurface.withOpacity(0.65),
+                                  endColor: totalCashFromTask.value >= 50 ? context.theme.colorScheme.surfaceContainerHigh : context.theme.colorScheme.onSurfaceVariant.withOpacity(0.75),
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              RichText(
+                                text: TextSpan(
+                                  text: "(Minimum ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: context.theme.colorScheme.onSurface,
+                                  ),
+                                  children: [
+                                    WidgetSpan(
+                                      child: Image.asset(
+                                        AssetsUtil.getCoin(),
+                                        height: 15,
+                                        width: 15,
+                                      ),
+                                    ),
+                                    const TextSpan(text: " = 50)"),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            AssetsUtil.getDiamond(),
+                            height: 30,
+                            width: 30,
+                            fit: BoxFit.contain,
+                          ),
+                          const SizedBox(width: 5),
+                          Obx(
+                                () => Text(
+                              "${totalDiamond.value}",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: context.theme.colorScheme.onSurface,
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          Column(
+                            children: [
+                              Obx(
+                                    () => TaskButtonComponent(
                                   text: "Redeem Card",
                                   onClick: totalDiamond.value >= 1000 ? () => onRedeemSpin() : () {},
                                   height: 30,
@@ -351,7 +412,7 @@ class ExtraTaskDialogComponent {
                                             style: TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.w500,
-                                              color: context.theme.colorScheme.primaryFixed,
+                                              color: context.theme.colorScheme.surfaceContainerLow,
                                             ),
                                           ),
                                         )
@@ -373,13 +434,8 @@ class ExtraTaskDialogComponent {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Image.asset(
-                                                AssetsUtil.getDiamond(),
-                                                height: 18,
-                                                width: 18,
-                                              ),
                                               Text(
-                                                "+${taskList[index].diamonds ?? 0}",
+                                                "₹${taskList[index].diamonds ?? 0}",
                                                 style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w600,
@@ -397,7 +453,7 @@ class ExtraTaskDialogComponent {
                                             ],
                                           )
                                         : TaskButtonComponent(
-                                            text: "+${taskList[index].diamonds ?? 0}",
+                                            text: "₹${taskList[index].diamonds ?? 0}",
                                             showDiamond: true,
                                             onClick: ((taskList[index].isInitiated ?? false) && !(activeTimerIndexList.contains(index))) ? () => onTaskClaimClick(index) : () {},
                                             height: 25,
@@ -609,7 +665,7 @@ class TaskButtonComponent extends StatelessWidget {
           children: [
             showDiamond
                 ? Image.asset(
-                    AssetsUtil.getDiamond(),
+                    AssetsUtil.getCoin(),
                     height: 18,
                     width: 18,
                   )
