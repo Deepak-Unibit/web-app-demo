@@ -1,14 +1,15 @@
 class MyProfileModel {
   MyProfileModel({
-      String? status, 
-      String? message, 
-      num? responseCode, 
-      MyProfileData? data,}){
+    String? status,
+    String? message,
+    num? responseCode,
+    MyProfileData? data,
+  }) {
     _status = status;
     _message = message;
     _responseCode = responseCode;
     _data = data;
-}
+  }
 
   MyProfileModel.fromJson(dynamic json) {
     _status = json['status'];
@@ -36,39 +37,40 @@ class MyProfileModel {
     }
     return map;
   }
-
 }
 
 class MyProfileData {
   MyProfileData({
-      String? id, 
-      String? telegramId, 
-      String? firstName, 
-      String? lastName, 
-      String? phoneNumber, 
-      String? accountHolderName, 
-      String? upiId, 
-      bool? status, 
-      num? earnedAmountTemp, 
-      num? earnedAmount, 
-      num? spinCount, 
-      num? referralSpins, 
-      String? referralCode, 
-      List<String>? referrals, 
-      num? referralCount, 
-      num? referralCountForCash, 
-      num? earnedReferralCash, 
-      num? cashClaimedCount, 
-      num? cashOutRequestFor10, 
-      num? newLogicStatus, 
-      num? referralCountDue, 
-      num? currentSpinRequired, 
-      num? cashOutCount, 
-      num? payOutCount, 
-      num? diamondsEarned, 
-      num? spinFromDiamond, 
-      String? createdAt, 
-      String? updatedAt,}){
+    String? id,
+    String? telegramId,
+    String? firstName,
+    String? lastName,
+    String? phoneNumber,
+    String? accountHolderName,
+    String? upiId,
+    bool? status,
+    num? earnedAmountTemp,
+    num? earnedAmount,
+    num? spinCount,
+    num? referralSpins,
+    String? referralCode,
+    List<String>? referrals,
+    num? referralCount,
+    num? referralCountForCash,
+    num? earnedReferralCash,
+    num? cashClaimedCount,
+    num? cashOutRequestFor10,
+    num? newLogicStatus,
+    num? referralCountDue,
+    num? currentSpinRequired,
+    num? cashOutCount,
+    num? payOutCount,
+    num? diamondsEarned,
+    num? spinFromDiamond,
+    num? cashEarnedFromTasks,
+    String? createdAt,
+    String? updatedAt,
+  }) {
     _id = id;
     _telegramId = telegramId;
     _firstName = firstName;
@@ -95,9 +97,10 @@ class MyProfileData {
     _payOutCount = payOutCount;
     _diamondsEarned = diamondsEarned;
     _spinFromDiamond = spinFromDiamond;
+    _cashEarnedFromTasks = cashEarnedFromTasks;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-}
+  }
 
   MyProfileData.fromJson(dynamic json) {
     _id = json['_id'];
@@ -126,6 +129,7 @@ class MyProfileData {
     _payOutCount = json['payOutCount'];
     _diamondsEarned = json['diamondsEarned'];
     _spinFromDiamond = json['spinFromDiamond'];
+    _cashEarnedFromTasks = json['cashEarnedFromTasks'];
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
   }
@@ -155,6 +159,7 @@ class MyProfileData {
   num? _payOutCount;
   num? _diamondsEarned;
   num? _spinFromDiamond;
+  num? _cashEarnedFromTasks;
   String? _createdAt;
   String? _updatedAt;
 
@@ -184,6 +189,7 @@ class MyProfileData {
   num? get payOutCount => _payOutCount;
   num? get diamondsEarned => _diamondsEarned;
   num? get spinFromDiamond => _spinFromDiamond;
+  num? get cashEarnedFromTasks => _cashEarnedFromTasks;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
 
@@ -215,9 +221,9 @@ class MyProfileData {
     map['payOutCount'] = _payOutCount;
     map['diamondsEarned'] = _diamondsEarned;
     map['spinFromDiamond'] = _spinFromDiamond;
+    map['cashEarnedFromTasks'] = _cashEarnedFromTasks;
     map['createdAt'] = _createdAt;
     map['updatedAt'] = _updatedAt;
     return map;
   }
-
 }

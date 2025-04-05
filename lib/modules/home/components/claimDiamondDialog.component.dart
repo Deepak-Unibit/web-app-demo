@@ -1,9 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../helper/lottie.helper.dart';
 import '../../../utils/assets.util.dart';
 
 class ClaimDiamondDialogComponent {
@@ -35,7 +32,7 @@ class ClaimDiamondDialogComponent {
                       fit: BoxFit.cover,
                     ),
                     Image.asset(
-                      AssetsUtil.getDiamond(),
+                      AssetsUtil.getCoin(),
                       height: 60,
                       width: 60,
                       fit: BoxFit.contain,
@@ -44,7 +41,7 @@ class ClaimDiamondDialogComponent {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  "You've got $diamondCount Diamond!",
+                  "You've got ₹$diamondCount!",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,

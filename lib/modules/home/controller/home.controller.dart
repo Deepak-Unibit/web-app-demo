@@ -42,6 +42,7 @@ import 'package:web_app_demo/modules/home/components/spinWinAmountDialog.compone
 import 'package:web_app_demo/modules/home/components/taskRedeemHistoryDialog.component.dart';
 import 'package:web_app_demo/modules/home/components/withdrawHistoryDialog.component.dart';
 import '../../../models/setUser.model.dart';
+import '../components/extraTaskCashOutDialog.component.dart';
 import '../components/extraTaskDialog.component.dart';
 import '../components/getSpinDialog.component.dart';
 import '../components/uploadProofDialog.component.dart';
@@ -58,6 +59,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   RxBool showExtraCash = false.obs;
   RxList<TaskListData> taskDataList = <TaskListData>[].obs;
   RxInt totalDiamond = 0.obs;
+  RxInt totalCashFromTask = 0.obs;
   RxList<int> activeTimerIndexList = <int>[].obs;
   final RxList<int> remainingTimes = <int>[].obs;
   Rx<DailyRewardsData> dailyRewardsData = DailyRewardsData().obs;
@@ -77,7 +79,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
       // Development
       // userModel = UserModel(
-      //   id: 1146609300,
+      //   id: 1146609302,
       //   firstName: "New3 Kumar",
       //   lastName: "Behera",
       //   allowsWriteToPm: true,
@@ -113,6 +115,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     //   data: VerifySubscriptionData(
     //     joinedChannel1: true,
     //     joinedChannel2: true,
+    //     joinedChannel3: true,
     //   ),
     // );
 
@@ -528,10 +531,13 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       return;
     }
     totalDiamond.value = (setUserData.value.diamondsEarned ?? 0) as int;
+    totalCashFromTask.value = (setUserData.value.cashEarnedFromTasks ?? 0) as int;
     ExtraTaskDialogComponent.show(
       totalDiamond: totalDiamond,
+      totalCashFromTask: totalCashFromTask,
       taskList: taskDataList,
       onInviteForSpin: onInviteForSpins,
+      onRedeemCashFromTask: onRedeemCashFromTask,
       onRedeemSpin: onRedeemSpin,
       onDetailsClick: onTaskDetailsClick,
       onTaskGoClick: onTaskGoClick,
@@ -549,6 +555,7 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       setUserData.value.setDiamondsEarned = myProfileModel.data?.diamondsEarned ?? 0;
       setUserData.value.setSpinCount = myProfileModel.data?.spinCount ?? 0;
       setUserData.value.setReferralSpins = myProfileModel.data?.referralSpins ?? 0;
+      setUserData.value.setCashEarnedFromTasks = myProfileModel.data?.cashEarnedFromTasks ?? 0;
       totalSpinCount.value = ((myProfileModel.data?.spinCount ?? 0) + (myProfileModel.data?.referralSpins ?? 0)) as int;
       return true;
     } else {
@@ -584,6 +591,35 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
       SnackBarHelper.show(taskListModel.message);
     }
     return false;
+  }
+
+  Future<void> onRedeemCashFromTask() async {
+    LoadingPage.show();
+    var resp = await ApiCall.get(UrlApi.redeemCashFromTask);
+    LoadingPage.close();
+
+    ResponseModel responseModel = ResponseModel.fromJson(resp);
+
+    if (responseModel.responseCode == 200) {
+      Get.back();
+      ExtraTaskCashOutDialogComponent.show(amount: (setUserData.value.cashEarnedFromTasks??0).toInt());
+      await updateProfileData();
+      Future.delayed(1.seconds, () => Get.back());
+    }
+    else if (responseModel.responseCode == 502) {
+      SnackBarHelper.show(responseModel.message);
+      AccountInfoDialogComponent.show(
+        nameController: nameController,
+        upiController: upiController,
+        mobileNumberController: mobileNumberController,
+        onBack: () => Get.back(),
+        onSave: () => onSaveAccountInfo(showCashOut: false),
+      );
+    }
+    else {
+      SnackBarHelper.show(responseModel.message);
+    }
+    return;
   }
 
   Future<void> onRedeemSpin() async {
@@ -715,8 +751,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
     ResponseModel responseModel = ResponseModel.fromJson(resp);
 
     if (responseModel.responseCode == 200) {
-      setUserData.value.setDiamondsEarned = responseModel.data ?? 0;
-      totalDiamond.value = setUserData.value.diamondsEarned as int;
+      setUserData.value.setCashEarnedFromTasks = responseModel.data ?? 0;
+      totalCashFromTask.value = setUserData.value.cashEarnedFromTasks as int;
       ClaimDiamondDialogComponent.show(diamondCount: diamondCount);
       await getTaskListData();
       Future.delayed(500.milliseconds, () => Get.back());
@@ -819,4 +855,5 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   int getRandomTeamNumber() {
     return Random().nextInt(10) + 1;
   }
+
 }

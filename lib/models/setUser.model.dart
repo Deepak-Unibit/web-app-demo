@@ -59,6 +59,7 @@ class SetUserData {
     String? phoneNumber,
     String? upiId,
     num? goal,
+    num? cashEarnedFromTasks,
   }) {
     _id = id;
     _telegramId = telegramId;
@@ -78,6 +79,7 @@ class SetUserData {
     _phoneNumber = phoneNumber;
     _upiId = upiId;
     _goal = goal;
+    _cashEarnedFromTasks = cashEarnedFromTasks;
   }
 
   SetUserData.fromJson(dynamic json) {
@@ -99,6 +101,7 @@ class SetUserData {
     _phoneNumber = json['phoneNumber'];
     _upiId = json['upiId'];
     _goal = json['goal'];
+    _cashEarnedFromTasks = json['cashEarnedFromTasks'];
   }
   String? _id;
   String? _telegramId;
@@ -118,6 +121,7 @@ class SetUserData {
   String? _phoneNumber;
   String? _upiId;
   num? _goal;
+  num? _cashEarnedFromTasks;
 
   String? get id => _id;
   String? get telegramId => _telegramId;
@@ -137,8 +141,10 @@ class SetUserData {
   String? get phoneNumber => _phoneNumber;
   String? get upiId => _upiId;
   num? get goal => _goal;
+  num? get cashEarnedFromTasks => _cashEarnedFromTasks;
 
   set setDiamondsEarned(num value) => _diamondsEarned=value;
+  set setCashEarnedFromTasks(num value) => _cashEarnedFromTasks=value;
 
   set setEarnedAmount(num value) {
     _earnedAmount = value;
@@ -172,6 +178,7 @@ class SetUserData {
     map['phoneNumber'] = _phoneNumber;
     map['upiId'] = _upiId;
     map['goal'] = _goal;
+    map['cashEarnedFromTasks'] = _cashEarnedFromTasks;
     return map;
   }
 }
